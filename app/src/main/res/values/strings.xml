@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DetoxRank</string>
+    <string name="tab_rank">Rank</string>
+    <string name="tab_tasks">Tasks</string>
+    <string name="tab_timer">Timer</string>
+    <string name="tab_theory">Theory</string>
+    <string name="tab_achievements">Achievements</string>
+    <string name="navigation_bottom">Navigation Bottom</string>
+</resources>

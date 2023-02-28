@@ -6,4 +6,11 @@
     <string name="tab_theory">Theory</string>
     <string name="tab_achievements">Achievements</string>
     <string name="navigation_bottom">Navigation Bottom</string>
+    <string name="button_select_chapter">SELECT CHAPTER</string>
+    <string name="chapter_difficulty">Difficulty</string>
+    <string name="chapter_rank_points_gain">Rank points gain</string>
+    <string name="back_button">back button</string>
+    <string name="chapter_select">Chapter Select</string>
+    <string name="chapters_learn">Learn</string>
+    <string name="select">Select &amp; Learn</string>
 </resources>

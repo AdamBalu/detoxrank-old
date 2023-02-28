@@ -2,11 +2,17 @@ package com.example.detoxrank.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AvTimer
+import androidx.compose.material.icons.filled.Checklist
+import androidx.compose.material.icons.filled.HistoryEdu
+import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -14,37 +20,43 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Section
+import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.theory.TheoryMainScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetoxRankHomeScreen(
+    viewModel: DetoxRankViewModel,
     detoxRankUiState: DetoxRankUiState,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
 ) {
-//    val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
     val navigationItemContentList = listOf(
         NavigationItemContent(
             section = Section.Rank,
-            icon = Icons.Outlined.LocalPolice,
-            text = stringResource(id = R.string.tab_rank)
+            icon = Icons.Filled.LocalPolice,
+            text = stringResource(id = R.string.tab_rank),
+            tint = rank_color
         ),
         NavigationItemContent(
             section = Section.Tasks,
-            icon = Icons.Outlined.Checklist,
-            text = stringResource(id = R.string.tab_tasks)
+            icon = Icons.Filled.Checklist,
+            text = stringResource(id = R.string.tab_tasks),
+            tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary
         ),
         NavigationItemContent(
             section = Section.Timer,
-            icon = Icons.Outlined.AvTimer,
-            text = stringResource(id = R.string.tab_timer)
+            icon = Icons.Filled.AvTimer,
+            text = stringResource(id = R.string.tab_timer),
+            tint = if (isSystemInDarkTheme()) timer_color_dark else md_theme_light_error
         ),
         NavigationItemContent(
             section = Section.Theory,
-            icon = Icons.Outlined.HistoryEdu,
-            text = stringResource(id = R.string.tab_theory)
+            icon = Icons.Filled.HistoryEdu,
+            text = stringResource(id = R.string.tab_theory),
+            tint = if (isSystemInDarkTheme()) md_theme_dark_primary else md_theme_light_primary
         )
     )
 
@@ -60,6 +72,7 @@ fun DetoxRankHomeScreen(
         }
         ) {
             DetoxRankContent(
+                viewModel = viewModel,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
                 onTabPressed = onTabPressed,
@@ -69,6 +82,7 @@ fun DetoxRankHomeScreen(
         }
     } else {
         DetoxRankContent(
+            viewModel = viewModel,
             navigationType = navigationType,
             detoxRankUiState = detoxRankUiState,
             onTabPressed = onTabPressed,
@@ -81,6 +95,7 @@ fun DetoxRankHomeScreen(
 
 @Composable
 private fun DetoxRankContent(
+    viewModel: DetoxRankViewModel,
     navigationType: DetoxRankNavigationType,
     detoxRankUiState: DetoxRankUiState,
     onTabPressed: ((Section) -> Unit),
@@ -101,24 +116,72 @@ private fun DetoxRankContent(
             )
         }
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.inverseOnSurface)
-        ) {
-            Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
-            // bottom navigation bar
-            AnimatedVisibility(
-                visible = navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION
+
+        // keep everything centered when on mobile screen size
+        if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .fillMaxSize()
             ) {
+
+                // filler element for space evenly to work
+                Spacer(modifier = Modifier.height(0.dp))
+
+                DetoxRankMainScreenContent(
+                    currentTab = detoxRankUiState.currentSection,
+                    viewModel = viewModel
+                )
+
+                // bottom navigation bar
                 ReplyBottomNavigationBar(
                     currentTab = detoxRankUiState.currentSection,
                     onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList
+                    navigationItemContentList = navigationItemContentList,
+                    modifier = Modifier.padding(bottom = 0.dp)
                 )
             }
+        } else {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+            ) {
+                DetoxRankMainScreenContent(
+                    currentTab = detoxRankUiState.currentSection,
+                    viewModel = viewModel
+                )
+                Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
+            }
+        }
+
+    }
+}
+
+@Composable
+fun DetoxRankMainScreenContent(
+    currentTab: Section,
+    viewModel: DetoxRankViewModel,
+    modifier: Modifier = Modifier
+) {
+    when (currentTab) {
+        Section.Rank -> {
+
+        }
+        Section.Tasks -> {
+
+        }
+        Section.Timer -> {
+
+        }
+        Section.Theory -> {
+            TheoryMainScreen(
+                modifier = modifier,
+                viewModel = viewModel
+            )
         }
     }
+
 }
 
 @Composable
@@ -136,7 +199,9 @@ private fun ReplyBottomNavigationBar(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
+                        tint = navItem.tint
                     )
                 }
             )
@@ -162,7 +227,8 @@ private fun DetoxRankNavigationRail(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        tint = navItem.tint
                     )
                 }
             )
@@ -176,7 +242,7 @@ private fun DetoxRankNavigationRail(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NavigationDrawerContent(
-    selectedDestination: Any,
+    selectedDestination: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
@@ -200,7 +266,8 @@ private fun NavigationDrawerContent(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        tint = navItem.tint
                     )
                 },
                 colors = NavigationDrawerItemDefaults.colors(
@@ -215,5 +282,6 @@ private fun NavigationDrawerContent(
 private data class NavigationItemContent(
     val section: Section,
     val icon: ImageVector,
-    val text: String
+    val text: String,
+    val tint: Color
 )

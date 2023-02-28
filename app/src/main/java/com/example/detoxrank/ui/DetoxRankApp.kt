@@ -35,10 +35,11 @@ fun DetoxRankApp(
     }
 
     DetoxRankHomeScreen(
+        viewModel = viewModel,
         detoxRankUiState = detoxRankUiState,
         navigationType = navigationType,
         onTabPressed = { section: Section ->
-            viewModel.updateCurrentMailbox(section = section)
+            viewModel.updateCurrentSection(section = section)
             // TODO reset home screen states if needed
         },
         modifier = modifier

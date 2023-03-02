@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Star
@@ -20,18 +21,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.data.ChapterDifficulty
+import com.example.detoxrank.ui.data.ChapterTag
 import com.example.detoxrank.ui.data.local.LocalChapterDataProvider
+import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
 import com.example.detoxrank.ui.theme.rank_color
 
 @Composable
 fun TheoryChapterSelectScreen(
-    onChapterCardClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onChapterOneSelected: () -> Unit,
+    onChapterTwoSelected: () -> Unit,
+    onChapterThreeSelected: () -> Unit,
+    onChapterFourSelected: () -> Unit,
+    onChapterFiveSelected: () -> Unit,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
     val chapters = LocalChapterDataProvider.allChapters
 
@@ -41,8 +52,17 @@ fun TheoryChapterSelectScreen(
             .padding(top = 24.dp)
     ) {
         items(chapters) {chapter ->
+            val chapterButtonBehavior: () -> Unit = when (chapter.tag) {
+                ChapterTag.Dopamine -> onChapterOneSelected
+                ChapterTag.HedonicsVsDopaminergics -> onChapterTwoSelected
+                ChapterTag.Reinforcement -> onChapterThreeSelected
+                ChapterTag.PREP -> onChapterFourSelected
+                ChapterTag.Solutions -> onChapterFiveSelected
+            }
             TheoryChapter(
-                chapter = chapter
+                onChapterSelected = chapterButtonBehavior,
+                chapter = chapter,
+                navController = navController
             )
         }
     }
@@ -51,10 +71,13 @@ fun TheoryChapterSelectScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TheoryChapter(
+    onChapterSelected: () -> Unit,
     chapter: Chapter,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
     var expanded by remember { mutableStateOf(false) }
+
     Card(
         modifier = modifier.padding(vertical = 4.dp, horizontal = 16.dp),
         onClick = { expanded = !expanded }
@@ -74,7 +97,7 @@ fun TheoryChapter(
             ) {
                 Text(
                     text = chapter.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = Typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Icon(
@@ -88,12 +111,12 @@ fun TheoryChapter(
             if (expanded) {
                 Text(
                     text = chapter.description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = Typography.bodyMedium,
                     modifier = Modifier
                         .padding(bottom = 20.dp)
                 )
                 FilledTonalButton(
-                    onClick = { /* TODO */ },
+                    onClick = onChapterSelected,
                     modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth()
                 ) {
                     Text(text = stringResource(id = R.string.select))
@@ -128,22 +151,26 @@ fun TheoryChapterFooter(
                 imageVector = Icons.Outlined.Shield,
                 contentDescription = null,
                 tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                modifier = Modifier.padding(end = 5.dp)
             )
             Text(
                 text = "$rankPointsGain RP",
-                style = MaterialTheme.typography.bodyMedium,
+                style = Typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
             )
         }
 
         // stars (difficulty level) footer
         Row(
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
-                tint = rank_color
+                tint = rank_color,
+                modifier = Modifier.size(20.dp)
             )
             Icon(
                 imageVector = if (
@@ -153,7 +180,8 @@ fun TheoryChapterFooter(
                 else
                     Icons.Outlined.Grade,
                 contentDescription = null,
-                tint = rank_color
+                tint = rank_color,
+                modifier = Modifier.size(20.dp)
             )
             Icon(
                 imageVector = if (chapter.difficulty == ChapterDifficulty.Hard)
@@ -161,10 +189,43 @@ fun TheoryChapterFooter(
                 else
                     Icons.Outlined.Grade,
                 contentDescription = null,
-                tint = rank_color
+                tint = rank_color,
+                modifier = Modifier.size(20.dp)
             )
         }
     }
+}
 
+@Composable
+fun ContinueIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedIconButton(
+        onClick = onClick,
+        modifier = modifier.width(160.dp).padding(16.dp)
+    ) {
+        Row {
+            Text(
+                text = stringResource(R.string.button_continue),
+                modifier = Modifier.padding(end = 5.dp)
+            )
+            Icon(
+                imageVector = Icons.Filled.ArrowRightAlt,
+                contentDescription = stringResource(R.string.back_button)
+            )
+        }
 
+    }
+}
+
+@Composable
+fun BoldText(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+
+    )
 }

@@ -1,5 +1,8 @@
 package com.example.detoxrank.ui.theory
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -13,10 +16,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.DetoxRankViewModel
+import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_primaryContainer
 import com.example.detoxrank.ui.theme.md_theme_light_primaryContainer
 
@@ -58,8 +63,31 @@ fun TheoryMainScreen(
             }
         }
     }
+}
 
-
+@Composable
+fun TheoryImage(
+    @DrawableRes imageRes: Int,
+    modifier: Modifier = Modifier,
+    @StringRes contentDescription: Int? = null,
+    @StringRes imageLabel: Int? = null,
+    includeImageTag: Boolean = false
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painterResource(id = imageRes),
+            contentDescription = stringResource(contentDescription ?: R.string.empty_message),
+            modifier = modifier.padding(top = 35.dp, start = 35.dp, end = 35.dp, bottom = 5.dp)
+        )
+        Text(
+            text = (if (includeImageTag) "Image: " else "") +
+                    stringResource(id = imageLabel ?: R.string.empty_message),
+            style = Typography.bodySmall,
+            modifier = modifier.padding(bottom = 30.dp)
+        )
+    }
 }
 
 

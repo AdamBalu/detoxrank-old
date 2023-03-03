@@ -1,5 +1,7 @@
 package com.example.detoxrank.ui.theory.screens.chapter_one
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -17,15 +19,19 @@ import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
+import com.example.detoxrank.ui.theme.md_theme_light_tertiary
 import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
 fun ChapterOneScreenTwo(
     modifier: Modifier = Modifier,
-    onChapterContinue: () -> Unit
+    onChapterContinue: () -> Unit,
+    backHandler: () -> Unit
 ) {
     val scrollState = rememberScrollState()
+    BackHandler(onBack = backHandler)
+
     Column(
         modifier = modifier
             .padding(start = 26.dp, end = 26.dp)
@@ -61,7 +67,7 @@ fun ChapterOneScreenTwoBody() {
             append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_2_part_3))
             withStyle(
                 style = SpanStyle(
-                    color = md_theme_dark_tertiary,
+                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {

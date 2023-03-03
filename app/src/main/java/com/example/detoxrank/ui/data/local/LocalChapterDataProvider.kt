@@ -8,10 +8,11 @@ object LocalChapterDataProvider {
     val allChapters = mutableListOf(
         Chapter(
             name = "Dopamine",
-            description = "In this chapter, we will talk about basic brain parts and influence of dopamine on " +
+            description = "In this chapter, we will talk about basic brain function and influence of dopamine on " +
                     "the behavior and motivation",
-            difficulty = ChapterDifficulty.Hard,
-            tag = ChapterTag.Dopamine
+            difficulty = ChapterDifficulty.Easy,
+            tag = ChapterTag.Dopamine,
+            chapterScreenNum = 5
         ),
         Chapter(
             name = "Hedonics vs Dopaminergics",

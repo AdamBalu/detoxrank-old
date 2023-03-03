@@ -20,11 +20,10 @@ import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
-import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun ChapterOneScreenThree(
+fun ChapterOneScreenFinal(
     modifier: Modifier = Modifier,
     onChapterContinue: () -> Unit,
     backHandler: () -> Unit
@@ -37,7 +36,7 @@ fun ChapterOneScreenThree(
             .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        ChapterOneScreenThreeBody()
+        ChapterOneScreenFinalBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -46,39 +45,29 @@ fun ChapterOneScreenThree(
 }
 
 @Composable
-fun ChapterOneScreenThreeBody() {
+fun ChapterOneScreenFinalBody() {
     Text(
         buildAnnotatedString {
-            append("A")
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_5_part_1))
             withStyle(
                 style = SpanStyle(
                     color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
-                append(" neurotransmitter ")
+                append("""
+                    
+    - neurons
+    - neurotransmitters
+    - dopamine
+    - wanting vs liking
+    - reinforcing behaviors
+                    
+""")
             }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_3_part_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" synapses")
-            }
-            append(".")
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_5_part_2))
         },
         style = Typography.bodyLarge
     )
-    TheoryImage(
-        imageRes = R.drawable.synapses,
-        imageLabel = R.string.synapse_label,
-        contentDescription = R.string.synapse_content_description,
-        includeImageTag = true
-    )
-    Text(
-        text = stringResource(id = R.string.chapter_1_dopamine_theory_text_3_part_2),
-        style = Typography.bodyLarge
-    )
+
 }

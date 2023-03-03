@@ -42,4 +42,25 @@ class DetoxRankViewModel : ViewModel() {
             )
         }
     }
+
+    fun getProgressBarValue(): Float {
+        return uiState.value.progressBarProgression
+    }
+
+    fun updateProgressBarProgression(valueToAdd: Float) {
+        val progression = getProgressBarValue() + valueToAdd
+        _uiState.update {
+            it.copy(
+                progressBarProgression = progression
+            )
+        }
+    }
+
+    fun resetProgressBarProgression() {
+        _uiState.update {
+            it.copy(
+                progressBarProgression = 0f
+            )
+        }
+    }
 }

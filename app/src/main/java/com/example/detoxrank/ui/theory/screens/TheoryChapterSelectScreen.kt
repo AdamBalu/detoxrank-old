@@ -28,7 +28,6 @@ import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.data.ChapterDifficulty
 import com.example.detoxrank.ui.data.ChapterTag
-import com.example.detoxrank.ui.data.local.LocalChapterDataProvider
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
@@ -42,10 +41,9 @@ fun TheoryChapterSelectScreen(
     onChapterFourSelected: () -> Unit,
     onChapterFiveSelected: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    chapters: MutableList<Chapter>
 ) {
-    val chapters = LocalChapterDataProvider.allChapters
-
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -217,15 +215,4 @@ fun ContinueIconButton(
         }
 
     }
-}
-
-@Composable
-fun BoldText(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = text,
-
-    )
 }

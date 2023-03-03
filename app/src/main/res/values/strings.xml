@@ -29,14 +29,34 @@
 
     <string name="chapter_1_dopamine_theory_text_2_part_3">These signals are sent by a&#160;special, electrically excitable cell called</string>
 
-    <string name="chapter_1_dopamine_theory_text_4">A neurotransmitter is a signaling molecule secreted by a neuron. Basically, it functions as a messenger who delivers
-        the information from point A to point B through the neurotic pathways called synapses.\n</string>
-    <string name="chapter_1_dopamine_theory_text_5">On the picture you can see a synapse, which you can imagine as a sender or receiver
-        and yellow tiny "dots" called neurotransmitters which travel across
-    the different pathways created by these synapses.\n</string>
-    <string name="chapter_1_dopamine_theory_text_6">You might be wondering, what do you get from all this? Well, now comes the important part.\n\nAs we already mentioned,
-    dopamine is one of those neurotransmitters. And what it does is that by traveling back and forth, it reinforces your behaviors - good ones or bad ones, it doesn\'t care.\n\nIt\'s
-        also responsible for the feeling of wanting something (which is not the same as liking, there is an important distinction to be made right here!)</string>
+    <string name="chapter_1_dopamine_theory_text_3_part_1">is a signaling molecule secreted by a neuron. Basically, it functions as a messenger who delivers
+        the information from point A to point B through the neurotic pathways called</string>
+    <string name="chapter_1_dopamine_theory_text_3_part_2">On the picture you can see a synapse. Neurotransmitters travel through these synapses from a sending neuron to a
+        receiving neuron and they are caught on the other end by the receptors.</string>
+    <string name="chapter_1_dopamine_theory_text_4_part_1">You might be wondering, what do you get from all this? Well, now comes the important part.\n\nAs we already mentioned,
+    dopamine is one of those neurotransmitters. And what it does is that by traveling back and forth, it</string>
+
+    <string name="chapter_1_dopamine_theory_text_4_part_2">- good ones or bad ones, it doesn\'t care.</string>
+    <string name="chapter_1_dopamine_theory_text_4_part_3">It\'s also responsible for the feeling of </string>
+    <string name="chapter_1_dopamine_theory_text_4_part_4">something (which is not the same as</string>
+    <string name="chapter_1_dopamine_theory_text_4_part_5">, there is an important distinction to be made right here!)\n\nFor
+    example, you are really excited to binge-watch an entire series, but how enjoyable is it after eight hours of watching compared
+    to the first hour?</string>
+    <string name="chapter_1_dopamine_theory_text_4_part_6">The problem is that after those eight hours, you don\'t really feel motivated towards anything - especially anything productive, but it\'s usually really hard to stop watching!</string>
+    <string name="chapter_1_dopamine_theory_text_5_part_1">That concludes this chapter! To summarize, you learned some new terms (most
+        of them will be further discussed later): </string>
+    <string name="chapter_1_dopamine_theory_text_5_part_2">Well done! Next up, we will discuss liking versus wanting.</string>
+    <string name="chapter_2_text_1_part_1">
+        In the last chapter, we made an important statement. It stated that liking is not the same as wanting.
+        Physically, brain handles these two in different parts. Liking is handled in the hedonic circuit, which
+        has it\'s own neurotransmitters with orbitofrontal cortex as the main handler, as you can see on the picture.
+
+        Wanting is the main attribute of dopaminergic circuit, also called reward circuitry, with it\'s main calculations
+        being processed by the nucleus accumbens.
+
+
+    </string>
+
     <string name="button_continue">Continue</string>
     <string name="dopamine_chemical_content_description">Dopamine chemical image</string>
     <string name="empty_message" />
@@ -44,5 +64,7 @@
     <string name="brain_neurons_content_description">brain with neuron pathways</string>
     <string name="brain_neurons_label">Neurons sending signals in the brain</string>
     <string name="neuron">Neuron</string>
+    <string name="synapse_label">Synapse. Made of: 1&#160;-&#160;neurotransmitters, 2&#160;-&#160;receptors, 3&#160;-&#160;sending neuron, 4&#160;-&#160;receiving neuron</string>
+    <string name="synapse_content_description">Image of a synapse with neurotransmitters</string>
 
 </resources>

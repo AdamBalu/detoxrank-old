@@ -13,5 +13,6 @@ data class Chapter(
     val description: String,
     val difficulty: ChapterDifficulty,
     val wasCompleted: Boolean = false,
-    val tag: ChapterTag
+    val tag: ChapterTag,
+    val chapterScreenNum: Int = 0
 )

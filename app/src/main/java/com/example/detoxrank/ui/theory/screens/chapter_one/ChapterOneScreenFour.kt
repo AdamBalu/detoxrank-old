@@ -24,7 +24,7 @@ import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun ChapterOneScreenThree(
+fun ChapterOneScreenFour(
     modifier: Modifier = Modifier,
     onChapterContinue: () -> Unit,
     backHandler: () -> Unit
@@ -37,7 +37,7 @@ fun ChapterOneScreenThree(
             .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        ChapterOneScreenThreeBody()
+        ChapterOneScreenFourBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -46,39 +46,52 @@ fun ChapterOneScreenThree(
 }
 
 @Composable
-fun ChapterOneScreenThreeBody() {
+fun ChapterOneScreenFourBody() {
     Text(
         buildAnnotatedString {
-            append("A")
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_1))
             withStyle(
                 style = SpanStyle(
                     color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
-                append(" neurotransmitter ")
+                append(" reinforces your behaviors ")
             }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_3_part_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" synapses")
-            }
-            append(".")
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_2))
         },
         style = Typography.bodyLarge
     )
     TheoryImage(
-        imageRes = R.drawable.synapses,
-        imageLabel = R.string.synapse_label,
-        contentDescription = R.string.synapse_content_description,
-        includeImageTag = true
+        imageRes = R.drawable.want_like_difference
     )
     Text(
-        text = stringResource(id = R.string.chapter_1_dopamine_theory_text_3_part_2),
+        buildAnnotatedString {
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_3))
+            withStyle(
+                style = SpanStyle(
+                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
+                append(" wanting ")
+            }
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_4))
+            withStyle(
+                style = SpanStyle(
+                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
+                append(" liking ")
+            }
+            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_5))
+        },
+        style = Typography.bodyLarge
+    )
+    TheoryImage(imageRes = R.drawable.time_passing)
+    Text(
+        text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_6),
         style = Typography.bodyLarge
     )
 }

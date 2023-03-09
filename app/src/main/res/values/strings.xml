@@ -15,47 +15,141 @@
     <string name="select">Select &amp; Learn</string>
     <string name="previous_chapter_screen">Previous</string>
 
-    <!-- Theory - Chapter 1 resources -->
-    <string name="chapter_1_dopamine_theory_text_1">In this chapter, you will learn basics about</string>
-    <string name="chapter_1_dopamine_theory_text_1_part_2">. So what exactly is it?\n\nDopamine is a</string>
-    <string name="chapter_1_dopamine_theory_text_1_part_3">in the dopaminergic pathway in the brain.</string>
-    <string name="chapter_1_dopamine_theory_text_1_part_4">Wait, that doesn\'t say much to
+
+    <!-- ******************************** -->
+    <!-- Theory - Chapter Intro resources -->
+    <!-- ******************************** -->
+    <string name="chapter_intro_screen_1_pt_1">
+        You are probably wondering: What is this section supposed to achieve?\n\nWell, there is a pretty high chance that you are a person who just found out
+        about
+    </string>
+    <string name="chapter_intro_screen_1_pt_2">
+        Maybe you heard that it helps, or that you should really do it and provided some default reasons as to why it\'s good.
+    </string>
+    <string name="chapter_intro_screen_2_pt_1">
+        Maybe you are someone who doesn\'t need any more explanations,
+        and these reasons are enough for you to actually do it.
+    </string>
+    <string name="chapter_intro_screen_2_pt_2">
+        If that\'s true, you can omit this entire section and explore other parts of this app.
+    </string>
+    <string name="chapter_intro_screen_3_pt_1">
+        But maybe this isn\'t enough,
+        and you think you could use some better motivation.\n\nYou might think that you should do it, however, you
+    </string>
+    <string name="chapter_intro_screen_3_pt_2">
+        in what ways this process helps you build healthier, better yourself.\n\nIn that case, this section is just for you!
+    </string>
+
+
+    <!-- *********************************** -->
+    <!-- Theory - Chapter Dopamine resources -->
+    <!-- *********************************** -->
+    <string name="chapter_dopamine_screen_1_pt_1">In this chapter, you will learn basics about</string>
+    <string name="chapter_dopamine_screen_1_pt_2">. So what exactly is it?\n\nDopamine is a</string>
+    <string name="chapter_dopamine_screen_1_pt_3">in the dopaminergic pathway in the brain.</string>
+    <string name="chapter_dopamine_screen_1_pt_4">
+        Wait, that doesn\'t say much to
         someone who never studied it… let\'s delve deeper into what it means.\n
     </string>
-    <string name="chapter_1_dopamine_theory_text_2">To find out what dopamine is, we need to first get a basic understanding of how the brain works.\n</string>
-    <string name="chapter_1_dopamine_theory_text_2_part_2">
+
+    <string name="chapter_dopamine_screen_2_pt_1">
+        To find out what dopamine is, we need to first get a basic understanding of how the brain works.\n
+    </string>
+    <string name="chapter_dopamine_screen_2_pt_2">
         You probably already know that in the human brain,
         there are plenty of signals being constantly sent between individual cells. </string>
-
-    <string name="chapter_1_dopamine_theory_text_2_part_3">These signals are sent by a&#160;special, electrically excitable cell called</string>
-
-    <string name="chapter_1_dopamine_theory_text_3_part_1">is a signaling molecule secreted by a neuron. Basically, it functions as a messenger who delivers
-        the information from point A to point B through the neurotic pathways called</string>
-    <string name="chapter_1_dopamine_theory_text_3_part_2">On the picture you can see a synapse. Neurotransmitters travel through these synapses from a sending neuron to a
-        receiving neuron and they are caught on the other end by the receptors.</string>
-    <string name="chapter_1_dopamine_theory_text_4_part_1">You might be wondering, what do you get from all this? Well, now comes the important part.\n\nAs we already mentioned,
-    dopamine is one of those neurotransmitters. And what it does is that by traveling back and forth, it</string>
-
-    <string name="chapter_1_dopamine_theory_text_4_part_2">- good ones or bad ones, it doesn\'t care.</string>
-    <string name="chapter_1_dopamine_theory_text_4_part_3">It\'s also responsible for the feeling of </string>
-    <string name="chapter_1_dopamine_theory_text_4_part_4">something (which is not the same as</string>
-    <string name="chapter_1_dopamine_theory_text_4_part_5">, there is an important distinction to be made right here!)\n\nFor
-    example, you are really excited to binge-watch an entire series, but how enjoyable is it after eight hours of watching compared
-    to the first hour?</string>
-    <string name="chapter_1_dopamine_theory_text_4_part_6">The problem is that after those eight hours, you don\'t really feel motivated towards anything - especially anything productive, but it\'s usually really hard to stop watching!</string>
-    <string name="chapter_1_dopamine_theory_text_5_part_1">That concludes this chapter! To summarize, you learned some new terms (most
-        of them will be further discussed later): </string>
-    <string name="chapter_1_dopamine_theory_text_5_part_2">Well done! Next up, we will discuss liking versus wanting.</string>
-    <string name="chapter_2_text_1_part_1">
-        In the last chapter, we made an important statement. It stated that liking is not the same as wanting.
-        Physically, brain handles these two in different parts. Liking is handled in the hedonic circuit, which
-        has it\'s own neurotransmitters with orbitofrontal cortex as the main handler, as you can see on the picture.
-
-        Wanting is the main attribute of dopaminergic circuit, also called reward circuitry, with it\'s main calculations
-        being processed by the nucleus accumbens.
-
-
+    <string name="chapter_dopamine_screen_2_pt_3">
+        These signals are sent by a&#160;special, electrically excitable cell called
     </string>
+
+    <string name="chapter_dopamine_screen_3_pt_1">
+        is a signaling molecule secreted by a neuron. Basically, it functions as a messenger who delivers
+        the information from point A to point B through the neurotic pathways called
+    </string>
+    <string name="chapter_dopamine_screen_3_pt_2">On the picture you can see a synapse. Neurotransmitters travel through these synapses from a sending neuron to a
+        receiving neuron and they are caught on the other end by the receptors.</string>
+
+    <string name="chapter_dopamine_screen_4_pt_1">
+        You might be wondering, what do you get from all this? Well, now comes the important part.\n\nAs we already mentioned, dopamine
+        is one of those neurotransmitters. And what it does is that by traveling back and forth, it
+    </string>
+    <string name="chapter_dopamine_screen_4_pt_2">- good ones or bad ones, it doesn\'t care.</string>
+    <string name="chapter_dopamine_screen_4_pt_3">It\'s also responsible for the feeling of </string>
+    <string name="chapter_dopamine_screen_4_pt_4">something (which is not the same as</string>
+    <string name="chapter_dopamine_screen_4_pt_5">
+        , there is an important distinction to be made right here!)\n\nFor
+    example, you are really excited to binge-watch an entire series, but how enjoyable is it after eight hours of watching compared
+    to the first hour?
+    </string>
+    <string name="chapter_dopamine_screen_4_pt_6">
+        The problem is that after those eight hours, you don\'t really feel motivated towards
+        anything&#160;-&#160;especially anything productive, but it\'s usually really hard to stop watching!
+    </string>
+
+    <string name="chapter_dopamine_screen_5_pt_1">
+        That concludes this chapter! To summarize, you learned some new terms (most
+        of them will be further discussed later):
+    </string>
+    <string name="chapter_dopamine_screen_5_pt_2">Well done! Next up, we will further discuss liking versus wanting.</string>
+
+
+    <!-- **************************************** -->
+    <!-- Theory - Chapter Reinforcement resources -->
+    <!-- **************************************** -->
+    <string name="chapter_reinforcement_screen_1_pt_1">
+        Brain has many different parts and</string>
+    <string name="chapter_reinforcement_screen_1_pt_2">
+        and each of them is responsible for a particular function.
+    </string>
+    <string name="chapter_reinforcement_screen_1_pt_3">
+        Taking them apart and looking specifically at the ones that are involved in dopaminergic
+        activities helps significantly. It leads to a better understanding and hopefully provides you with more motivation.
+    </string>
+
+    <string name="chapter_reinforcement_screen_2_pt_1">
+        When we talk about dopamine, the main circuit, which this neurotransmitter operates in, is called
+    </string>
+    <string name="chapter_reinforcement_screen_2_pt_2">
+        is the main process performed by this circuit when we engage in different activities.\n\nLet\'s take a look at an example.
+    </string>
+
+    <string name="chapter_reinforcement_screen_3_pt_1">
+        Let\'s consider drugs.
+    </string>
+    <string name="chapter_reinforcement_screen_3_pt_2">
+        Addictive substances are incredibly strong. They
+        are also called</string>
+    <string name="chapter_reinforcement_screen_3_pt_3">
+        By taking a drug, which usually releases exceptionally high amounts of dopamine, you directly activate
+        this process and therefore substantially reinforce the behavior.\n\nNote: Even an anticipation of the drug releases dopamine!
+    </string>
+
+    <string name="chapter_reinforcement_screen_4_pt_1">
+        This process is also called
+    </string>
+    <string name="chapter_reinforcement_screen_4_pt_2">
+        You learn to take the drug. We can see people having very low interest in activities which are not as rewarding
+        (in terms of dopamine release) when they are used to high dopamine releases&#160;-&#160;they most likely won\'t prefer a walk outside in this state.
+    </string>
+    <string name="chapter_reinforcement_screen_4_pt_3">
+         Also, the next time they feel even more devastating desire to take the drug again.\n\nWith no
+        access to the desired drug, there are often severe motivational issues.
+    </string>
+    <string name="chapter_reinforcement_screen_4_pt_4">In
+        the same way, just a little bit weaker, reinforcement occurs with other dopaminergic activities such as
+        browsing social media or watching too many videos and movies.</string>
+
+    <string name="chapter_reinforcement_screen_5_pt_1">Good job! In the next chapter, you will learn about developing tolerance.</string>
+
+
+    <!-- **************************************** -->
+    <!-- Theory - Chapter Tolerance resources -->
+    <!-- **************************************** -->
+    <string name="chapter_tolerance_screen_1_pt_1">
+        The brain constantly receives signals. If it receives a signal in a high frequency, it adapts to that signal - it develops a
+    </string> <!--tolerance -->
+
 
     <string name="button_continue">Continue</string>
     <string name="dopamine_chemical_content_description">Dopamine chemical image</string>
@@ -66,5 +160,10 @@
     <string name="neuron">Neuron</string>
     <string name="synapse_label">Synapse. Made of: 1&#160;-&#160;neurotransmitters, 2&#160;-&#160;receptors, 3&#160;-&#160;sending neuron, 4&#160;-&#160;receiving neuron</string>
     <string name="synapse_content_description">Image of a synapse with neurotransmitters</string>
+    <string name="button_complete_chapter">Complete</string>
+    <string name="brain_circuits_label">Different circuits of a human brain</string>
+    <string name="reward_circuit_label">Circuit where dopamine is the main\n neurotransmitter&#160;-&#160;reward circuit.\nNucleus accumbens is one of the key structures involved in motivation and reward.</string>
+    <string name="reward_circuit_stimulated_label">Reward circuit being directly stimulated by addictive substances</string>
+    <string name="reinforcement_label">Getting a reward from a dopaminergic activity, this behavior is getting reinforced</string>
 
 </resources>

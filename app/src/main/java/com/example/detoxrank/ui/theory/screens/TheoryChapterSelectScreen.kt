@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Grade
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.*
@@ -35,8 +32,9 @@ import com.example.detoxrank.ui.theme.rank_color
 
 @Composable
 fun TheoryChapterSelectScreen(
-    onChapterOneSelected: () -> Unit,
-    onChapterTwoSelected: () -> Unit,
+    onCHIntroSelected: () -> Unit,
+    onCHDopamineSelected: () -> Unit,
+    onCHReinforcementSelected: () -> Unit,
     onChapterThreeSelected: () -> Unit,
     onChapterFourSelected: () -> Unit,
     onChapterFiveSelected: () -> Unit,
@@ -51,9 +49,10 @@ fun TheoryChapterSelectScreen(
     ) {
         items(chapters) {chapter ->
             val chapterButtonBehavior: () -> Unit = when (chapter.tag) {
-                ChapterTag.Dopamine -> onChapterOneSelected
-                ChapterTag.HedonicsVsDopaminergics -> onChapterTwoSelected
-                ChapterTag.Reinforcement -> onChapterThreeSelected
+                ChapterTag.Introduction -> onCHIntroSelected
+                ChapterTag.Dopamine -> onCHDopamineSelected
+                ChapterTag.Reinforcement -> onCHReinforcementSelected
+                ChapterTag.Tolerance -> onChapterThreeSelected
                 ChapterTag.PREP -> onChapterFourSelected
                 ChapterTag.Solutions -> onChapterFiveSelected
             }
@@ -206,11 +205,40 @@ fun ContinueIconButton(
         Row {
             Text(
                 text = stringResource(R.string.button_continue),
-                modifier = Modifier.padding(end = 5.dp)
+                style = Typography.bodyMedium,
+                letterSpacing = 1.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 5.dp).align(Alignment.CenterVertically)
             )
             Icon(
                 imageVector = Icons.Filled.ArrowRightAlt,
-                contentDescription = stringResource(R.string.back_button)
+                contentDescription = null
+            )
+        }
+
+    }
+}
+
+@Composable
+fun CompleteChapterIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedIconButton(
+        onClick = onClick,
+        modifier = modifier.width(160.dp).padding(16.dp)
+    ) {
+        Row {
+            Text(
+                text = stringResource(R.string.button_complete_chapter),
+                style = Typography.bodyMedium,
+                letterSpacing = 1.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 5.dp).align(Alignment.CenterVertically)
+            )
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null
             )
         }
 

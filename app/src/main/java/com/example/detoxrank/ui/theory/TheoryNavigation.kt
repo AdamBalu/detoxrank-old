@@ -30,22 +30,55 @@ import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
 import com.example.detoxrank.ui.theory.screens.*
-import com.example.detoxrank.ui.theory.screens.chapter_one.*
+import com.example.detoxrank.ui.theory.screens.chapter_dopamine.*
+import com.example.detoxrank.ui.theory.screens.chapter_introduction.CHIntroDilemma
+import com.example.detoxrank.ui.theory.screens.chapter_introduction.CHIntroDilemmaCont
+import com.example.detoxrank.ui.theory.screens.chapter_introduction.CHIntroIntro
+import com.example.detoxrank.ui.theory.screens.chapter_reinforcement.*
+import com.example.detoxrank.ui.theory.screens.chapter_tolerance.CHToleranceIntro
+
 
 /**
  * enum values that represent the screens in the app
  */
 enum class TheoryScreen(@StringRes val title: Int) {
+    // chapter select
     Chapters(R.string.chapter_select),
-    ChapterOne(R.string.chapters_learn),
-    ChapterTwo(R.string.chapters_learn),
+
+    // intro
+    CHIntro(R.string.chapters_learn),
+    CHIntroDilemma(R.string.chapters_learn),
+    CHIntroDilemmaCont(R.string.chapters_learn),
+
+    // dopamine
+    CHDopamine(R.string.chapters_learn),
+    CHDopamineBrain(R.string.previous_chapter_screen),
+    CHDopamineNeurotransmitter(R.string.previous_chapter_screen),
+    CHDopaminePoint(R.string.previous_chapter_screen),
+    CHDopamineSummary(R.string.previous_chapter_screen),
+
+    // reinforcement
+    CHReinforcement(R.string.chapters_learn),
+    CHReinforcementRewardCircuit(R.string.chapters_learn),
+    CHReinforcementExample(R.string.chapters_learn),
+    CHReinforcementProblems(R.string.chapters_learn),
+    CHReinforcementSummary(R.string.chapters_learn),
+
+    // tolerance
+    CHTolerance(R.string.chapters_learn),
+
     ChapterThree(R.string.chapters_learn),
     ChapterFour(R.string.chapters_learn),
-    ChapterFive(R.string.chapters_learn),
-    ChapterOnePtTwo(R.string.previous_chapter_screen),
-    ChapterOnePtThree(R.string.previous_chapter_screen),
-    ChapterOnePtFour(R.string.previous_chapter_screen),
-    ChapterOnePtFinal(R.string.previous_chapter_screen)
+    ChapterFive(R.string.chapters_learn)
+}
+
+enum class ChapterIndices {
+    INTRO_INDEX,
+    DETOX_INDEX,
+    BRAIN_FUNCTIONS_INDEX,
+    REINFORCEMENT_INDEX,
+    PREP_INDEX,
+    SOLUTIONS_INDEX
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,37 +134,41 @@ fun TheoryNavigation(
                 viewModel.resetProgressBarProgression()
 
                 TheoryChapterSelectScreen(
-                    onChapterOneSelected = {
-                        navController.navigate(TheoryScreen.ChapterOne.name)
-                        currentChapter = chapters[0]
+                    onCHIntroSelected = {
+                        navController.navigate(TheoryScreen.CHIntro.name)
+                        currentChapter = chapters[ChapterIndices.INTRO_INDEX.ordinal]
                     },
-                    onChapterTwoSelected = {
-                        navController.navigate(TheoryScreen.ChapterTwo.name)
-                        currentChapter = chapters[1]
+                    onCHDopamineSelected = {
+                        navController.navigate(TheoryScreen.CHDopamine.name)
+                        currentChapter = chapters[ChapterIndices.DETOX_INDEX.ordinal]
+                    },
+                    onCHReinforcementSelected = {
+                        navController.navigate(TheoryScreen.CHReinforcement.name)
+                        currentChapter = chapters[ChapterIndices.BRAIN_FUNCTIONS_INDEX.ordinal]
                     },
                     onChapterThreeSelected = {
                         navController.navigate(TheoryScreen.ChapterThree.name)
-                        currentChapter = chapters[2]
+                        currentChapter = chapters[ChapterIndices.REINFORCEMENT_INDEX.ordinal]
                     },
                     onChapterFourSelected = {
                         navController.navigate(TheoryScreen.ChapterFour.name)
-                        currentChapter = chapters[3]
+                        currentChapter = chapters[ChapterIndices.PREP_INDEX.ordinal]
                     },
                     onChapterFiveSelected = {
                         navController.navigate(TheoryScreen.ChapterFive.name)
-                        currentChapter = chapters[4]
+                        currentChapter = chapters[ChapterIndices.SOLUTIONS_INDEX.ordinal]
                     },
                     chapters = chapters
                 )
             }
 
             /**
-             * Chapter one
+             * Chapter Introduction
              */
-            composable(route = TheoryScreen.ChapterOne.name) {
-                ChapterOneStartScreen(
+            composable(route = TheoryScreen.CHIntro.name) {
+                CHIntroIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.ChapterOnePtTwo.name)
+                        navController.navigate(TheoryScreen.CHIntroDilemma.name)
                         viewModel.updateProgressBarProgression(
                             calculateProgressBarAddition(currentChapter)
                         )
@@ -139,10 +176,10 @@ fun TheoryNavigation(
                     backHandler = backHandler
                 )
             }
-            composable(route = TheoryScreen.ChapterOnePtTwo.name) {
-                ChapterOneScreenTwo(
+            composable(route = TheoryScreen.CHIntroDilemma.name) {
+                CHIntroDilemma(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.ChapterOnePtThree.name)
+                        navController.navigate(TheoryScreen.CHIntroDilemmaCont.name)
                         viewModel.updateProgressBarProgression(
                             calculateProgressBarAddition(currentChapter)
                         )
@@ -150,32 +187,9 @@ fun TheoryNavigation(
                     backHandler = backHandler
                 )
             }
-            composable(route = TheoryScreen.ChapterOnePtThree.name) {
-                ChapterOneScreenThree(
-                    onChapterContinue = {
-                        navController.navigate(TheoryScreen.ChapterOnePtFour.name)
-                        viewModel.updateProgressBarProgression(
-                            calculateProgressBarAddition(currentChapter)
-                        )
-                    },
-                    backHandler = backHandler
-                )
-            }
-            composable(route = TheoryScreen.ChapterOnePtFour.name) {
-                ChapterOneScreenFour(
-                    onChapterContinue = {
-                        navController.navigate(TheoryScreen.ChapterOnePtFinal.name)
-                        viewModel.updateProgressBarProgression(
-                            calculateProgressBarAddition(currentChapter)
-                        )
-                    },
-                    backHandler = backHandler
-                )
-            }
-
-            composable(route = TheoryScreen.ChapterOnePtFinal.name) {
-                ChapterOneScreenFinal(
-                    onChapterContinue = {
+            composable(route = TheoryScreen.CHIntroDilemmaCont.name) {
+                CHIntroDilemmaCont(
+                    onChapterDone = {
                         navController.navigate(TheoryScreen.Chapters.name) {
                             popUpTo(navController.graph.startDestinationId) {
                                 inclusive = true
@@ -188,10 +202,137 @@ fun TheoryNavigation(
             }
 
             /**
-             * Chapter two
+             * Chapter Dopamine
              */
-            composable(route = TheoryScreen.ChapterTwo.name) {
-                ChapterTwoStartScreen()
+            composable(route = TheoryScreen.CHDopamine.name) {
+                CHDopamineIntro(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHDopamineBrain.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHDopamineBrain.name) {
+                CHDopamineBrain(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHDopamineNeurotransmitter.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHDopamineNeurotransmitter.name) {
+                CHDopamineNeurotransmitter(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHDopaminePoint.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHDopaminePoint.name) {
+                CHDopaminePoint(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHDopamineSummary.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+
+            composable(route = TheoryScreen.CHDopamineSummary.name) {
+                CHDopamineSummary(
+                    onChapterDone = {
+                        navController.navigate(TheoryScreen.Chapters.name) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = true
+                            }
+                        }
+                        viewModel.resetProgressBarProgression()
+                    },
+                    backHandler = backHandler
+                )
+            }
+
+            /**
+             * Chapter Reinforcement
+             */
+            composable(route = TheoryScreen.CHReinforcement.name) {
+                CHReinforcementIntro(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHReinforcementRewardCircuit.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHReinforcementRewardCircuit.name) {
+                CHReinforcementRewardCircuit(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHReinforcementExample.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHReinforcementExample.name) {
+                CHReinforcementExample(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHReinforcementProblems.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHReinforcementProblems.name) {
+                CHReinforcementProblems(
+                    onChapterContinue = {
+                        navController.navigate(TheoryScreen.CHReinforcementSummary.name)
+                        viewModel.updateProgressBarProgression(
+                            calculateProgressBarAddition(currentChapter)
+                        )
+                    },
+                    backHandler = backHandler
+                )
+            }
+            composable(route = TheoryScreen.CHReinforcementSummary.name) {
+                CHReinforcementSummary(onChapterDone = {
+                    navController.navigate(TheoryScreen.Chapters.name) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
+                    viewModel.resetProgressBarProgression()
+                    },
+                    backHandler = backHandler
+                )
+            }
+
+            /**
+             * Chapter Tolerance
+             */
+            composable(route = TheoryScreen.CHTolerance.name) {
+                CHToleranceIntro(
+                    onChapterContinue = {
+                        /*TODO*/
+                    },
+                    backHandler = backHandler
+                )
             }
             composable(route = TheoryScreen.ChapterThree.name) {
                 ChapterThreeStartScreen()

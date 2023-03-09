@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.DetoxRankViewModel
@@ -65,30 +67,53 @@ fun TheoryMainScreen(
     }
 }
 
+/**
+ * Image in theory with optional label as description
+ *
+ * for label to work correctly, this component needs to be wrapped in a column
+ */
 @Composable
 fun TheoryImage(
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier,
     @StringRes contentDescription: Int? = null,
-    @StringRes imageLabel: Int? = null,
-    includeImageTag: Boolean = false
+    @StringRes imageLabel: Int? = null
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
     ) {
-        Image(
-            painterResource(id = imageRes),
-            contentDescription = stringResource(contentDescription ?: R.string.empty_message),
-            modifier = modifier.padding(top = 35.dp, start = 35.dp, end = 35.dp, bottom = 5.dp)
-        )
-        Text(
-            text = (if (includeImageTag) "Image: " else "") +
-                    stringResource(id = imageLabel ?: R.string.empty_message),
-            style = Typography.bodySmall,
-            modifier = modifier.padding(bottom = 30.dp)
-        )
+            Image(
+                painterResource(id = imageRes),
+                contentDescription = stringResource(contentDescription ?: R.string.empty_message),
+                modifier = Modifier
+                    .padding(top = 25.dp, bottom = 12.dp)
+            )
+
+        if (imageLabel != null)
+            Text(
+                text = "Image: " + stringResource(id = imageLabel),
+                style = Typography.bodySmall,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(bottom = 25.dp)
+            )
+        else
+            Spacer(Modifier.height(25.dp))
     }
 }
 
+@Preview
+@Composable
+fun TheoryImagePreview() {
+    Column(
+        horizontalAlignment = Alignment.End
+    ) {
+        TheoryImage(
+            imageRes = R.drawable.reward_circuit,
+            imageLabel = R.string.reward_circuit_label
+        )
+        Text("hey??")
+    }
 
-
+}

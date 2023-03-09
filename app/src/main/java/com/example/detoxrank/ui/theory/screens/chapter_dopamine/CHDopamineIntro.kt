@@ -1,9 +1,11 @@
-package com.example.detoxrank.ui.theory.screens.chapter_one
+package com.example.detoxrank.ui.theory.screens.chapter_dopamine
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -24,20 +26,19 @@ import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun ChapterOneScreenFour(
-    modifier: Modifier = Modifier,
+fun CHDopamineIntro(
     onChapterContinue: () -> Unit,
+    modifier: Modifier = Modifier,
     backHandler: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
 
     Column(
-        modifier = modifier
-            .padding(start = 26.dp, end = 26.dp)
-            .verticalScroll(state = scrollState)
+        modifier = Modifier
+            .padding(start = 26.dp, end = 26.dp, top = 26.dp)
+            .verticalScroll(state = rememberScrollState())
     ) {
-        ChapterOneScreenFourBody()
+        CHDopamineIntroBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -46,52 +47,49 @@ fun ChapterOneScreenFour(
 }
 
 @Composable
-fun ChapterOneScreenFourBody() {
+fun CHDopamineIntroBody(
+    modifier: Modifier = Modifier
+) {
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_1))
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_1))
             withStyle(
                 style = SpanStyle(
                     color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
-                append(" reinforces your behaviors ")
+                append(" dopamine")
             }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_2))
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_2))
+            withStyle(
+                style = SpanStyle(
+                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
+                append(" neurotransmitter ") }
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_3))
         },
         style = Typography.bodyLarge
     )
-    TheoryImage(
-        imageRes = R.drawable.want_like_difference
-    )
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TheoryImage(
+            imageRes = R.drawable.dopamine,
+            imageLabel = R.string.dopamine_chemical_label,
+            contentDescription = R.string.dopamine_chemical_content_description,
+            modifier = Modifier.width(290.dp)
+        )
+    }
+
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_3))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" wanting ")
-            }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_4))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" liking ")
-            }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_5))
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_4))
         },
-        style = Typography.bodyLarge
-    )
-    TheoryImage(imageRes = R.drawable.time_passing)
-    Text(
-        text = stringResource(id = R.string.chapter_1_dopamine_theory_text_4_part_6),
         style = Typography.bodyLarge
     )
 }

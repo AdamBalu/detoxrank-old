@@ -5,11 +5,11 @@ enum class ChapterDifficulty {
 }
 
 enum class ChapterTag {
-    Dopamine, HedonicsVsDopaminergics, Reinforcement, PREP, Solutions
+    Introduction, Dopamine, Reinforcement, Tolerance, PREP, Solutions
 }
 
 data class Chapter(
-    val name: String,
+    var name: String,
     val description: String,
     val difficulty: ChapterDifficulty,
     val wasCompleted: Boolean = false,

@@ -1,9 +1,11 @@
-package com.example.detoxrank.ui.theory.screens.chapter_one
+package com.example.detoxrank.ui.theory.screens.chapter_dopamine
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -20,10 +22,11 @@ import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
+import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun ChapterOneScreenFinal(
+fun CHDopamineNeurotransmitter(
     modifier: Modifier = Modifier,
     onChapterContinue: () -> Unit,
     backHandler: () -> Unit
@@ -36,7 +39,7 @@ fun ChapterOneScreenFinal(
             .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        ChapterOneScreenFinalBody()
+        CHDopamineNeurotransmitterBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -45,29 +48,44 @@ fun ChapterOneScreenFinal(
 }
 
 @Composable
-fun ChapterOneScreenFinalBody() {
+fun CHDopamineNeurotransmitterBody() {
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_5_part_1))
+            append("A")
             withStyle(
                 style = SpanStyle(
                     color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
-                append("""
-                    
-    - neurons
-    - neurotransmitters
-    - dopamine
-    - wanting vs liking
-    - reinforcing behaviors
-                    
-""")
+                append(" neurotransmitter ")
             }
-            append(text = stringResource(id = R.string.chapter_1_dopamine_theory_text_5_part_2))
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_3_pt_1))
+            withStyle(
+                style = SpanStyle(
+                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
+                append(" synapses")
+            }
+            append(".")
         },
         style = Typography.bodyLarge
     )
-
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TheoryImage(
+            imageRes = R.drawable.synapses,
+            imageLabel = R.string.synapse_label,
+            contentDescription = R.string.synapse_content_description,
+            modifier = Modifier.width(250.dp)
+        )
+    }
+    Text(
+        text = stringResource(id = R.string.chapter_dopamine_screen_3_pt_2),
+        style = Typography.bodyLarge
+    )
 }

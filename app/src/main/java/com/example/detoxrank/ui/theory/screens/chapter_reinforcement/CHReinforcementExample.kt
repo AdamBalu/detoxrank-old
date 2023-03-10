@@ -35,7 +35,7 @@ fun CHReinforcementExample(
     BackHandler(onBack = backHandler)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
@@ -51,6 +51,11 @@ fun CHReinforcementExample(
 fun CHReinforcementExampleBody(
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val boldStyle = SpanStyle(
+        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
     Text(
         text = stringResource(id = R.string.chapter_reinforcement_screen_3_pt_1),
         style = Typography.bodyLarge
@@ -60,20 +65,18 @@ fun CHReinforcementExampleBody(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TheoryImage(imageRes = R.drawable.drugs)
+        TheoryImage(
+            imageRes = if (darkTheme)
+                R.drawable.drugs
+            else
+                R.drawable.drughs_light
+        )
     }
 
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_reinforcement_screen_3_pt_2))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" direct stimulants")
-            }
+            withStyle(style = boldStyle) { append(" direct stimulants") }
             append(".")
         },
         style = Typography.bodyLarge
@@ -84,7 +87,10 @@ fun CHReinforcementExampleBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.reward_circuit_stimulated,
+            imageRes = if (darkTheme)
+                R.drawable.reward_circuit_stimulated
+            else
+                R.drawable.reward_circuit_stimulated_light,
             imageLabel = R.string.reward_circuit_stimulated_label,
             contentDescription = R.string.reward_circuit_stimulated_label
         )
@@ -96,7 +102,7 @@ fun CHReinforcementExampleBody(
 @Preview
 @Composable
 fun CHReinforcementExamplePreview() {
-    CHReinforcementExample(onChapterContinue = { /*TODO*/ }) {
+    CHReinforcementExample(onChapterContinue = { }) {
 
     }
 }

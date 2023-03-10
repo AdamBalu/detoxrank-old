@@ -33,7 +33,7 @@ fun CHIntroIntro(
     BackHandler(onBack = backHandler)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
@@ -49,12 +49,13 @@ fun CHIntroIntro(
 fun CHIntroIntroBody(
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_intro_screen_1_pt_1))
             withStyle(
                 style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
@@ -66,7 +67,7 @@ fun CHIntroIntroBody(
     )
 
     TheoryImage(
-        imageRes = R.drawable.detox
+        imageRes = if (darkTheme) R.drawable.detox else R.drawable.detox_light
     )
     Text(
         text = stringResource(id = R.string.chapter_intro_screen_1_pt_2),

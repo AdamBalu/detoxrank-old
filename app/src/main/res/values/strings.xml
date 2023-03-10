@@ -16,9 +16,9 @@
     <string name="previous_chapter_screen">Previous</string>
 
 
-    <!-- ******************************** -->
-    <!-- Theory - Chapter Intro resources -->
-    <!-- ******************************** -->
+    <!-- **************************************** -->
+    <!--     Theory - Chapter Intro resources     -->
+    <!-- **************************************** -->
     <string name="chapter_intro_screen_1_pt_1">
         You are probably wondering: What is this section supposed to achieve?\n\nWell, there is a pretty high chance that you are a person who just found out
         about
@@ -42,9 +42,9 @@
     </string>
 
 
-    <!-- *********************************** -->
-    <!-- Theory - Chapter Dopamine resources -->
-    <!-- *********************************** -->
+    <!-- ******************************************* -->
+    <!--     Theory - Chapter Dopamine resources     -->
+    <!-- ******************************************* -->
     <string name="chapter_dopamine_screen_1_pt_1">In this chapter, you will learn basics about</string>
     <string name="chapter_dopamine_screen_1_pt_2">. So what exactly is it?\n\nDopamine is a</string>
     <string name="chapter_dopamine_screen_1_pt_3">in the dopaminergic pathway in the brain.</string>
@@ -94,9 +94,9 @@
     <string name="chapter_dopamine_screen_5_pt_2">Well done! Next up, we will further discuss liking versus wanting.</string>
 
 
-    <!-- **************************************** -->
-    <!-- Theory - Chapter Reinforcement resources -->
-    <!-- **************************************** -->
+    <!-- ************************************************ -->
+    <!--     Theory - Chapter Reinforcement resources     -->
+    <!-- ************************************************ -->
     <string name="chapter_reinforcement_screen_1_pt_1">
         Brain has many different parts and</string>
     <string name="chapter_reinforcement_screen_1_pt_2">
@@ -143,13 +143,157 @@
     <string name="chapter_reinforcement_screen_5_pt_1">Good job! In the next chapter, you will learn about developing tolerance.</string>
 
 
-    <!-- **************************************** -->
-    <!-- Theory - Chapter Tolerance resources -->
-    <!-- **************************************** -->
+    <!-- ******************************************** -->
+    <!--     Theory - Chapter Tolerance resources     -->
+    <!-- ******************************************** -->
     <string name="chapter_tolerance_screen_1_pt_1">
-        The brain constantly receives signals. If it receives a signal in a high frequency, it adapts to that signal - it develops a
-    </string> <!--tolerance -->
+        The brain constantly receives signals. If it receives a signal in a high frequency, it
+        adapts to that signal&#160;-&#160;it develops a
+    </string>
+    <string name="chapter_tolerance_screen_1_pt_2">
+        Let\'s look at an example.
+    </string>
 
+    <string name="chapter_tolerance_screen_2_pt_1">
+        Imagine a drug addict.
+    </string>
+    <string name="chapter_tolerance_screen_2_pt_2">
+         He first stumbles upon a drug. He only takes a very small dose.
+    </string>
+    <string name="chapter_tolerance_screen_2_pt_3">
+        However, even this amount is enough for him to feel a big hit.
+    </string>
+    <string name="chapter_tolerance_screen_2_pt_4">
+        After he starts taking the drug again and again, the brain adapts to the intake of that
+        substance. It
+    </string>
+    <string name="chapter_tolerance_screen_2_pt_5">
+        of the drug, and the guy doesn\'t feel as big of a hit as
+        before.
+    </string>
+    <string name="chapter_tolerance_screen_2_pt_6">
+        He therefore starts consuming larger and larger doses, leading to a
+        very brutal and unforgiving spiral of addiction.
+    </string>
+
+    <string name="chapter_tolerance_screen_3_pt_1">The same applies for dopamine "hits". Regular
+        and high releases of dopamine lead to your brain
+        developing a
+    </string>
+    <string name="chapter_tolerance_screen_3_pt_2">
+        towards them.\n\nThen, you usually feel the need to increase the doses. We
+        can see these in action with social media addictions.
+    </string>
+    <string name="chapter_tolerance_screen_3_pt_3">
+        People often spend hours and hours on social media in the need of dopamine.\n\nAfter
+        several hours, they usually feel really bad
+        about themselves (they are often not even enjoying it!). However, they find it
+        really hard to stop.
+    </string>
+
+    <string name="chapter_tolerance_screen_4_pt_1">
+        \nAwesome!\n\nYou learned about tolerance.\n\nNow, let\'s look at the hedonic circuit in the next chapter.
+    </string>
+
+
+    <!-- ************************************************** -->
+    <!--     Theory - Chapter Hedonic Circuit resources     -->
+    <!-- ************************************************** -->
+    <string name="chapter_hedonic_circuit_screen_1_pt_1">
+        Do you remember when we stated that people don\'t enjoy spending hours on social media?\n\nWell,
+        this is where we can see a difference between the reward circuitry
+    </string>
+    <string name="chapter_hedonic_circuit_screen_1_pt_2">
+         and hedonic circuitry,
+    </string>
+    <string name="chapter_hedonic_circuit_screen_1_pt_3">
+         which we will discuss in this chapter.\n\nHedonic circuit, which manages our ability to like things, is located mainly in orbitofrontal cortex.
+    </string>
+
+    <string name="chapter_hedonic_circuit_screen_2_pt_1">
+        Imagine yourself in a situation&#160;-&#160;your family is organizing a skiing/hiking trip in the mountains.
+    </string>
+    <string name="chapter_hedonic_circuit_screen_2_pt_2">
+        You can either decide to go with them, or you can decide to spend your next few days home alone with infinite access to
+        the internet.\n\nWhich one do you
+    </string>
+    <string name="chapter_hedonic_circuit_screen_2_pt_3">
+        more?
+    </string>
+
+    <string name="chapter_hedonic_circuit_screen_3_pt_1">
+        Most of you would probably choose the internet.\n\nBut if you remember the last time you
+        went on a similar trip with your family, you probably really enjoyed it
+    </string>
+    <string name="chapter_hedonic_circuit_screen_3_pt_2">
+        Here you can see how wanting something differs from liking something,
+        and how your damaged reward circuitry can affect your short-term decisions, even
+        though you would probably be
+    </string>
+    <string name="chapter_hedonic_circuit_screen_3_pt_3">
+         in the end if you went on the trip.\n\nThis is a serious reason to put your
+        reward circuitry back on track!
+    </string>
+
+    <string name="chapter_hedonic_circuit_screen_4_pt_1">
+        To revise, this chapter taught you how hedonism differs from wanting. You learned about:
+    </string>
+    <string name="chapter_hedonic_circuit_screen_4_pt_2">
+        In the final chapter, you will learn how to do a detox correctly!
+    </string>
+
+
+    <!-- ********************************* -->
+    <!--     Theory - Chapter Solution     -->
+    <!-- ********************************* -->
+    <string name="chapter_solution_screen_1_pt_1">
+        The point is to get your brain back in balanced state. This is done by targeting the
+        main behaviors that
+    </string>
+    <string name="chapter_solution_screen_1_pt_2">
+        The more you can reduce the flow, the
+        better. However, you don\'t have to cut it off fully&#160;-&#160;in fact, that\'s just
+        impossible. Focus on cutting it down as much as you can handle.
+    </string>
+
+    <string name="chapter_solution_screen_2_pt_1">
+        Your brain has developed a tolerance towards dopamine (as discussed in the previous chapter about tolerance), and your task is to get rid of that tolerance.
+    </string>
+    <string name="chapter_solution_screen_2_pt_2">
+        Think about stuff that you really want, but isn\'t healthy.\n\nFor
+        example, as we already mentioned, there is technology usage.
+    </string>
+    <string name="chapter_solution_screen_2_pt_3">
+        This one is probably the most important, because
+        lately it has been on a steady rise and it\'s severely affecting our brain in mostly negative ways.\n\nThink
+        about places where you take your phone not to be bored&#160;-&#160;for example, the toilet. Try to evade this behavior.
+    </string>
+
+    <string name="chapter_solution_screen_3_pt_1">
+        The next important thing is food.\n\nThink about food which is unhealthy, but you always give in to the urge to buy and eat it.
+    </string>
+    <string name="chapter_solution_screen_3_pt_2">
+        There has also been a heavy rise in porn addiction.\n\nTry to reduce the consumption of
+        pornography as much as you can, at least for the duration of the detox.
+    </string>
+
+    <string name="chapter_solution_screen_4_pt_1">
+        Try your best to completely avoid these and other activities you might come up
+        with (even avoid this app if it helps!), but don\'t beat yourself up too much
+        if you fail to from time to time. Keep going.\n\nRemember, this is about endurance, not about flawlessness.
+    </string>
+    <string name="chapter_solution_screen_4_pt_2">
+        \nYou are going to experience a lot of boredom. Try to come up with fun, healthy activities
+        that you can do to fill your free time.
+        You could also experience some negative emotions, so be ready.
+    </string>
+
+    <string name="chapter_solution_screen_5_pt_1">
+        If you think you are ready, it\'s time to start the timer!\n\nChoose
+        the difficulty you prefer and try to stay truthful.\n\nYou should tolerate some screw-ups,
+        but don\'t keep the timer going if you know you completely failed, just go again and
+        maybe choose an easier difficulty, there\'s no point giving up :-)\n\nGood luck!
+    </string>
 
     <string name="button_continue">Continue</string>
     <string name="dopamine_chemical_content_description">Dopamine chemical image</string>
@@ -165,5 +309,20 @@
     <string name="reward_circuit_label">Circuit where dopamine is the main\n neurotransmitter&#160;-&#160;reward circuit.\nNucleus accumbens is one of the key structures involved in motivation and reward.</string>
     <string name="reward_circuit_stimulated_label">Reward circuit being directly stimulated by addictive substances</string>
     <string name="reinforcement_label">Getting a reward from a dopaminergic activity, this behavior is getting reinforced</string>
+    <string name="hedonic_circuit_label">Hedonic circuit with it\'s main operator&#160;-&#160;orbitofrontal cortex</string>
+    <string name="topbar_dilemma">Dilemma</string>
+    <string name="topbar_introduction">Introduction</string>
+    <string name="topbar_brain">Learn about brain</string>
+    <string name="topbar_dilemma_pt_2">Dilemma, pt. 2</string>
+    <string name="topbar_neurotransmitter">Neurotransmitter</string>
+    <string name="topbar_point">Point</string>
+    <string name="topbar_summary">Summary</string>
+    <string name="topbar_reward_circuit">Reward circuit</string>
+    <string name="topbar_example">Example</string>
+    <string name="topbar_problems">Problems</string>
+    <string name="topbar_correlation">Correlation</string>
+    <string name="topbar_advice">Advice</string>
+    <string name="topbar_advice_pt2">Advice, pt. 2</string>
+    <string name="topbar_advice_pt3">Advice, pt.3</string>
 
 </resources>

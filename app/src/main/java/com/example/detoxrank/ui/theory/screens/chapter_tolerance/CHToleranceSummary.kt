@@ -1,7 +1,6 @@
-package com.example.detoxrank.ui.theory.screens.chapter_introduction
+package com.example.detoxrank.ui.theory.screens.chapter_tolerance
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,13 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
-import com.example.detoxrank.ui.theory.TheoryImage
-import com.example.detoxrank.ui.theory.screens.ContinueIconButton
+import com.example.detoxrank.ui.theory.screens.CompleteChapterIconButton
 
 @Composable
-fun CHIntroDilemma(
-    onChapterContinue: () -> Unit,
+fun CHToleranceSummary(
     modifier: Modifier = Modifier,
+    onChapterDone: () -> Unit,
     backHandler: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -28,34 +26,21 @@ fun CHIntroDilemma(
 
     Column(
         modifier = modifier
-            .padding(start = 26.dp, end = 26.dp, top = 26.dp)
+            .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHIIntroDilemmaBody()
-        ContinueIconButton(
-            onClick = onChapterContinue,
+        CHToleranceSummaryBody()
+        CompleteChapterIconButton(
+            onClick = onChapterDone,
             modifier = Modifier.align(Alignment.End)
         )
     }
 }
 
 @Composable
-fun CHIIntroDilemmaBody(
-    modifier: Modifier = Modifier
-) {
+fun CHToleranceSummaryBody() {
     Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_1),
-        style = Typography.bodyLarge
-    )
-    TheoryImage(
-        imageRes = if (isSystemInDarkTheme())
-            R.drawable.tasks_with_timer
-        else
-            R.drawable.tasks_with_timer_light
-    )
-    Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_2),
+        text = stringResource(id = R.string.chapter_tolerance_screen_4_pt_1),
         style = Typography.bodyLarge
     )
 }
-

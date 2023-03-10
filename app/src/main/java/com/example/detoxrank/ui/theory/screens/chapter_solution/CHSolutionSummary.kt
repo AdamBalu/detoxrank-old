@@ -1,4 +1,4 @@
-package com.example.detoxrank.ui.theory.screens.chapter_introduction
+package com.example.detoxrank.ui.theory.screens.chapter_solution
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -23,9 +23,9 @@ import com.example.detoxrank.ui.theme.md_theme_light_tertiary
 import com.example.detoxrank.ui.theory.screens.CompleteChapterIconButton
 
 @Composable
-fun CHIntroDilemmaCont(
-    onChapterDone: () -> Unit,
+fun CHSolutionSummary(
     modifier: Modifier = Modifier,
+    onChapterDone: () -> Unit,
     backHandler: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -33,10 +33,10 @@ fun CHIntroDilemmaCont(
 
     Column(
         modifier = modifier
-            .padding(start = 26.dp, end = 26.dp, top = 26.dp)
+            .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHIntroDilemmaContBody()
+        CHSolutionSummaryBody()
         CompleteChapterIconButton(
             onClick = onChapterDone,
             modifier = Modifier.align(Alignment.End)
@@ -45,30 +45,26 @@ fun CHIntroDilemmaCont(
 }
 
 @Composable
-fun CHIntroDilemmaContBody(
-    modifier: Modifier = Modifier
-) {
+fun CHSolutionSummaryBody() {
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_intro_screen_3_pt_1))
+            append(text = stringResource(id = R.string.chapter_dopamine_screen_5_pt_1))
             withStyle(
                 style = SpanStyle(
                     color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                     fontWeight = FontWeight.Bold
                 )
             ) {
-                append(" struggle ")
+                append("""
+
+    - brain circuits
+    - reward circuit
+    - drug effects on brain
+    - reinforcement learning
+           
+""")
             }
-            append(text = "to really")
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" understand ")
-            }
-            append(stringResource(id = R.string.chapter_intro_screen_3_pt_2))
+            append(text = stringResource(id = R.string.chapter_reinforcement_screen_5_pt_1))
         },
         style = Typography.bodyLarge
     )

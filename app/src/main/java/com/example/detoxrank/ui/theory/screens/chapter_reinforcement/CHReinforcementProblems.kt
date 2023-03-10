@@ -35,7 +35,7 @@ fun CHReinforcementProblems(
     BackHandler(onBack = backHandler)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
@@ -51,17 +51,15 @@ fun CHReinforcementProblems(
 fun CHReinforcementProblemsBody(
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val boldStyle = SpanStyle(
+        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_reinforcement_screen_4_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" reinforcement learning")
-            }
+            withStyle(style = boldStyle) { append(" reinforcement learning") }
             append(".\n")
             append(text = stringResource(id = R.string.chapter_reinforcement_screen_4_pt_2))
         },
@@ -73,7 +71,10 @@ fun CHReinforcementProblemsBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.reinforcement,
+            imageRes = if (darkTheme)
+                R.drawable.reinforcement
+            else
+                R.drawable.reinforcement_light,
             imageLabel = R.string.reinforcement_label,
             contentDescription = R.string.reinforcement_label
         )
@@ -84,7 +85,12 @@ fun CHReinforcementProblemsBody(
         style = Typography.bodyLarge
     )
 
-    TheoryImage(imageRes = R.drawable.easy_dopamine_access)
+    TheoryImage(
+        imageRes = if (darkTheme)
+            R.drawable.easy_dopamine_access
+        else
+            R.drawable.easy_dopamine_access_light
+    )
     Text(
         text = stringResource(id = R.string.chapter_reinforcement_screen_4_pt_4),
         style = Typography.bodyLarge
@@ -94,7 +100,7 @@ fun CHReinforcementProblemsBody(
 @Preview
 @Composable
 fun CHReinforcementProblemsPreview() {
-    CHReinforcementProblems(onChapterContinue = { /*TODO*/ }) {
+    CHReinforcementProblems(onChapterContinue = { }) {
 
     }
 }

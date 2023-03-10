@@ -1,4 +1,4 @@
-package com.example.detoxrank.ui.theory.screens.chapter_reinforcement
+package com.example.detoxrank.ui.theory.screens.chapter_tolerance
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -26,7 +26,7 @@ import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun CHReinforcementRewardCircuit(
+fun CHToleranceCorrelation(
     onChapterContinue: () -> Unit,
     modifier: Modifier = Modifier,
     backHandler: () -> Unit
@@ -39,7 +39,7 @@ fun CHReinforcementRewardCircuit(
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHReinforcementRewardCircuitBody()
+        CHToleranceCorrelationBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -48,7 +48,7 @@ fun CHReinforcementRewardCircuit(
 }
 
 @Composable
-fun CHReinforcementRewardCircuitBody(
+fun CHToleranceCorrelationBody(
     modifier: Modifier = Modifier
 ) {
     val darkTheme = isSystemInDarkTheme()
@@ -56,12 +56,11 @@ fun CHReinforcementRewardCircuitBody(
         color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
         fontWeight = FontWeight.Bold
     )
-
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_1))
-            withStyle(style = boldStyle) { append(" reward circuit") }
-            append(".")
+            append(text = stringResource(id = R.string.chapter_tolerance_screen_3_pt_1))
+            withStyle(style = boldStyle) { append(" tolerance ") }
+            append(text = stringResource(id = R.string.chapter_tolerance_screen_3_pt_2))
         },
         style = Typography.bodyLarge
     )
@@ -72,28 +71,22 @@ fun CHReinforcementRewardCircuitBody(
     ) {
         TheoryImage(
             imageRes = if (darkTheme)
-                R.drawable.reward_circuit
+                R.drawable.dopamine_social_media
             else
-                R.drawable.reward_circuit_light,
-            imageLabel = R.string.reward_circuit_label,
-            contentDescription = R.string.reward_circuit_label,
-            modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
+                R.drawable.dopamine_social_media_light
         )
     }
 
     Text(
-        buildAnnotatedString {
-            withStyle(style = boldStyle) { append("Behavior reinforcement ") }
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_2))
-        },
+        text = stringResource(R.string.chapter_tolerance_screen_3_pt_3),
         style = Typography.bodyLarge
     )
 }
 
 @Preview
 @Composable
-fun CHReinforcementRewardCircuitPreview() {
-    CHReinforcementRewardCircuit(onChapterContinue = { }) {
+fun CHToleranceCorrelationPreview() {
+    CHToleranceExample(onChapterContinue = { }) {
 
     }
 }

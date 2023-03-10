@@ -34,7 +34,7 @@ fun CHDopamineIntro(
     BackHandler(onBack = backHandler)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = rememberScrollState())
     ) {
@@ -50,25 +50,16 @@ fun CHDopamineIntro(
 fun CHDopamineIntroBody(
     modifier: Modifier = Modifier
 ) {
+    val boldStyle = SpanStyle(
+        color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" dopamine")
-            }
+            withStyle(style = boldStyle) { append(" dopamine") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_2))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" neurotransmitter ") }
+            withStyle(style = boldStyle) { append(" neurotransmitter ") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_1_pt_3))
         },
         style = Typography.bodyLarge
@@ -79,7 +70,10 @@ fun CHDopamineIntroBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.dopamine,
+            imageRes = if (isSystemInDarkTheme())
+                R.drawable.dopamine
+            else
+                R.drawable.dopamine_light,
             imageLabel = R.string.dopamine_chemical_label,
             contentDescription = R.string.dopamine_chemical_content_description,
             modifier = Modifier.width(290.dp)

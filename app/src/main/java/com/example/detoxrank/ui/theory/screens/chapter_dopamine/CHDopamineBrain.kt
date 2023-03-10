@@ -34,10 +34,6 @@ fun CHDopamineBrain(
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
 
-    val mod = modifier
-        .padding(start = 26.dp, end = 26.dp)
-        .verticalScroll(state = scrollState)
-
     Column(
         modifier = modifier
             .padding(start = 26.dp, end = 26.dp)
@@ -55,6 +51,13 @@ fun CHDopamineBrain(
 fun CHDopamineBrainBody(
     modifier: Modifier = Modifier
 ) {
+
+    val darkTheme = isSystemInDarkTheme()
+    val boldStyle = SpanStyle(
+        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
+
     Text(
         text = stringResource(id = R.string.chapter_dopamine_screen_2_pt_1),
         style = Typography.bodyLarge
@@ -64,7 +67,10 @@ fun CHDopamineBrainBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.brain,
+            imageRes = if (darkTheme)
+                R.drawable.brain
+            else
+                R.drawable.brain_light,
             modifier = modifier.width(200.dp)
         )
     }
@@ -79,7 +85,10 @@ fun CHDopamineBrainBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.brain_neurons,
+            imageRes = if (darkTheme)
+                R.drawable.brain_neurons
+            else
+                R.drawable.brain_neurons_light,
             contentDescription = R.string.brain_neurons_content_description,
             imageLabel = R.string.brain_neurons_label,
             modifier = modifier.width(280.dp)
@@ -89,23 +98,21 @@ fun CHDopamineBrainBody(
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_dopamine_screen_2_pt_3))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" neuron") }
+            withStyle(style = boldStyle) { append(" neuron") }
             append(".")
         },
         style = Typography.bodyLarge
     )
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.neuron,
+            imageRes = if (darkTheme)
+                R.drawable.neuron
+            else
+                R.drawable.neuron_light,
             contentDescription = R.string.neuron,
             imageLabel = R.string.neuron,
             modifier = modifier.width(250.dp)

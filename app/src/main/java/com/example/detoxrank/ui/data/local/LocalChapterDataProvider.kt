@@ -33,19 +33,22 @@ object LocalChapterDataProvider {
             name = "Tolerance",
             description = "Here we will talk about tolerance which is developed in the brain when exposing yourself to a large quantum of dopamine.",
             difficulty = ChapterDifficulty.Medium,
-            tag = ChapterTag.Tolerance
+            tag = ChapterTag.Tolerance,
+            chapterScreenNum = 4
         ),
         Chapter(
             name = "Hedonic circuit",
-            description = "",
+            description = "Let\'s learn about the hedonic circuit which is responsible for producing enjoyment in the brain!",
             difficulty = ChapterDifficulty.Hard,
-            tag = ChapterTag.PREP
+            tag = ChapterTag.HedonicCircuit,
+            chapterScreenNum = 4
         ),
         Chapter(
             name = "Solution - Detox",
             description = "The chapter talks about how to do a dopamine detox correctly.",
             difficulty = ChapterDifficulty.Easy,
-            tag = ChapterTag.Solutions
+            tag = ChapterTag.Solutions,
+            chapterScreenNum = 5
         )
     )
 }

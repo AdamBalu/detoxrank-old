@@ -19,8 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.data.ChapterDifficulty
@@ -35,11 +33,10 @@ fun TheoryChapterSelectScreen(
     onCHIntroSelected: () -> Unit,
     onCHDopamineSelected: () -> Unit,
     onCHReinforcementSelected: () -> Unit,
-    onChapterThreeSelected: () -> Unit,
-    onChapterFourSelected: () -> Unit,
-    onChapterFiveSelected: () -> Unit,
+    onCHToleranceSelected: () -> Unit,
+    onCHHedonicCircuitSelected: () -> Unit,
+    onCHSolutionSelected: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
     chapters: MutableList<Chapter>
 ) {
     LazyColumn(
@@ -52,14 +49,13 @@ fun TheoryChapterSelectScreen(
                 ChapterTag.Introduction -> onCHIntroSelected
                 ChapterTag.Dopamine -> onCHDopamineSelected
                 ChapterTag.Reinforcement -> onCHReinforcementSelected
-                ChapterTag.Tolerance -> onChapterThreeSelected
-                ChapterTag.PREP -> onChapterFourSelected
-                ChapterTag.Solutions -> onChapterFiveSelected
+                ChapterTag.Tolerance -> onCHToleranceSelected
+                ChapterTag.HedonicCircuit -> onCHHedonicCircuitSelected
+                ChapterTag.Solutions -> onCHSolutionSelected
             }
             TheoryChapter(
                 onChapterSelected = chapterButtonBehavior,
-                chapter = chapter,
-                navController = navController
+                chapter = chapter
             )
         }
     }
@@ -70,8 +66,7 @@ fun TheoryChapterSelectScreen(
 fun TheoryChapter(
     onChapterSelected: () -> Unit,
     chapter: Chapter,
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -234,11 +229,13 @@ fun CompleteChapterIconButton(
                 style = Typography.bodyMedium,
                 letterSpacing = 1.sp,
                 fontWeight = FontWeight.Bold,
+                color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                 modifier = Modifier.padding(end = 5.dp).align(Alignment.CenterVertically)
             )
             Icon(
                 imageVector = Icons.Filled.Check,
-                contentDescription = null
+                contentDescription = null,
+                tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
             )
         }
 

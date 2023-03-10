@@ -1,9 +1,8 @@
-package com.example.detoxrank.ui.theory.screens.chapter_reinforcement
+package com.example.detoxrank.ui.theory.screens.chapter_hedonic_circuit
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,11 +21,10 @@ import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
-import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun CHReinforcementRewardCircuit(
+fun CHHedonicCircuitPoint(
     onChapterContinue: () -> Unit,
     modifier: Modifier = Modifier,
     backHandler: () -> Unit
@@ -39,7 +37,7 @@ fun CHReinforcementRewardCircuit(
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHReinforcementRewardCircuitBody()
+        CHHedonicCircuitPointBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -48,43 +46,22 @@ fun CHReinforcementRewardCircuit(
 }
 
 @Composable
-fun CHReinforcementRewardCircuitBody(
-    modifier: Modifier = Modifier
-) {
-    val darkTheme = isSystemInDarkTheme()
+fun CHHedonicCircuitPointBody() {
     val boldStyle = SpanStyle(
-        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
         fontWeight = FontWeight.Bold
     )
 
     Text(
         buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_1))
-            withStyle(style = boldStyle) { append(" reward circuit") }
-            append(".")
-        },
-        style = Typography.bodyLarge
-    )
-
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TheoryImage(
-            imageRes = if (darkTheme)
-                R.drawable.reward_circuit
-            else
-                R.drawable.reward_circuit_light,
-            imageLabel = R.string.reward_circuit_label,
-            contentDescription = R.string.reward_circuit_label,
-            modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
-        )
-    }
-
-    Text(
-        buildAnnotatedString {
-            withStyle(style = boldStyle) { append("Behavior reinforcement ") }
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_2))
+            append(text = stringResource(id = R.string.chapter_hedonic_circuit_screen_3_pt_1))
+            withStyle(style = boldStyle) { append(" once you were there") }
+            append(".\n\n")
+            append(text = stringResource(id = R.string.chapter_hedonic_circuit_screen_3_pt_2))
+            withStyle(style = boldStyle) { append(" happier") }
+            append(" or ")
+            withStyle(style = boldStyle) { append("more content ") }
+            append(text = stringResource(id = R.string.chapter_hedonic_circuit_screen_3_pt_3))
         },
         style = Typography.bodyLarge
     )
@@ -92,8 +69,7 @@ fun CHReinforcementRewardCircuitBody(
 
 @Preview
 @Composable
-fun CHReinforcementRewardCircuitPreview() {
-    CHReinforcementRewardCircuit(onChapterContinue = { }) {
-
+fun CHHedonicCircuitPointPreview() {
+    CHHedonicCircuitPoint(onChapterContinue = { }) {
     }
 }

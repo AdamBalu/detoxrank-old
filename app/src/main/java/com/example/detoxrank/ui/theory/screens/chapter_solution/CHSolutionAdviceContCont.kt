@@ -1,7 +1,6 @@
-package com.example.detoxrank.ui.theory.screens.chapter_introduction
+package com.example.detoxrank.ui.theory.screens.chapter_solution
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,13 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
-import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun CHIntroDilemma(
-    onChapterContinue: () -> Unit,
+fun CHSolutionAdviceContCont(
     modifier: Modifier = Modifier,
+    onChapterContinue: () -> Unit,
     backHandler: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -28,10 +26,10 @@ fun CHIntroDilemma(
 
     Column(
         modifier = modifier
-            .padding(start = 26.dp, end = 26.dp, top = 26.dp)
+            .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHIIntroDilemmaBody()
+        CHSolutionAdviceContContBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -40,22 +38,25 @@ fun CHIntroDilemma(
 }
 
 @Composable
-fun CHIIntroDilemmaBody(
+fun CHSolutionAdviceContContBody(
     modifier: Modifier = Modifier
 ) {
     Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_1),
+        text = stringResource(id = R.string.chapter_solution_screen_4_pt_1),
         style = Typography.bodyLarge
     )
-    TheoryImage(
-        imageRes = if (isSystemInDarkTheme())
-            R.drawable.tasks_with_timer
-        else
-            R.drawable.tasks_with_timer_light
-    )
+
+//    Column(
+//        modifier = Modifier.fillMaxWidth(),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        TheoryImage(
+//            imageRes = R.drawable.burgers
+//        )
+//    }
+
     Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_2),
+        text = stringResource(id = R.string.chapter_solution_screen_4_pt_2),
         style = Typography.bodyLarge
     )
 }
-

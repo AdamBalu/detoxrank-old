@@ -1,8 +1,9 @@
-package com.example.detoxrank.ui.theory.screens.chapter_introduction
+package com.example.detoxrank.ui.theory.screens.chapter_solution
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,9 +19,9 @@ import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun CHIntroDilemma(
-    onChapterContinue: () -> Unit,
+fun CHSolutionAdvice(
     modifier: Modifier = Modifier,
+    onChapterContinue: () -> Unit,
     backHandler: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -28,10 +29,10 @@ fun CHIntroDilemma(
 
     Column(
         modifier = modifier
-            .padding(start = 26.dp, end = 26.dp, top = 26.dp)
+            .padding(start = 26.dp, end = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHIIntroDilemmaBody()
+        CHSolutionAdviceBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -40,22 +41,49 @@ fun CHIntroDilemma(
 }
 
 @Composable
-fun CHIIntroDilemmaBody(
+fun CHSolutionAdviceBody(
     modifier: Modifier = Modifier
 ) {
-    Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_1),
-        style = Typography.bodyLarge
-    )
-    TheoryImage(
-        imageRes = if (isSystemInDarkTheme())
-            R.drawable.tasks_with_timer
-        else
-            R.drawable.tasks_with_timer_light
-    )
-    Text(
-        stringResource(id = R.string.chapter_intro_screen_2_pt_2),
-        style = Typography.bodyLarge
-    )
-}
 
+    val darkTheme = isSystemInDarkTheme()
+
+    Text(
+        text = stringResource(id = R.string.chapter_solution_screen_2_pt_1),
+        style = Typography.bodyLarge
+    )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TheoryImage(
+            imageRes = if (darkTheme)
+                R.drawable.brain_tolerance
+            else
+                R.drawable.brain_tolerance_light
+        )
+    }
+
+    Text(
+        text = stringResource(id = R.string.chapter_solution_screen_2_pt_2),
+        style = Typography.bodyLarge
+    )
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TheoryImage(
+            imageRes = if (darkTheme)
+                R.drawable.dopamine_social_media
+            else
+                R.drawable.dopamine_social_media_light
+        )
+    }
+
+    Text(
+        text = stringResource(id = R.string.chapter_solution_screen_2_pt_3),
+        style = Typography.bodyLarge
+    )
+
+
+}

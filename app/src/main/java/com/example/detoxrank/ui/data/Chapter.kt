@@ -5,7 +5,7 @@ enum class ChapterDifficulty {
 }
 
 enum class ChapterTag {
-    Introduction, Dopamine, Reinforcement, Tolerance, PREP, Solutions
+    Introduction, Dopamine, Reinforcement, Tolerance, HedonicCircuit, Solutions
 }
 
 data class Chapter(

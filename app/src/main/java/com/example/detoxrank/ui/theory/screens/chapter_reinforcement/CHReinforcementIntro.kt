@@ -51,17 +51,16 @@ fun CHReinforcementIntro(
 fun CHReinforcementIntroBody(
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val boldStyle =  SpanStyle(
+        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
+
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_reinforcement_screen_1_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" circuits ")
-            }
+            withStyle(style = boldStyle) { append(" circuits ") }
             append(text = stringResource(id = R.string.chapter_reinforcement_screen_1_pt_2))
         },
         style = Typography.bodyLarge
@@ -72,7 +71,10 @@ fun CHReinforcementIntroBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.brain_circuits,
+            imageRes = if (darkTheme)
+                R.drawable.brain_circuits
+            else
+                R.drawable.brain_circuits_light,
             imageLabel = R.string.brain_circuits_label,
             contentDescription = R.string.brain_circuits_label,
             modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
@@ -87,7 +89,7 @@ fun CHReinforcementIntroBody(
 @Preview
 @Composable
 fun CHReinforcementPreview() {
-    CHReinforcementIntro(onChapterContinue = { /*TODO*/ }) {
+    CHReinforcementIntro(onChapterContinue = { }) {
 
     }
 }

@@ -49,26 +49,17 @@ fun CHDopamineNeurotransmitter(
 
 @Composable
 fun CHDopamineNeurotransmitterBody() {
+    val darkTheme = isSystemInDarkTheme()
+    val boldStyle = SpanStyle(
+        color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
     Text(
         buildAnnotatedString {
             append("A")
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" neurotransmitter ")
-            }
+            withStyle(style = boldStyle) { append(" neurotransmitter ") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_3_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" synapses")
-            }
+            withStyle(style = boldStyle) { append(" synapses") }
             append(".")
         },
         style = Typography.bodyLarge
@@ -78,7 +69,10 @@ fun CHDopamineNeurotransmitterBody() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
-            imageRes = R.drawable.synapses,
+            imageRes = if (darkTheme)
+                R.drawable.synapses
+            else
+                R.drawable.synapses_light,
             imageLabel = R.string.synapse_label,
             contentDescription = R.string.synapse_content_description,
             modifier = Modifier.width(250.dp)

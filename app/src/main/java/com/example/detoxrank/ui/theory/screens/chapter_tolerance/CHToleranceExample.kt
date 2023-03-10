@@ -1,4 +1,4 @@
-package com.example.detoxrank.ui.theory.screens.chapter_reinforcement
+package com.example.detoxrank.ui.theory.screens.chapter_tolerance
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -26,7 +26,7 @@ import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
-fun CHReinforcementRewardCircuit(
+fun CHToleranceExample(
     onChapterContinue: () -> Unit,
     modifier: Modifier = Modifier,
     backHandler: () -> Unit
@@ -39,7 +39,7 @@ fun CHReinforcementRewardCircuit(
             .padding(start = 26.dp, end = 26.dp, top = 26.dp)
             .verticalScroll(state = scrollState)
     ) {
-        CHReinforcementRewardCircuitBody()
+        CHToleranceExampleBody()
         ContinueIconButton(
             onClick = onChapterContinue,
             modifier = Modifier.align(Alignment.End)
@@ -48,7 +48,7 @@ fun CHReinforcementRewardCircuit(
 }
 
 @Composable
-fun CHReinforcementRewardCircuitBody(
+fun CHToleranceExampleBody(
     modifier: Modifier = Modifier
 ) {
     val darkTheme = isSystemInDarkTheme()
@@ -56,44 +56,75 @@ fun CHReinforcementRewardCircuitBody(
         color = if (darkTheme) md_theme_dark_tertiary else md_theme_light_tertiary,
         fontWeight = FontWeight.Bold
     )
-
     Text(
-        buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_1))
-            withStyle(style = boldStyle) { append(" reward circuit") }
-            append(".")
-        },
+        text = stringResource(R.string.chapter_tolerance_screen_2_pt_1),
         style = Typography.bodyLarge
     )
-
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
             imageRes = if (darkTheme)
-                R.drawable.reward_circuit
+                R.drawable.guy
             else
-                R.drawable.reward_circuit_light,
-            imageLabel = R.string.reward_circuit_label,
-            contentDescription = R.string.reward_circuit_label,
-            modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
+                R.drawable.guy_light
         )
     }
 
     Text(
+        text = stringResource(R.string.chapter_tolerance_screen_2_pt_2),
+        style = Typography.bodyLarge
+    )
+    TheoryImage(
+        imageRes = if (darkTheme)
+            R.drawable.guy_taking_drugs
+        else
+            R.drawable.guy_taking_drugs_light
+    )
+
+    Text(
+        text = stringResource(R.string.chapter_tolerance_screen_2_pt_3),
+        style = Typography.bodyLarge
+    )
+    TheoryImage(
+        imageRes = if (darkTheme)
+            R.drawable.guy_small_drug_big_hit
+        else
+            R.drawable.guy_small_drug_big_hit_light
+    )
+
+    Text(
         buildAnnotatedString {
-            withStyle(style = boldStyle) { append("Behavior reinforcement ") }
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_2_pt_2))
+            append(text = stringResource(id = R.string.chapter_tolerance_screen_2_pt_4))
+            withStyle(style = boldStyle) { append(" reduces the effects ") }
+            append(text = stringResource(id = R.string.chapter_tolerance_screen_2_pt_5))
         },
         style = Typography.bodyLarge
+    )
+    TheoryImage(
+        imageRes = if (darkTheme)
+            R.drawable.guy_taking_drug_reduced_effects
+        else
+            R.drawable.guy_taking_drug_reduced_effects_light
+    )
+
+    Text(
+        text = stringResource(R.string.chapter_tolerance_screen_2_pt_6),
+        style = Typography.bodyLarge
+    )
+    TheoryImage(
+        imageRes = if (darkTheme)
+            R.drawable.guy_big_portion_big_hit
+        else
+            R.drawable.guy_big_portion_big_hit_light
     )
 }
 
 @Preview
 @Composable
-fun CHReinforcementRewardCircuitPreview() {
-    CHReinforcementRewardCircuit(onChapterContinue = { }) {
+fun CHToleranceExamplePreview() {
+    CHToleranceExample(onChapterContinue = { }) {
 
     }
 }

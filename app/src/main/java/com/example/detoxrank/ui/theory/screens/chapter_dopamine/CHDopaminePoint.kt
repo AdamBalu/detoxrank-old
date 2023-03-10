@@ -49,17 +49,15 @@ fun CHDopaminePoint(
 
 @Composable
 fun CHDopaminePointBody() {
+    val boldStyle = SpanStyle(
+        color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+        fontWeight = FontWeight.Bold
+    )
+
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_dopamine_screen_4_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" reinforces your behaviors ")
-            }
+            withStyle(style = boldStyle) { append(" reinforces your behaviors ") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_4_pt_2))
         },
         style = Typography.bodyLarge
@@ -78,23 +76,9 @@ fun CHDopaminePointBody() {
     Text(
         buildAnnotatedString {
             append(text = stringResource(id = R.string.chapter_dopamine_screen_4_pt_3))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" wanting ")
-            }
+            withStyle(style = boldStyle) { append(" wanting ") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_4_pt_4))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append(" liking ")
-            }
+            withStyle(style = boldStyle) { append(" liking ") }
             append(text = stringResource(id = R.string.chapter_dopamine_screen_4_pt_5))
         },
         style = Typography.bodyLarge

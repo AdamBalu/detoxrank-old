@@ -1,5 +1,7 @@
 package com.example.detoxrank.ui.data
 
+import androidx.annotation.StringRes
+
 enum class ChapterDifficulty {
     Easy, Medium, Hard
 }
@@ -9,10 +11,11 @@ enum class ChapterTag {
 }
 
 data class Chapter(
-    var name: String,
-    val description: String,
+    @StringRes var name: Int,
+    @StringRes val description: Int,
     val difficulty: ChapterDifficulty,
-    val wasCompleted: Boolean = false,
+    var wasCompleted: Boolean = false,
     val tag: ChapterTag,
-    val chapterScreenNum: Int = 0
+    val chapterScreenNum: Int = 0,
+    @StringRes val startChapterButtonLabel: Int
 )

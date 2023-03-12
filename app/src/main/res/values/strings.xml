@@ -6,7 +6,7 @@
     <string name="tab_theory">Theory</string>
     <string name="tab_achievements">Achievements</string>
     <string name="navigation_bottom">Navigation Bottom</string>
-    <string name="button_select_chapter">SELECT CHAPTER</string>
+    <string name="button_select_chapter">Select chapter to learn</string>
     <string name="chapter_difficulty">Difficulty</string>
     <string name="chapter_rank_points_gain">Rank points gain</string>
     <string name="back_button">back button</string>
@@ -280,17 +280,20 @@
     <string name="chapter_solution_screen_4_pt_1">
         Try your best to completely avoid these and other activities you might come up
         with (even avoid this app if it helps!), but don\'t beat yourself up too much
-        if you fail to from time to time. Keep going.\n\nRemember, this is about endurance, not about flawlessness.
+        if you fail to from time to time. Keep going.
     </string>
     <string name="chapter_solution_screen_4_pt_2">
+        Remember, this is about endurance, not about flawlessness.\n
         \nYou are going to experience a lot of boredom. Try to come up with fun, healthy activities
         that you can do to fill your free time.
         You could also experience some negative emotions, so be ready.
     </string>
 
     <string name="chapter_solution_screen_5_pt_1">
-        If you think you are ready, it\'s time to start the timer!\n\nChoose
-        the difficulty you prefer and try to stay truthful.\n\nYou should tolerate some screw-ups,
+        If you think you are ready, it\'s time to start the timer!
+    </string>
+    <string name="chapter_solution_screen_5_pt_2">
+        Choose the difficulty you prefer and try to stay truthful.\n\nYou should tolerate some screw-ups,
         but don\'t keep the timer going if you know you completely failed, just go again and
         maybe choose an easier difficulty, there\'s no point giving up :-)\n\nGood luck!
     </string>
@@ -300,16 +303,18 @@
     <string name="empty_message" />
     <string name="dopamine_chemical_label">Chemical representation of dopamine</string>
     <string name="brain_neurons_content_description">brain with neuron pathways</string>
-    <string name="brain_neurons_label">Neurons sending signals in the brain</string>
     <string name="neuron">Neuron</string>
-    <string name="synapse_label">Synapse. Made of: 1&#160;-&#160;neurotransmitters, 2&#160;-&#160;receptors, 3&#160;-&#160;sending neuron, 4&#160;-&#160;receiving neuron</string>
     <string name="synapse_content_description">Image of a synapse with neurotransmitters</string>
     <string name="button_complete_chapter">Complete</string>
+
+    <string name="synapse_label">Synapse. Made of: 1&#160;-&#160;neurotransmitters, 2&#160;-&#160;receptors, 3&#160;-&#160;sending neuron, 4&#160;-&#160;receiving neuron</string>
+    <string name="brain_neurons_label">Neurons sending signals in the brain</string>
     <string name="brain_circuits_label">Different circuits of a human brain</string>
     <string name="reward_circuit_label">Circuit where dopamine is the main\n neurotransmitter&#160;-&#160;reward circuit.\nNucleus accumbens is one of the key structures involved in motivation and reward.</string>
     <string name="reward_circuit_stimulated_label">Reward circuit being directly stimulated by addictive substances</string>
     <string name="reinforcement_label">Getting a reward from a dopaminergic activity, this behavior is getting reinforced</string>
     <string name="hedonic_circuit_label">Hedonic circuit with it\'s main operator&#160;-&#160;orbitofrontal cortex</string>
+
     <string name="topbar_dilemma">Dilemma</string>
     <string name="topbar_introduction">Introduction</string>
     <string name="topbar_brain">Learn about brain</string>
@@ -324,5 +329,34 @@
     <string name="topbar_advice">Advice</string>
     <string name="topbar_advice_pt2">Advice, pt. 2</string>
     <string name="topbar_advice_pt3">Advice, pt.3</string>
+
+    <string name="chapter_introduction_start_chapter_button_label">Get Started!</string>
+    <string name="chapter_dopamine_start_chapter_button_label">Learn About Dopamine</string>
+    <string name="chapter_reinforcement_start_chapter_button_label">Study Reinforcement</string>
+    <string name="chapter_tolerance_start_chapter_button_label">Find Out About Tolerance</string>
+    <string name="chapter_hedonic_circuit_start_chapter_button_label">Study Hedonic Circuit</string>
+    <string name="chapter_solution_start_chapter_button_label">Learn How To Detox</string>
+    <string name="chapter_name_introduction">Introduction</string>
+    <string name="chapter_name_dopamine">Dopamine</string>
+    <string name="chapter_name_reinforcement">Reinforcement</string>
+    <string name="chapter_name_tolerance">Tolerance</string>
+    <string name="chapter_name_hedonic_circuit">Hedonic circuit</string>
+    <string name="chapter_name_solution">Solution - Detox</string>
+    <string name="chapter_description_introduction">Welcome to dopamine detox theory! Here you will find some motivation for why you should study this section.</string>
+    <string name="chapter_description_dopamine">In this chapter, we will talk about how neurons and neurotransmitters work. We also get a brief look into what dopamine does in the brain and how it influences our motivation.</string>
+    <string name="chapter_description_reinforcement">This chapter looks deeper into brain\'s reward circuitry and explores the main behavior that this circuit executes - reinforcement learning.</string>
+    <string name="chapter_description_tolerance">Here we will talk about tolerance which is developed in the brain when exposing yourself to a large quantum of dopamine.</string>
+    <string name="chapter_description_hedonic_circuit">Let\'s learn about the hedonic circuit which is responsible for producing enjoyment in the brain!</string>
+    <string name="chapter_description_solution">The chapter talks about how to do a dopamine detox correctly.</string>
+
+    <string name="section_theory_description">
+        Here you can learn about dopamine detox and reasons why it\'s useful.
+    </string>
+    <string name="section_theory_description_pt_2">
+        It is recommended, although not necessary, to learn about the brain and
+        complete all chapters before your first attempt to do the detox.
+    </string>
+    <string name="default_task">do this default task to be happy</string>
+    <string name="default_task_long_description">blah hooray lol we won or something haha</string>
 
 </resources>

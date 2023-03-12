@@ -4,10 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -24,7 +21,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.DetoxRankViewModel
+import com.example.detoxrank.ui.NavigationItemContent
+import com.example.detoxrank.ui.ReplyBottomNavigationBar
 import com.example.detoxrank.ui.data.Chapter
+import com.example.detoxrank.ui.data.Section
 import com.example.detoxrank.ui.data.local.LocalChapterDataProvider
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
@@ -105,7 +105,10 @@ enum class ChapterIndices {
 fun TheoryNavigation(
     viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    currentTab: Section,
+    onTabPressed: ((Section) -> Unit),
+    navigationItemContentList: List<NavigationItemContent>
 ) {
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -151,6 +154,15 @@ fun TheoryNavigation(
                 },
                 viewModel = viewModel
             )
+        },
+        bottomBar = {
+            if (currentScreen == TheoryScreen.Chapters) {
+                ReplyBottomNavigationBar(
+                    currentTab = currentTab,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList
+                )
+            }
         }
     ) { innerPadding ->
         NavHost(
@@ -218,7 +230,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHIntroDilemmaCont.name) {
                 CHIntroDilemmaCont(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
 
@@ -273,7 +286,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHDopamineSummary.name) {
                 CHDopamineSummary(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
 
@@ -327,7 +341,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHReinforcementSummary.name) {
                 CHReinforcementSummary(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
 
@@ -370,7 +385,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHToleranceSummary.name) {
                 CHToleranceSummary(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
 
@@ -413,7 +429,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHHedonicCircuitSummary.name) {
                 CHHedonicCircuitSummary(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
 
@@ -467,7 +484,8 @@ fun TheoryNavigation(
             composable(route = TheoryScreen.CHSolutionSummary.name) {
                 CHSolutionSummary(
                     onChapterDone = onChapterDone,
-                    backHandler = backHandler
+                    backHandler = backHandler,
+                    chapter = currentChapter
                 )
             }
         }

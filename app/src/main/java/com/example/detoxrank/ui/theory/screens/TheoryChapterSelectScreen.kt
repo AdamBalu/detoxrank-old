@@ -10,7 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Grade
-import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material.icons.twotone.DoneOutline
+import androidx.compose.material.icons.twotone.Shield
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,10 +24,7 @@ import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.data.ChapterDifficulty
 import com.example.detoxrank.ui.data.ChapterTag
-import com.example.detoxrank.ui.theme.Typography
-import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
-import com.example.detoxrank.ui.theme.md_theme_light_tertiary
-import com.example.detoxrank.ui.theme.rank_color
+import com.example.detoxrank.ui.theme.*
 
 @Composable
 fun TheoryChapterSelectScreen(
@@ -37,12 +35,11 @@ fun TheoryChapterSelectScreen(
     onCHHedonicCircuitSelected: () -> Unit,
     onCHSolutionSelected: () -> Unit,
     modifier: Modifier = Modifier,
-    chapters: MutableList<Chapter>
+    chapters: List<Chapter>
 ) {
     LazyColumn(
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 24.dp)
+            .fillMaxWidth()
     ) {
         items(chapters) {chapter ->
             val chapterButtonBehavior: () -> Unit = when (chapter.tag) {
@@ -71,24 +68,38 @@ fun TheoryChapter(
     var expanded by remember { mutableStateOf(false) }
 
     Card(
-        modifier = modifier.padding(vertical = 4.dp, horizontal = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (chapter.wasCompleted) {
+                if (isSystemInDarkTheme())
+                    MaterialTheme.colorScheme.tertiaryContainer
+                else
+                    MaterialTheme.colorScheme.tertiaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
+
+        ),
+        modifier = modifier
+            .padding(vertical = 4.dp, horizontal = 16.dp),
         onClick = { expanded = !expanded }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
-                .animateContentSize(animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                ))
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = chapter.name,
+                    text = stringResource(chapter.name),
                     style = Typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -102,16 +113,18 @@ fun TheoryChapter(
             }
             if (expanded) {
                 Text(
-                    text = chapter.description,
+                    text = stringResource(chapter.description),
                     style = Typography.bodyMedium,
                     modifier = Modifier
                         .padding(bottom = 20.dp)
                 )
                 FilledTonalButton(
                     onClick = onChapterSelected,
-                    modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth()
                 ) {
-                    Text(text = stringResource(id = R.string.select))
+                    Text(text = stringResource(chapter.startChapterButtonLabel))
                 }
             }
             TheoryChapterFooter(chapter)
@@ -134,25 +147,6 @@ fun TheoryChapterFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        // xp gain footer
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Shield,
-                contentDescription = null,
-                tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                modifier = Modifier.padding(end = 5.dp)
-            )
-            Text(
-                text = "$rankPointsGain RP",
-                style = Typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
-
         // stars (difficulty level) footer
         Row(
             horizontalArrangement = Arrangement.End,
@@ -185,6 +179,43 @@ fun TheoryChapterFooter(
                 modifier = Modifier.size(20.dp)
             )
         }
+
+        if (!chapter.wasCompleted) {
+            // xp gain footer
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
+                    tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+                    modifier = Modifier
+                        .size(16.dp)
+                        .padding(end = 1.dp)
+                )
+                Text(
+                    text = "$rankPointsGain RP",
+                    style = Typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+                Icon(
+                    imageVector = Icons.TwoTone.Shield,
+                    contentDescription = null,
+                    tint = rank_color,
+                    modifier = Modifier
+                        .padding(start = 3.dp)
+                )
+            }
+        } else {
+            // chapter done - display checkmark
+            Icon(
+                imageVector = Icons.TwoTone.DoneOutline,
+                contentDescription = null,
+                tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary
+            )
+        }
     }
 }
 
@@ -195,7 +226,9 @@ fun ContinueIconButton(
 ) {
     OutlinedIconButton(
         onClick = onClick,
-        modifier = modifier.width(160.dp).padding(16.dp)
+        modifier = modifier
+            .width(160.dp)
+            .padding(16.dp)
     ) {
         Row {
             Text(
@@ -203,7 +236,9 @@ fun ContinueIconButton(
                 style = Typography.bodyMedium,
                 letterSpacing = 1.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(end = 5.dp).align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .align(Alignment.CenterVertically)
             )
             Icon(
                 imageVector = Icons.Filled.ArrowRightAlt,
@@ -217,12 +252,16 @@ fun ContinueIconButton(
 @Composable
 fun CompleteChapterIconButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    chapter: Chapter
 ) {
     OutlinedIconButton(
         onClick = onClick,
-        modifier = modifier.width(160.dp).padding(16.dp)
+        modifier = modifier
+            .width(160.dp)
+            .padding(16.dp)
     ) {
+        chapter.wasCompleted = true
         Row {
             Text(
                 text = stringResource(R.string.button_complete_chapter),
@@ -230,7 +269,9 @@ fun CompleteChapterIconButton(
                 letterSpacing = 1.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                modifier = Modifier.padding(end = 5.dp).align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .align(Alignment.CenterVertically)
             )
             Icon(
                 imageVector = Icons.Filled.Check,

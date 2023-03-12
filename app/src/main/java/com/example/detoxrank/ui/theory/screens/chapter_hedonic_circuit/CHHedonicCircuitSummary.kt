@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
@@ -26,7 +27,8 @@ import com.example.detoxrank.ui.theory.screens.CompleteChapterIconButton
 fun CHHedonicCircuitSummary(
     modifier: Modifier = Modifier,
     onChapterDone: () -> Unit,
-    backHandler: () -> Unit
+    backHandler: () -> Unit,
+    chapter: Chapter
 ) {
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
@@ -39,7 +41,8 @@ fun CHHedonicCircuitSummary(
         CHHedonicCircuitSummaryBody()
         CompleteChapterIconButton(
             onClick = onChapterDone,
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier.align(Alignment.End),
+            chapter = chapter
         )
     }
 }

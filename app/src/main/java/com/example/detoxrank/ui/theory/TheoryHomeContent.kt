@@ -3,13 +3,7 @@ package com.example.detoxrank.ui.theory
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
-import androidx.compose.material.icons.outlined.School
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,52 +17,81 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.DetoxRankViewModel
+import com.example.detoxrank.ui.NavigationItemContent
+import com.example.detoxrank.ui.data.Section
 import com.example.detoxrank.ui.theme.Typography
-import com.example.detoxrank.ui.theme.md_theme_dark_primaryContainer
-import com.example.detoxrank.ui.theme.md_theme_light_primaryContainer
 
 
 
 @Composable
 fun TheoryMainScreen(
     viewModel: DetoxRankViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTabPressed: ((Section) -> Unit),
+    navigationItemContentList: List<NavigationItemContent>,
+    currentTab: Section,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    if (uiState.isTheoryLaunched) {
-        TheoryNavigation(viewModel = viewModel)
-    } else {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.School,
-                contentDescription = null,
-                modifier = modifier.size(350.dp),
-                tint = if (isSystemInDarkTheme())
-                    md_theme_dark_primaryContainer
-                else
-                    md_theme_light_primaryContainer
-            )
-            FilledTonalButton(
-                onClick = { viewModel.updateTheoryLaunchState(true) },
-                contentPadding = PaddingValues(top = 20.dp, bottom = 20.dp, start = 30.dp, end = 30.dp)
-            ) {
-                Text(text = stringResource(R.string.button_select_chapter))
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
-                    contentDescription = null,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
-            }
-        }
-    }
+//    if (uiState.isTheoryLaunched) {
+    TheoryNavigation(
+        viewModel = viewModel,
+        onTabPressed = onTabPressed,
+        navigationItemContentList = navigationItemContentList,
+        currentTab = currentTab
+    )
+//    } else {
+//
+//        Column (
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.SpaceBetween,
+//            modifier = modifier
+//                .fillMaxHeight(0.8f)
+//                ) {
+//            Column(
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(
+//                    "Theory",
+//                    style = Typography.headlineLarge,
+//                    textAlign = TextAlign.Center,
+//                    modifier = modifier.padding(bottom = 30.dp)
+//                )
+//                Image(
+//                    painterResource(id = R.drawable.brain_enlighted),
+//                    contentDescription = null,
+//                    modifier = modifier.width(300.dp)
+//                )
+//            }
+//
+//            FilledTonalButton(
+//                shape = RoundedCornerShape(20),
+//                onClick = { viewModel.updateTheoryLaunchState(true) },
+//                contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp, start = 20.dp, end = 20.dp),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(20.dp),
+//                elevation = ButtonDefaults.buttonElevation(
+//                    defaultElevation = 10.dp,
+//                    pressedElevation = 3.dp,
+//                    disabledElevation = 0.dp,
+//                    hoveredElevation = 5.dp,
+//                    focusedElevation = 5.dp
+//                )
+//            ) {
+//                Text(text = stringResource(R.string.button_select_chapter))
+//                Icon(
+//                    imageVector = Icons.Outlined.Start,
+//                    contentDescription = null,
+//                    modifier = Modifier.padding(start = 10.dp)
+//                )
+//            }
+//        }
+
 }
 
 /**
- * Image in theory with optional label as description
+ * Image format for theory with optional label as a description
  *
  * for label to work correctly, this component needs to be wrapped in a column
  */
@@ -113,7 +136,12 @@ fun TheoryImagePreview() {
             imageRes = R.drawable.reward_circuit,
             imageLabel = R.string.reward_circuit_label
         )
-        Text("hey??")
     }
+}
 
+@Preview
+@Composable
+fun TheoryMainScreenPreview() {
+//    val viewModel: DetoxRankViewModel = viewModel()
+//    TheoryMainScreen(viewModel = viewModel)
 }

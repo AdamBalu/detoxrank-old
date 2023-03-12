@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Section
+import com.example.detoxrank.ui.tasks.TasksMainScreen
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryMainScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
@@ -131,7 +132,9 @@ private fun DetoxRankContent(
 
                 DetoxRankMainScreenContent(
                     currentTab = detoxRankUiState.currentSection,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList,
                 )
 
                 // bottom navigation bar
@@ -149,7 +152,9 @@ private fun DetoxRankContent(
             ) {
                 DetoxRankMainScreenContent(
                     currentTab = detoxRankUiState.currentSection,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList,
                 )
                 Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
             }
@@ -162,14 +167,19 @@ private fun DetoxRankContent(
 fun DetoxRankMainScreenContent(
     currentTab: Section,
     viewModel: DetoxRankViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTabPressed: ((Section) -> Unit),
+    navigationItemContentList: List<NavigationItemContent>
 ) {
     when (currentTab) {
         Section.Rank -> {
 
         }
         Section.Tasks -> {
-
+            TasksMainScreen(
+                modifier = modifier,
+                viewModel = viewModel
+            )
         }
         Section.Timer -> {
 
@@ -177,7 +187,10 @@ fun DetoxRankMainScreenContent(
         Section.Theory -> {
             TheoryMainScreen(
                 modifier = modifier,
-                viewModel = viewModel
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList,
             )
         }
     }
@@ -185,7 +198,7 @@ fun DetoxRankMainScreenContent(
 }
 
 @Composable
-private fun ReplyBottomNavigationBar(
+fun ReplyBottomNavigationBar(
     currentTab: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
@@ -279,7 +292,7 @@ private fun NavigationDrawerContent(
     }
 }
 
-private data class NavigationItemContent(
+data class NavigationItemContent(
     val section: Section,
     val icon: ImageVector,
     val text: String,

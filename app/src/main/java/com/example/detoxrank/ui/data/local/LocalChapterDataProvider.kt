@@ -1,54 +1,59 @@
 package com.example.detoxrank.ui.data.local
 
+import com.example.detoxrank.R
 import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.data.ChapterDifficulty
 import com.example.detoxrank.ui.data.ChapterTag
 
 object LocalChapterDataProvider {
-    val allChapters = mutableListOf(
+    val allChapters = listOf(
         Chapter(
-            name = "Introduction",
-            description = "Welcome to dopamine detox theory! Here you will find some motivation for" +
-                    " why you should study this section.",
+            name = R.string.chapter_name_introduction,
+            description = R.string.chapter_description_introduction,
             difficulty = ChapterDifficulty.Easy,
             tag = ChapterTag.Introduction,
-            chapterScreenNum = 3
+            chapterScreenNum = 3,
+            startChapterButtonLabel = R.string.chapter_introduction_start_chapter_button_label
         ),
         Chapter(
-            name = "Dopamine",
-            description = "In this chapter, we will talk about how neurons and neurotransmitters work. We also get a brief look into what dopamine does in the brain and" +
-                    " how it influences our motivation.",
+            name = R.string.chapter_name_dopamine,
+            description = R.string.chapter_description_dopamine,
             difficulty = ChapterDifficulty.Medium,
             tag = ChapterTag.Dopamine,
-            chapterScreenNum = 5
+            chapterScreenNum = 5,
+            startChapterButtonLabel = R.string.chapter_dopamine_start_chapter_button_label
         ),
         Chapter(
-            name = "Reinforcement",
-            description = "This chapter looks deeper into brain\'s reward circuitry and explores the main behavior that this circuit executes - reinforcement learning.",
+            name = R.string.chapter_name_reinforcement,
+            description = R.string.chapter_description_reinforcement,
             difficulty = ChapterDifficulty.Hard,
             tag = ChapterTag.Reinforcement,
-            chapterScreenNum = 5
+            chapterScreenNum = 5,
+            startChapterButtonLabel = R.string.chapter_reinforcement_start_chapter_button_label
         ),
         Chapter(
-            name = "Tolerance",
-            description = "Here we will talk about tolerance which is developed in the brain when exposing yourself to a large quantum of dopamine.",
+            name = R.string.chapter_name_tolerance,
+            description = R.string.chapter_description_tolerance,
             difficulty = ChapterDifficulty.Medium,
             tag = ChapterTag.Tolerance,
-            chapterScreenNum = 4
+            chapterScreenNum = 4,
+            startChapterButtonLabel = R.string.chapter_tolerance_start_chapter_button_label
         ),
         Chapter(
-            name = "Hedonic circuit",
-            description = "Let\'s learn about the hedonic circuit which is responsible for producing enjoyment in the brain!",
+            name = R.string.chapter_name_hedonic_circuit,
+            description = R.string.chapter_description_hedonic_circuit,
             difficulty = ChapterDifficulty.Hard,
             tag = ChapterTag.HedonicCircuit,
-            chapterScreenNum = 4
+            chapterScreenNum = 4,
+            startChapterButtonLabel = R.string.chapter_hedonic_circuit_start_chapter_button_label
         ),
         Chapter(
-            name = "Solution - Detox",
-            description = "The chapter talks about how to do a dopamine detox correctly.",
+            name = R.string.chapter_name_solution,
+            description = R.string.chapter_description_solution,
             difficulty = ChapterDifficulty.Easy,
             tag = ChapterTag.Solutions,
-            chapterScreenNum = 5
+            chapterScreenNum = 5,
+            startChapterButtonLabel = R.string.chapter_solution_start_chapter_button_label
         )
     )
 }

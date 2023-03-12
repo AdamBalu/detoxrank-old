@@ -1,7 +1,9 @@
 package com.example.detoxrank.ui.theory.screens.chapter_solution
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.ui.theme.Typography
+import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.ContinueIconButton
 
 @Composable
@@ -46,14 +49,17 @@ fun CHSolutionAdviceContContBody(
         style = Typography.bodyLarge
     )
 
-//    Column(
-//        modifier = Modifier.fillMaxWidth(),
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        TheoryImage(
-//            imageRes = R.drawable.burgers
-//        )
-//    }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TheoryImage(
+            imageRes = if (isSystemInDarkTheme())
+                R.drawable.endurance
+            else
+                R.drawable.endurance_light
+        )
+    }
 
     Text(
         text = stringResource(id = R.string.chapter_solution_screen_4_pt_2),

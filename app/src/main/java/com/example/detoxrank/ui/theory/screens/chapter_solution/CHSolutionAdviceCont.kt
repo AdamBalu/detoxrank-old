@@ -1,7 +1,6 @@
 package com.example.detoxrank.ui.theory.screens.chapter_solution
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,16 +43,13 @@ fun CHSolutionAdviceCont(
 fun CHSolutionAdviceContBody(
     modifier: Modifier = Modifier
 ) {
-
-    val darkTheme = isSystemInDarkTheme()
-
     Text(
         text = stringResource(id = R.string.chapter_solution_screen_3_pt_1),
         style = Typography.bodyLarge
     )
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TheoryImage(
@@ -65,8 +61,4 @@ fun CHSolutionAdviceContBody(
         text = stringResource(id = R.string.chapter_solution_screen_3_pt_2),
         style = Typography.bodyLarge
     )
-
-
-
-
 }

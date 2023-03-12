@@ -11,22 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.data.Chapter
 import com.example.detoxrank.ui.theme.Typography
-import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
-import com.example.detoxrank.ui.theme.md_theme_light_tertiary
+import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.screens.CompleteChapterIconButton
 
 @Composable
 fun CHSolutionSummary(
     modifier: Modifier = Modifier,
     onChapterDone: () -> Unit,
-    backHandler: () -> Unit
+    backHandler: () -> Unit,
+    chapter: Chapter
 ) {
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
@@ -39,7 +36,8 @@ fun CHSolutionSummary(
         CHSolutionSummaryBody()
         CompleteChapterIconButton(
             onClick = onChapterDone,
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier.align(Alignment.End),
+            chapter = chapter
         )
     }
 }
@@ -47,25 +45,12 @@ fun CHSolutionSummary(
 @Composable
 fun CHSolutionSummaryBody() {
     Text(
-        buildAnnotatedString {
-            append(text = stringResource(id = R.string.chapter_dopamine_screen_5_pt_1))
-            withStyle(
-                style = SpanStyle(
-                    color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    fontWeight = FontWeight.Bold
-                )
-            ) {
-                append("""
-
-    - brain circuits
-    - reward circuit
-    - drug effects on brain
-    - reinforcement learning
-           
-""")
-            }
-            append(text = stringResource(id = R.string.chapter_reinforcement_screen_5_pt_1))
-        },
+        text = stringResource(id = R.string.chapter_solution_screen_5_pt_1),
+        style = Typography.bodyLarge
+    )
+    TheoryImage(imageRes = if (isSystemInDarkTheme()) R.drawable.timer else R.drawable.timer_light)
+    Text(
+        text = stringResource(id = R.string.chapter_solution_screen_5_pt_2),
         style = Typography.bodyLarge
     )
 }

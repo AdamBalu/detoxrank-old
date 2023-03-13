@@ -1,4 +1,4 @@
-package com.example.detoxrank.ui.data
+package com.example.detoxrank.data
 
 import androidx.annotation.StringRes
 

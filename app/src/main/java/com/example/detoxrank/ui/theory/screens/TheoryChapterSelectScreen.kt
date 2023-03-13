@@ -3,6 +3,8 @@ package com.example.detoxrank.ui.theory.screens
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Grade
 import androidx.compose.material.icons.twotone.DoneOutline
-import androidx.compose.material.icons.twotone.Shield
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,9 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.detoxrank.R
-import com.example.detoxrank.ui.data.Chapter
-import com.example.detoxrank.ui.data.ChapterDifficulty
-import com.example.detoxrank.ui.data.ChapterTag
+import com.example.detoxrank.data.Chapter
+import com.example.detoxrank.data.ChapterDifficulty
+import com.example.detoxrank.data.ChapterTag
+import com.example.detoxrank.ui.AnimationBox
+import com.example.detoxrank.ui.RankPointsGain
 import com.example.detoxrank.ui.theme.*
 
 @Composable
@@ -50,10 +53,14 @@ fun TheoryChapterSelectScreen(
                 ChapterTag.HedonicCircuit -> onCHHedonicCircuitSelected
                 ChapterTag.Solutions -> onCHSolutionSelected
             }
-            TheoryChapter(
-                onChapterSelected = chapterButtonBehavior,
-                chapter = chapter
-            )
+            AnimationBox(
+                enter = expandVertically() + fadeIn()
+            ) {
+                TheoryChapter(
+                    onChapterSelected = chapterButtonBehavior,
+                    chapter = chapter
+                )
+            }
         }
     }
 }
@@ -181,33 +188,14 @@ fun TheoryChapterFooter(
         }
 
         if (!chapter.wasCompleted) {
-            // xp gain footer
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = null,
-                    tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
-                    modifier = Modifier
-                        .size(16.dp)
-                        .padding(end = 1.dp)
-                )
-                Text(
-                    text = "$rankPointsGain RP",
-                    style = Typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Icon(
-                    imageVector = Icons.TwoTone.Shield,
-                    contentDescription = null,
-                    tint = rank_color,
-                    modifier = Modifier
-                        .padding(start = 3.dp)
-                )
-            }
+            RankPointsGain(
+                rankPointsGain = rankPointsGain,
+                horizontalArrangement = Arrangement.End,
+                plusIconSize = 16.dp,
+                fontSize = 16.sp,
+                shieldIconSize = 20.dp
+            )
+
         } else {
             // chapter done - display checkmark
             Icon(

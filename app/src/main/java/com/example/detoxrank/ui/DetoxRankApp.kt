@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.detoxrank.ui.data.Section
+import com.example.detoxrank.data.Section
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
 /**

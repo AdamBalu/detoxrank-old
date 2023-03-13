@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
-import com.example.detoxrank.ui.data.Section
+import com.example.detoxrank.data.Section
 import com.example.detoxrank.ui.tasks.TasksMainScreen
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryMainScreen
@@ -178,7 +178,10 @@ fun DetoxRankMainScreenContent(
         Section.Tasks -> {
             TasksMainScreen(
                 modifier = modifier,
-                viewModel = viewModel
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList
             )
         }
         Section.Timer -> {

@@ -52,5 +52,10 @@ val Typography = Typography(
         fontFamily = JosefinSans,
         fontWeight = FontWeight.Bold,
         fontSize = 40.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = JosefinSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp
     )
 )

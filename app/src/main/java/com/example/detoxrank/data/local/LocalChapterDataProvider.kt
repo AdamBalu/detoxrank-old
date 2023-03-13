@@ -1,9 +1,9 @@
-package com.example.detoxrank.ui.data.local
+package com.example.detoxrank.data.local
 
 import com.example.detoxrank.R
-import com.example.detoxrank.ui.data.Chapter
-import com.example.detoxrank.ui.data.ChapterDifficulty
-import com.example.detoxrank.ui.data.ChapterTag
+import com.example.detoxrank.data.Chapter
+import com.example.detoxrank.data.ChapterDifficulty
+import com.example.detoxrank.data.ChapterTag
 
 object LocalChapterDataProvider {
     val allChapters = listOf(

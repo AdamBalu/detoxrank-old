@@ -1,19 +1,23 @@
 package com.example.detoxrank.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.data.Section
+import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
 /**
  * Main composable which displays content
  */
+@ExperimentalAnimationApi
 @Composable
-fun DetoxRankApp(
+fun DetoxRankAppContent(
     windowSize: WindowWidthSizeClass,
+    timerService: TimerService,
     modifier: Modifier = Modifier
 ) {
     val viewModel: DetoxRankViewModel = viewModel()
@@ -37,6 +41,7 @@ fun DetoxRankApp(
     DetoxRankHomeScreen(
         viewModel = viewModel,
         detoxRankUiState = detoxRankUiState,
+        timerService = timerService,
         navigationType = navigationType,
         onTabPressed = { section: Section ->
             viewModel.updateCurrentSection(section = section)

@@ -1,4 +1,4 @@
-package com.example.detoxrank.ui
+package com.example.detoxrank.ui.utils
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState

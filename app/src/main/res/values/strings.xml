@@ -414,5 +414,17 @@
     <string name="tasklist_heading_weekly">Weekly</string>
     <string name="tasklist_heading_monthly">Monthly</string>
     <string name="task_completed">Completed!</string>
-
+    <string name="technology">technology\n(fun activities)</string>
+    <string name="fastfood">fastfood</string>
+    <string name="sweets">sweets</string>
+    <string name="tv">TV</string>
+    <string name="drugs">drugs</string>
+    <string name="pornography">adult content</string>
+    <string name="risktaking">risk-taking</string>
+    <string name="hazard">hazard</string>
+    <string name="coffee">coffee</string>
+    <string name="shopping">impulsive shopping</string>
+    <string name="music">music</string>
+    <string name="parties">parties and big events</string>
+    <string name="sex">sex</string>
 </resources>

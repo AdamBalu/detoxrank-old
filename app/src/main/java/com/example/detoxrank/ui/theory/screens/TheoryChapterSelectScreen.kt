@@ -25,9 +25,9 @@ import com.example.detoxrank.R
 import com.example.detoxrank.data.Chapter
 import com.example.detoxrank.data.ChapterDifficulty
 import com.example.detoxrank.data.ChapterTag
-import com.example.detoxrank.ui.AnimationBox
-import com.example.detoxrank.ui.RankPointsGain
 import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.utils.AnimationBox
+import com.example.detoxrank.ui.utils.RankPointsGain
 
 @Composable
 fun TheoryChapterSelectScreen(

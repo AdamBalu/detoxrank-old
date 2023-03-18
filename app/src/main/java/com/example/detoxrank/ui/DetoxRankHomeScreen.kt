@@ -1,6 +1,7 @@
 package com.example.detoxrank.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -20,16 +21,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
+import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.tasks.TasksMainScreen
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryMainScreen
+import com.example.detoxrank.ui.timer.TimerMainScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetoxRankHomeScreen(
     viewModel: DetoxRankViewModel,
     detoxRankUiState: DetoxRankUiState,
+    timerService: TimerService,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
@@ -76,6 +81,7 @@ fun DetoxRankHomeScreen(
                 viewModel = viewModel,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
+                timerService = timerService,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
                 modifier = modifier
@@ -86,6 +92,7 @@ fun DetoxRankHomeScreen(
             viewModel = viewModel,
             navigationType = navigationType,
             detoxRankUiState = detoxRankUiState,
+            timerService = timerService,
             onTabPressed = onTabPressed,
             navigationItemContentList = navigationItemContentList,
             modifier = modifier
@@ -94,11 +101,13 @@ fun DetoxRankHomeScreen(
 
 }
 
+@ExperimentalAnimationApi
 @Composable
 private fun DetoxRankContent(
     viewModel: DetoxRankViewModel,
     navigationType: DetoxRankNavigationType,
     detoxRankUiState: DetoxRankUiState,
+    timerService: TimerService,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier
@@ -135,6 +144,7 @@ private fun DetoxRankContent(
                     viewModel = viewModel,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList,
+                    timerService = timerService
                 )
 
                 // bottom navigation bar
@@ -155,6 +165,7 @@ private fun DetoxRankContent(
                     viewModel = viewModel,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList,
+                    timerService = timerService
                 )
                 Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
             }
@@ -163,10 +174,12 @@ private fun DetoxRankContent(
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun DetoxRankMainScreenContent(
     currentTab: Section,
     viewModel: DetoxRankViewModel,
+    timerService: TimerService,
     modifier: Modifier = Modifier,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>
@@ -185,7 +198,13 @@ fun DetoxRankMainScreenContent(
             )
         }
         Section.Timer -> {
-
+            TimerMainScreen(
+                timerService = timerService,
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList
+            )
         }
         Section.Theory -> {
             TheoryMainScreen(

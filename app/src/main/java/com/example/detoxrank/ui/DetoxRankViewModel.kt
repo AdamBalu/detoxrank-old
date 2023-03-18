@@ -4,10 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
-import com.example.detoxrank.data.Chapter
-import com.example.detoxrank.data.Section
-import com.example.detoxrank.data.Task
-import com.example.detoxrank.data.TaskCategory
+import com.example.detoxrank.data.*
+import com.example.detoxrank.data.local.LocalTimerDifficultyDataProvider.listOfDifficulties
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,8 +21,24 @@ class DetoxRankViewModel : ViewModel() {
     val taskList: List<Task>
         get() = _taskList
 
+    private val _difficultySelectShown = mutableStateOf(false)
+    val difficultySelectShown: Boolean
+        get() = _difficultySelectShown.value
+
+    private val _difficultyList = listOfDifficulties
+    val difficultyList: List<TimerDifficultyCard>
+        get() = _difficultyList
+
+    private var _selectedTimerDifficulty = TimerDifficulty.Easy
+    val selectedTimerDifficulty: TimerDifficulty
+        get() = _selectedTimerDifficulty
+
     init {
         initializeUIState()
+    }
+
+    fun setSelectedTimerDifficulty(value: TimerDifficulty) {
+        _selectedTimerDifficulty = value
     }
 
     private fun initializeUIState() {
@@ -91,6 +105,10 @@ class DetoxRankViewModel : ViewModel() {
         }
     }
 
+    fun cleanTaskList(tasks: List<Task>) {
+        _taskList.removeAll(tasks)
+    }
+
     fun calculateProgressBarAddition(chapter: Chapter): Float =
         if (chapter.chapterScreenNum != 0)
             (1 / (chapter.chapterScreenNum - 1).toFloat())
@@ -134,5 +152,9 @@ class DetoxRankViewModel : ViewModel() {
         tasks.forEach {
             it.completed = mutableStateOf(false)
         }
+    }
+
+    fun setDifficultySelectShown(value: Boolean) {
+        _difficultySelectShown.value = value
     }
 }

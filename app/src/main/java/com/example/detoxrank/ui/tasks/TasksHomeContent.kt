@@ -2,7 +2,7 @@ package com.example.detoxrank.ui.tasks
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
-import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +28,8 @@ import com.example.detoxrank.data.TaskCategory
 import com.example.detoxrank.data.local.LocalTasksDataProvider.tasks
 import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.utils.AnimationBox
+import com.example.detoxrank.ui.utils.RankPointsGain
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,6 +84,11 @@ fun TaskList(
     modifier: Modifier = Modifier,
     viewModel: DetoxRankViewModel = viewModel()
 ) {
+    if (viewModel.taskList.all { it.completed.value }) {
+        viewModel.cleanTaskList(tasks)
+        viewModel.resetTaskCompletionValues(tasks)
+        viewModel.fillTaskList(tasks)
+    }
     if (viewModel.taskList.isEmpty()) {
         viewModel.resetTaskCompletionValues(tasks)
         viewModel.fillTaskList(tasks)
@@ -118,85 +125,57 @@ fun TaskList(
             )
         }
     } else {
-            /**
-             * Daily tasks
-             */
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxWidth()
-            ) {
-                item {
-                    TasksHeading(
-                        headingRes = R.string.tasklist_heading_daily,
-                        timeLeft = 0 /* TODO */,
-                        iconImageVector = Icons.Filled.Today
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+        ) {
+            item {
+                TasksHeading(
+                    headingRes = R.string.tasklist_heading_daily,
+                    timeLeft = 0 /* TODO */,
+                    iconImageVector = Icons.Filled.Today
+                )
+            }
+            items(viewModel.taskList.filter { it.category == TaskCategory.Daily }) { task ->
+                AnimationBox {
+                    Task(
+                        task = task
                     )
-                }
-                items(viewModel.taskList.filter { it.category == TaskCategory.Daily }) { task ->
-                    AnimationBox {
-                        Task(
-                            task = task,
-                            viewModel = viewModel
-                        )
-                    }
-                }
-                item {
-                    TasksHeading(
-                        headingRes = R.string.tasklist_heading_weekly,
-                        timeLeft = 0 /* TODO */,
-                        iconImageVector = Icons.Filled.DateRange
-                    )
-                }
-                items(viewModel.taskList.filter { it.category == TaskCategory.Weekly }) { task ->
-                    AnimationBox {
-                        Task(
-                            task = task,
-                            viewModel = viewModel
-                        )
-                    }
-                }
-                item {
-                    TasksHeading(
-                        headingRes = R.string.tasklist_heading_monthly,
-                        timeLeft = 0 /* TODO */,
-                        iconImageVector = Icons.Filled.CalendarMonth
-                    )
-                }
-                items(viewModel.taskList.filter { it.category == TaskCategory.Monthly }) { task ->
-                    AnimationBox {
-                        Task(
-                            task = task,
-                            viewModel = viewModel
-                        )
-                    }
-                }
-                item {
-                    OutlinedIconButton(
-                        onClick = {
-                            viewModel.removeCompletedTasks() /* TODO add rank points */
-                        },
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(start = 50.dp, end = 50.dp, top = 0.dp)
-                    ) {
-                        Row {
-                            Text(
-                                "Save progress",
-                                modifier = Modifier
-                                    .padding(end = 5.dp)
-                                    .align(Alignment.CenterVertically)
-                            )
-                            Icon(
-                                Icons.Filled.Save,
-                                contentDescription = null
-                            )
-                        }
-                    }
                 }
             }
+            item {
+                TasksHeading(
+                    headingRes = R.string.tasklist_heading_weekly,
+                    timeLeft = 0 /* TODO */,
+                    iconImageVector = Icons.Filled.DateRange
+                )
+            }
+            items(viewModel.taskList.filter { it.category == TaskCategory.Weekly }) { task ->
+                AnimationBox {
+                    Task(
+                        task = task
+                    )
+                }
+            }
+            item {
+                TasksHeading(
+                    headingRes = R.string.tasklist_heading_monthly,
+                    timeLeft = 0 /* TODO */,
+                    iconImageVector = Icons.Filled.CalendarMonth
+                )
+            }
+            items(viewModel.taskList.filter { it.category == TaskCategory.Monthly }) { task ->
+                AnimationBox {
+                    Task(
+                        task = task
+                    )
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(bottom = 75.dp))
+            }
+        }
     }
-
-
 }
 
 @Composable
@@ -227,7 +206,7 @@ fun TasksHeading(
                 modifier = Modifier.size(25.dp)
             )
         }
-//        Text(
+//        Text( TODO
 //            stringResource(id = R.string.tasklist_time_left, timeLeft)
 //        )
     }
@@ -236,8 +215,7 @@ fun TasksHeading(
 @Composable
 fun Task(
     task: Task,
-    modifier: Modifier = Modifier,
-    viewModel: DetoxRankViewModel = viewModel()
+    modifier: Modifier = Modifier
 ) {
     val rankPointsGain = when (task.category) {
         TaskCategory.Daily -> 100
@@ -250,9 +228,19 @@ fun Task(
     Card(
         modifier = modifier
             .padding(vertical = 4.dp, horizontal = 16.dp)
-            .clickable { task.completed.value = !task.completed.value },
+            .clickable { task.completed.value = !task.completed.value }
+            .height(if (task.completed.value) IntrinsicSize.Min else IntrinsicSize.Max)
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            ),
         colors = if (task.completed.value) {
-            CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer)
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.tertiary
+            )
         } else {
             when (task.category) {
                 TaskCategory.Daily ->
@@ -278,7 +266,11 @@ fun Task(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 15.dp, end = 10.dp, top = 18.dp, bottom = 14.dp)
+                .padding(
+                    start = 15.dp,
+                    end = 10.dp,
+                    top = if (task.completed.value) 2.dp else 18.dp,
+                    bottom = if (task.completed.value) 2.dp else 14.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

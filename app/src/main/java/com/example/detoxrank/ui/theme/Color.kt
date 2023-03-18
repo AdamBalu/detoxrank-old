@@ -64,6 +64,8 @@ val md_theme_dark_outlineVariant = Color(0xFF45464F)
 val md_theme_dark_scrim = Color(0xFF000000)
 
 val rank_color = Color(0xFFFFC000)
+val rank_color_light = Color(0xFFBB8E04)
+val rank_color_ultra_dark = Color(0xFF836918)
 val timer_color_dark = Color(0xfffa5443)
 
 

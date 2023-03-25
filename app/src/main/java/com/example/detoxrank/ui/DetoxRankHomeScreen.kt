@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.service.TimerService
@@ -39,6 +41,7 @@ fun DetoxRankHomeScreen(
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
 ) {
+    val navController: NavHostController = rememberNavController()
     val navigationItemContentList = listOf(
         NavigationItemContent(
             section = Section.Rank,
@@ -84,6 +87,7 @@ fun DetoxRankHomeScreen(
                 timerService = timerService,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
+                navController = navController,
                 modifier = modifier
             )
         }
@@ -95,6 +99,7 @@ fun DetoxRankHomeScreen(
             timerService = timerService,
             onTabPressed = onTabPressed,
             navigationItemContentList = navigationItemContentList,
+            navController = navController,
             modifier = modifier
         )
     }
@@ -110,6 +115,7 @@ private fun DetoxRankContent(
     timerService: TimerService,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
+    navController: NavHostController,
     modifier: Modifier
 ) {
 
@@ -144,11 +150,13 @@ private fun DetoxRankContent(
                     viewModel = viewModel,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList,
-                    timerService = timerService
+                    timerService = timerService,
+                    navigationType = navigationType,
+                    navController = navController
                 )
 
                 // bottom navigation bar
-                ReplyBottomNavigationBar(
+                DetoxRankBottomNavigationBar(
                     currentTab = detoxRankUiState.currentSection,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList,
@@ -165,7 +173,9 @@ private fun DetoxRankContent(
                     viewModel = viewModel,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList,
-                    timerService = timerService
+                    timerService = timerService,
+                    navigationType = navigationType,
+                    navController = navController
                 )
                 Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
             }
@@ -182,7 +192,9 @@ fun DetoxRankMainScreenContent(
     timerService: TimerService,
     modifier: Modifier = Modifier,
     onTabPressed: ((Section) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>
+    navigationItemContentList: List<NavigationItemContent>,
+    navController: NavHostController,
+    navigationType: DetoxRankNavigationType
 ) {
     when (currentTab) {
         Section.Rank -> {
@@ -203,7 +215,8 @@ fun DetoxRankMainScreenContent(
                 viewModel = viewModel,
                 currentTab = currentTab,
                 onTabPressed = onTabPressed,
-                navigationItemContentList = navigationItemContentList
+                navigationItemContentList = navigationItemContentList,
+                navigationType = navigationType
             )
         }
         Section.Theory -> {
@@ -213,6 +226,8 @@ fun DetoxRankMainScreenContent(
                 currentTab = currentTab,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
+                navController = navController,
+                navigationType = navigationType
             )
         }
     }
@@ -220,7 +235,7 @@ fun DetoxRankMainScreenContent(
 }
 
 @Composable
-fun ReplyBottomNavigationBar(
+fun DetoxRankBottomNavigationBar(
     currentTab: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,

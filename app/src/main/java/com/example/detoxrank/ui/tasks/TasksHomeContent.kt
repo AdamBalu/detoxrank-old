@@ -62,7 +62,7 @@ fun TasksMainScreen(
             )
         },
         bottomBar = {
-            ReplyBottomNavigationBar(
+            DetoxRankBottomNavigationBar(
                 currentTab = currentTab,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList

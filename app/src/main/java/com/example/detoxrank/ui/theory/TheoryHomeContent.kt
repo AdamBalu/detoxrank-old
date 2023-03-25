@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui.theory
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,11 +27,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
+import com.example.detoxrank.data.Chapter
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.local.LocalChapterDataProvider
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.NavigationItemContent
-import com.example.detoxrank.ui.ReplyBottomNavigationBar
+import com.example.detoxrank.ui.DetoxRankBottomNavigationBar
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
@@ -49,6 +51,7 @@ import com.example.detoxrank.ui.theory.screens.chapter_tolerance.CHToleranceCorr
 import com.example.detoxrank.ui.theory.screens.chapter_tolerance.CHToleranceExample
 import com.example.detoxrank.ui.theory.screens.chapter_tolerance.CHToleranceIntro
 import com.example.detoxrank.ui.theory.screens.chapter_tolerance.CHToleranceSummary
+import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
 /**
  * enum values that represent the screens in the app
@@ -104,6 +107,42 @@ enum class ChapterIndices {
     SOLUTIONS_INDEX
 }
 
+private fun backHandler(
+    navController: NavHostController,
+    viewModel: DetoxRankViewModel,
+    currentChapter: Chapter
+) {
+    navController.navigateUp()
+    viewModel.updateProgressBarProgression(
+        -viewModel.calculateProgressBarAddition(currentChapter)
+    )
+}
+
+private fun onChaptersDone(
+    navController: NavHostController,
+    viewModel: DetoxRankViewModel
+) {
+//    navController.navigate(TheoryScreen.Chapters.name) {
+//        popUpTo(navController.graph.startDestinationId) {
+//            inclusive = false
+//        }
+//    }
+    navController.popBackStack(TheoryScreen.Chapters.name, inclusive = false)
+    viewModel.resetProgressBarProgression()
+}
+
+private fun onChapterContinue(
+    navController: NavHostController,
+    viewModel: DetoxRankViewModel,
+    currentChapter: Chapter,
+    chapterName: String
+) {
+    navController.navigate(chapterName)
+    viewModel.updateProgressBarProgression(
+        viewModel.calculateProgressBarAddition(currentChapter)
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TheoryMainScreen(
@@ -113,9 +152,11 @@ fun TheoryMainScreen(
     navigationItemContentList: List<NavigationItemContent>,
     currentTab: Section,
     navController: NavHostController = rememberNavController(),
+    navigationType: DetoxRankNavigationType
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-
+    val bSE = navController.currentBackStackEntryAsState().value
+    Log.d("BackStackEntry", "Curr BSE: $bSE")
     val chapters = LocalChapterDataProvider.allChapters
 
     val currentScreen = TheoryScreen.valueOf(
@@ -123,22 +164,6 @@ fun TheoryMainScreen(
     )
 
     var currentChapter by remember { mutableStateOf(chapters[0]) }
-
-    val backHandler = {
-        navController.navigateUp()
-        viewModel.updateProgressBarProgression(
-            -viewModel.calculateProgressBarAddition(currentChapter)
-        )
-    }
-
-    val onChapterDone = {
-        navController.navigate(TheoryScreen.Chapters.name) {
-            popUpTo(navController.graph.startDestinationId) {
-                inclusive = true
-            }
-        }
-        viewModel.resetProgressBarProgression()
-    }
 
     Scaffold(
         topBar = {
@@ -155,8 +180,9 @@ fun TheoryMainScreen(
             )
         },
         bottomBar = {
-            if (currentScreen == TheoryScreen.Chapters) {
-                ReplyBottomNavigationBar(
+            if (currentScreen == TheoryScreen.Chapters &&
+                navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
+                DetoxRankBottomNavigationBar(
                     currentTab = currentTab,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList
@@ -174,32 +200,32 @@ fun TheoryMainScreen(
 
                 TheoryChapterSelectScreen(
                     onCHIntroSelected = {
-                        navController.navigate(TheoryScreen.CHIntro.name)
                         currentChapter = chapters[ChapterIndices.INTRO_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHIntro.name)
                     },
                     onCHDopamineSelected = {
-                        navController.navigate(TheoryScreen.CHDopamine.name)
                         currentChapter = chapters[ChapterIndices.DETOX_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHDopamine.name)
                     },
                     onCHReinforcementSelected = {
-                        navController.navigate(TheoryScreen.CHReinforcement.name)
                         currentChapter = chapters[ChapterIndices.BRAIN_FUNCTIONS_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHReinforcement.name)
                     },
                     onCHToleranceSelected = {
-                        navController.navigate(TheoryScreen.CHTolerance.name)
                         currentChapter = chapters[ChapterIndices.REINFORCEMENT_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHTolerance.name)
                     },
                     onCHHedonicCircuitSelected = {
-                        navController.navigate(TheoryScreen.CHHedonicCircuit.name)
                         currentChapter = chapters[ChapterIndices.HEDONIC_CIRCUIT_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHHedonicCircuit.name)
                     },
                     onCHSolutionSelected = {
-                        navController.navigate(TheoryScreen.CHSolution.name)
                         currentChapter = chapters[ChapterIndices.SOLUTIONS_INDEX.ordinal]
+                        navController.navigate(TheoryScreen.CHSolution.name)
                     },
                     chapters = chapters
-                )
-            }
+            )
+        }
 
             /**
              * Chapter Introduction
@@ -207,29 +233,23 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHIntro.name) {
                 CHIntroIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHIntroDilemma.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHIntroDilemma.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHIntroDilemma.name) {
                 CHIntroDilemma(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHIntroDilemmaCont.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHIntroDilemmaCont.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHIntroDilemmaCont.name) {
                 CHIntroDilemmaCont(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -240,52 +260,40 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHDopamine.name) {
                 CHDopamineIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHDopamineBrain.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHDopamineBrain.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHDopamineBrain.name) {
                 CHDopamineBrain(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHDopamineNeurotransmitter.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHDopamineNeurotransmitter.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHDopamineNeurotransmitter.name) {
                 CHDopamineNeurotransmitter(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHDopaminePoint.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHDopaminePoint.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHDopaminePoint.name) {
                 CHDopaminePoint(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHDopamineSummary.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHDopamineSummary.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
 
             composable(route = TheoryScreen.CHDopamineSummary.name) {
                 CHDopamineSummary(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -296,51 +304,39 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHReinforcement.name) {
                 CHReinforcementIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHReinforcementRewardCircuit.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHReinforcementRewardCircuit.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHReinforcementRewardCircuit.name) {
                 CHReinforcementRewardCircuit(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHReinforcementExample.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHReinforcementExample.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHReinforcementExample.name) {
                 CHReinforcementExample(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHReinforcementProblems.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHReinforcementProblems.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHReinforcementProblems.name) {
                 CHReinforcementProblems(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHReinforcementSummary.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHReinforcementSummary.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHReinforcementSummary.name) {
                 CHReinforcementSummary(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -351,40 +347,31 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHTolerance.name) {
                 CHToleranceIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHToleranceExample.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHToleranceExample.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHToleranceExample.name) {
                 CHToleranceExample(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHToleranceCorrelation.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHToleranceCorrelation.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHToleranceCorrelation.name) {
                 CHToleranceCorrelation(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHToleranceSummary.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHToleranceSummary.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHToleranceSummary.name) {
                 CHToleranceSummary(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -395,40 +382,31 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHHedonicCircuit.name) {
                 CHHedonicCircuitIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHHedonicCircuitExample.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHHedonicCircuitExample.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHHedonicCircuitExample.name) {
                 CHHedonicCircuitExample(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHHedonicCircuitPoint.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHHedonicCircuitExample.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHHedonicCircuitPoint.name) {
                 CHHedonicCircuitPoint(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHHedonicCircuitSummary.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHHedonicCircuitSummary.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHHedonicCircuitSummary.name) {
                 CHHedonicCircuitSummary(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -439,51 +417,39 @@ fun TheoryMainScreen(
             composable(route = TheoryScreen.CHSolution.name) {
                 CHSolutionIntro(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHSolutionAdvice.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHSolutionAdvice.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHSolutionAdvice.name) {
                 CHSolutionAdvice(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHSolutionAdviceCont.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHSolutionAdviceCont.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHSolutionAdviceCont.name) {
                 CHSolutionAdviceCont(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHSolutionAdviceContCont.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHSolutionAdviceContCont.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHSolutionAdviceContCont.name) {
                 CHSolutionAdviceContCont(
                     onChapterContinue = {
-                        navController.navigate(TheoryScreen.CHSolutionSummary.name)
-                        viewModel.updateProgressBarProgression(
-                            viewModel.calculateProgressBarAddition(currentChapter)
-                        )
+                        onChapterContinue(navController, viewModel, currentChapter, TheoryScreen.CHSolutionSummary.name)
                     },
-                    backHandler = backHandler
+                    backHandler = { backHandler(navController, viewModel, currentChapter) }
                 )
             }
             composable(route = TheoryScreen.CHSolutionSummary.name) {
                 CHSolutionSummary(
-                    onChapterDone = onChapterDone,
-                    backHandler = backHandler,
+                    onChapterDone = { onChaptersDone(navController, viewModel) },
+                    backHandler = { backHandler(navController, viewModel, currentChapter) },
                     chapter = currentChapter
                 )
             }
@@ -524,19 +490,6 @@ fun TheoryImage(
             )
         else
             Spacer(Modifier.height(25.dp))
-    }
-}
-
-@Preview
-@Composable
-fun TheoryImagePreview() {
-    Column(
-        horizontalAlignment = Alignment.End
-    ) {
-        TheoryImage(
-            imageRes = R.drawable.reward_circuit,
-            imageLabel = R.string.reward_circuit_label
-        )
     }
 }
 
@@ -588,12 +541,26 @@ fun TheoryAppBar(
 
 @Preview
 @Composable
+fun TheoryImagePreview() {
+    Column(
+        horizontalAlignment = Alignment.End
+    ) {
+        TheoryImage(
+            imageRes = R.drawable.reward_circuit,
+            imageLabel = R.string.reward_circuit_label
+        )
+    }
+}
+
+@Preview
+@Composable
 fun TheoryMainScreenPreview() {
     val viewModel: DetoxRankViewModel = viewModel()
     TheoryMainScreen(viewModel = viewModel,
         onTabPressed = { },
         navigationItemContentList = listOf(),
         currentTab = Section.Theory,
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        navigationType = DetoxRankNavigationType.BOTTOM_NAVIGATION
     )
 }

@@ -3,7 +3,7 @@ package com.example.detoxrank.ui.theory.screens
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.expandVertically
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -54,7 +54,7 @@ fun TheoryChapterSelectScreen(
                 ChapterTag.Solutions -> onCHSolutionSelected
             }
             AnimationBox(
-                enter = expandVertically() + fadeIn()
+                enter = expandHorizontally() + fadeIn()
             ) {
                 TheoryChapter(
                     onChapterSelected = chapterButtonBehavior,

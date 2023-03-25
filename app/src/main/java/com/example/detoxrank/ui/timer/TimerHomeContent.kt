@@ -34,12 +34,13 @@ import com.example.detoxrank.service.StopwatchState
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.NavigationItemContent
-import com.example.detoxrank.ui.ReplyBottomNavigationBar
+import com.example.detoxrank.ui.DetoxRankBottomNavigationBar
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.rank_color
 import com.example.detoxrank.ui.theme.rank_color_ultra_dark
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_CANCEL
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_START
+import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,6 +52,7 @@ fun TimerMainScreen(
     viewModel: DetoxRankViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
+    navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
 ) {
     val darkTheme = isSystemInDarkTheme()
@@ -63,11 +65,12 @@ fun TimerMainScreen(
 
     Scaffold(
         bottomBar = {
-            ReplyBottomNavigationBar(
-                currentTab = currentTab,
-                onTabPressed = onTabPressed,
-                navigationItemContentList = navigationItemContentList
-            )
+            if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
+                DetoxRankBottomNavigationBar(
+                    currentTab = currentTab,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList
+                )
         }
     ) { innerPadding ->
         Box(

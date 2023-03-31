@@ -2,33 +2,60 @@ package com.example.detoxrank.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.detoxrank.R
+
+
+val DMSans = FontFamily(
+    Font(R.font.dm_sans_regular),
+    Font(R.font.dm_sans_bold),
+    Font(R.font.dm_sans_medium)
+)
+
+val JosefinSans = FontFamily(
+    Font(R.font.josefin_sans_bold),
+    Font(R.font.josefin_sans_regular),
+    Font(R.font.josefin_sans_thin)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
+        fontSize = 23.sp,
+        lineHeight = 32.sp,
         letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    bodyMedium = TextStyle(
+        fontFamily = DMSans
+    ),
+    bodySmall = TextStyle(
+        fontFamily = DMSans,
+        fontStyle = FontStyle.Italic
+    ),
+    titleMedium = TextStyle(
+        fontFamily = JosefinSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
+    ),
+    titleLarge = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = JosefinSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 40.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = JosefinSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp
     )
-    */
 )

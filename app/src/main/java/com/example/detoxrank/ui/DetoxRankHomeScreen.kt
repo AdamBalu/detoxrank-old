@@ -1,50 +1,71 @@
 package com.example.detoxrank.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AvTimer
+import androidx.compose.material.icons.filled.Checklist
+import androidx.compose.material.icons.filled.HistoryEdu
+import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
-import com.example.detoxrank.ui.data.Section
+import com.example.detoxrank.data.Section
+import com.example.detoxrank.service.TimerService
+import com.example.detoxrank.ui.tasks.TasksMainScreen
+import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.theory.TheoryMainScreen
+import com.example.detoxrank.ui.timer.TimerMainScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetoxRankHomeScreen(
+    viewModel: DetoxRankViewModel,
     detoxRankUiState: DetoxRankUiState,
+    timerService: TimerService,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
 ) {
-//    val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
+    val navController: NavHostController = rememberNavController()
     val navigationItemContentList = listOf(
         NavigationItemContent(
             section = Section.Rank,
-            icon = Icons.Outlined.LocalPolice,
-            text = stringResource(id = R.string.tab_rank)
+            icon = Icons.Filled.LocalPolice,
+            text = stringResource(id = R.string.tab_rank),
+            tint = rank_color
         ),
         NavigationItemContent(
             section = Section.Tasks,
-            icon = Icons.Outlined.Checklist,
-            text = stringResource(id = R.string.tab_tasks)
+            icon = Icons.Filled.Checklist,
+            text = stringResource(id = R.string.tab_tasks),
+            tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary
         ),
         NavigationItemContent(
             section = Section.Timer,
-            icon = Icons.Outlined.AvTimer,
-            text = stringResource(id = R.string.tab_timer)
+            icon = Icons.Filled.AvTimer,
+            text = stringResource(id = R.string.tab_timer),
+            tint = if (isSystemInDarkTheme()) timer_color_dark else md_theme_light_error
         ),
         NavigationItemContent(
             section = Section.Theory,
-            icon = Icons.Outlined.HistoryEdu,
-            text = stringResource(id = R.string.tab_theory)
+            icon = Icons.Filled.HistoryEdu,
+            text = stringResource(id = R.string.tab_theory),
+            tint = if (isSystemInDarkTheme()) md_theme_dark_primary else md_theme_light_primary
         )
     )
 
@@ -60,31 +81,41 @@ fun DetoxRankHomeScreen(
         }
         ) {
             DetoxRankContent(
+                viewModel = viewModel,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
+                timerService = timerService,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
+                navController = navController,
                 modifier = modifier
             )
         }
     } else {
         DetoxRankContent(
+            viewModel = viewModel,
             navigationType = navigationType,
             detoxRankUiState = detoxRankUiState,
+            timerService = timerService,
             onTabPressed = onTabPressed,
             navigationItemContentList = navigationItemContentList,
+            navController = navController,
             modifier = modifier
         )
     }
 
 }
 
+@ExperimentalAnimationApi
 @Composable
 private fun DetoxRankContent(
+    viewModel: DetoxRankViewModel,
     navigationType: DetoxRankNavigationType,
     detoxRankUiState: DetoxRankUiState,
+    timerService: TimerService,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
+    navController: NavHostController,
     modifier: Modifier
 ) {
 
@@ -101,28 +132,110 @@ private fun DetoxRankContent(
             )
         }
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.inverseOnSurface)
-        ) {
-            Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
-            // bottom navigation bar
-            AnimatedVisibility(
-                visible = navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION
+
+        // keep everything centered when on mobile screen size
+        if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .fillMaxSize()
             ) {
-                ReplyBottomNavigationBar(
+
+                // filler element for space evenly to work
+                Spacer(modifier = Modifier.height(0.dp))
+
+                DetoxRankMainScreenContent(
+                    currentTab = detoxRankUiState.currentSection,
+                    viewModel = viewModel,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList,
+                    timerService = timerService,
+                    navigationType = navigationType,
+                    navController = navController
+                )
+
+                // bottom navigation bar
+                DetoxRankBottomNavigationBar(
                     currentTab = detoxRankUiState.currentSection,
                     onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList
+                    navigationItemContentList = navigationItemContentList,
+                    modifier = Modifier.padding(bottom = 0.dp)
                 )
             }
+        } else {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+            ) {
+                DetoxRankMainScreenContent(
+                    currentTab = detoxRankUiState.currentSection,
+                    viewModel = viewModel,
+                    onTabPressed = onTabPressed,
+                    navigationItemContentList = navigationItemContentList,
+                    timerService = timerService,
+                    navigationType = navigationType,
+                    navController = navController
+                )
+                Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
+            }
         }
+
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
-private fun ReplyBottomNavigationBar(
+fun DetoxRankMainScreenContent(
+    currentTab: Section,
+    viewModel: DetoxRankViewModel,
+    timerService: TimerService,
+    modifier: Modifier = Modifier,
+    onTabPressed: ((Section) -> Unit),
+    navigationItemContentList: List<NavigationItemContent>,
+    navController: NavHostController,
+    navigationType: DetoxRankNavigationType
+) {
+    when (currentTab) {
+        Section.Rank -> {
+
+        }
+        Section.Tasks -> {
+            TasksMainScreen(
+                modifier = modifier,
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList
+            )
+        }
+        Section.Timer -> {
+            TimerMainScreen(
+                timerService = timerService,
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList,
+                navigationType = navigationType
+            )
+        }
+        Section.Theory -> {
+            TheoryMainScreen(
+                modifier = modifier,
+                viewModel = viewModel,
+                currentTab = currentTab,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList,
+                navController = navController,
+                navigationType = navigationType
+            )
+        }
+    }
+
+}
+
+@Composable
+fun DetoxRankBottomNavigationBar(
     currentTab: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
@@ -136,7 +249,9 @@ private fun ReplyBottomNavigationBar(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
+                        tint = navItem.tint
                     )
                 }
             )
@@ -162,7 +277,8 @@ private fun DetoxRankNavigationRail(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        tint = navItem.tint
                     )
                 }
             )
@@ -176,7 +292,7 @@ private fun DetoxRankNavigationRail(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NavigationDrawerContent(
-    selectedDestination: Any,
+    selectedDestination: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
@@ -200,7 +316,8 @@ private fun NavigationDrawerContent(
                 icon = {
                     Icon(
                         imageVector = navItem.icon,
-                        contentDescription = navItem.text
+                        contentDescription = navItem.text,
+                        tint = navItem.tint
                     )
                 },
                 colors = NavigationDrawerItemDefaults.colors(
@@ -212,8 +329,9 @@ private fun NavigationDrawerContent(
     }
 }
 
-private data class NavigationItemContent(
+data class NavigationItemContent(
     val section: Section,
     val icon: ImageVector,
-    val text: String
+    val text: String,
+    val tint: Color
 )

@@ -1,0 +1,15 @@
+package com.example.detoxrank.ui.utils
+
+object Constants {
+    const val ACTION_SERVICE_START = "ACTION_SERVICE_START"
+    const val ACTION_SERVICE_CANCEL = "ACTION_SERVICE_CANCEL"
+
+    const val STOPWATCH_STATE = "STOPWATCH_STATE"
+
+    const val NOTIFICATION_CHANNEL_ID = "STOPWATCH_NOTIFICATION_ID"
+    const val NOTIFICATION_CHANNEL_NAME = "STOPWATCH_NOTIFICATION"
+    const val NOTIFICATION_ID = 10
+
+    const val CLICK_REQUEST_CODE = 100
+    const val CANCEL_REQUEST_CODE = 101
+}

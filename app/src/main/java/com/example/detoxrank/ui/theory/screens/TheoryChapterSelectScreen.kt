@@ -22,12 +22,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.detoxrank.R
-import com.example.detoxrank.data.Chapter
-import com.example.detoxrank.data.ChapterDifficulty
-import com.example.detoxrank.data.ChapterTag
+import com.example.detoxrank.data.chapter.Chapter
+import com.example.detoxrank.data.chapter.ChapterDifficulty
+import com.example.detoxrank.data.chapter.ChapterTag
 import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.theory.TheoryViewModel
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.RankPointsGain
+import kotlinx.coroutines.launch
 
 @Composable
 fun TheoryChapterSelectScreen(
@@ -37,15 +39,16 @@ fun TheoryChapterSelectScreen(
     onCHToleranceSelected: () -> Unit,
     onCHHedonicCircuitSelected: () -> Unit,
     onCHSolutionSelected: () -> Unit,
-    modifier: Modifier = Modifier,
-    chapters: List<Chapter>
+    theoryViewModel: TheoryViewModel,
+    modifier: Modifier = Modifier
 ) {
+    val theoryUiState by theoryViewModel.theoryHomeUiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        items(chapters) {chapter ->
-            val chapterButtonBehavior: () -> Unit = when (chapter.tag) {
+        items(theoryUiState.chapterList) {chapter ->
+            val chapterButtonBehavior = when (chapter.tag) {
                 ChapterTag.Introduction -> onCHIntroSelected
                 ChapterTag.Dopamine -> onCHDopamineSelected
                 ChapterTag.Reinforcement -> onCHReinforcementSelected
@@ -58,6 +61,7 @@ fun TheoryChapterSelectScreen(
             ) {
                 TheoryChapter(
                     onChapterSelected = chapterButtonBehavior,
+                    theoryViewModel = theoryViewModel,
                     chapter = chapter
                 )
             }
@@ -70,10 +74,11 @@ fun TheoryChapterSelectScreen(
 fun TheoryChapter(
     onChapterSelected: () -> Unit,
     chapter: Chapter,
+    theoryViewModel: TheoryViewModel,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-
+    val coroutineScope = rememberCoroutineScope()
     Card(
         colors = CardDefaults.cardColors(
             containerColor = if (chapter.wasCompleted) {
@@ -106,7 +111,7 @@ fun TheoryChapter(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(chapter.name),
+                    text = chapter.name,
                     style = Typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -120,18 +125,24 @@ fun TheoryChapter(
             }
             if (expanded) {
                 Text(
-                    text = stringResource(chapter.description),
+                    text = chapter.description,
                     style = Typography.bodyMedium,
                     modifier = Modifier
                         .padding(bottom = 20.dp)
                 )
                 FilledTonalButton(
-                    onClick = onChapterSelected,
+                    onClick = {
+                        onChapterSelected()
+                        theoryViewModel.setCurrentChapterName(chapter.name)
+                        coroutineScope.launch {
+                            theoryViewModel.setCurrentChapterScreenNum()
+                        }
+                    },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
                 ) {
-                    Text(text = stringResource(chapter.startChapterButtonLabel))
+                    Text(text = chapter.startChapterButtonLabel)
                 }
             }
             TheoryChapterFooter(chapter)
@@ -241,15 +252,20 @@ fun ContinueIconButton(
 fun CompleteChapterIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    chapter: Chapter
+    chapterName: String,
+    theoryViewModel: TheoryViewModel
 ) {
+    val chapter = theoryViewModel.getChapterByName(chapterName).collectAsState(null)
+
     OutlinedIconButton(
-        onClick = onClick,
+        onClick = {
+            onClick()
+            theoryViewModel.setChapterCompletionValue(chapter.value)
+        },
         modifier = modifier
             .width(160.dp)
             .padding(16.dp)
     ) {
-        chapter.wasCompleted = true
         Row {
             Text(
                 text = stringResource(R.string.button_complete_chapter),

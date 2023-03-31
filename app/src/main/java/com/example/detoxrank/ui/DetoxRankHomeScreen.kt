@@ -1,6 +1,5 @@
 package com.example.detoxrank.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,36 +11,52 @@ import androidx.compose.material.icons.filled.HistoryEdu
 import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.service.TimerService
-import com.example.detoxrank.ui.tasks.TasksMainScreen
+import com.example.detoxrank.ui.rank.RankHomeScreen
+import com.example.detoxrank.ui.tasks.home.TasksHomeScreen
 import com.example.detoxrank.ui.theme.*
-import com.example.detoxrank.ui.theory.TheoryMainScreen
-import com.example.detoxrank.ui.timer.TimerMainScreen
+import com.example.detoxrank.ui.theory.TheoryHomeScreen
+import com.example.detoxrank.ui.timer.TimerHomeScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
+@ExperimentalMaterial3Api
 @ExperimentalAnimationApi
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetoxRankHomeScreen(
-    viewModel: DetoxRankViewModel,
-    detoxRankUiState: DetoxRankUiState,
+fun DetoxRankAppContent(
+    windowSize: WindowWidthSizeClass,
     timerService: TimerService,
-    onTabPressed: ((Section) -> Unit),
-    navigationType: DetoxRankNavigationType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: DetoxRankViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
-    val navController: NavHostController = rememberNavController()
+    val detoxRankUiState = viewModel.uiState.collectAsState().value
+    val onTabPressed = { section: Section -> viewModel.updateCurrentSection(section = section) } // TODO reset home screen states if needed
+
+    val navigationType = when (windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            DetoxRankNavigationType.BOTTOM_NAVIGATION
+        }
+        WindowWidthSizeClass.Medium -> {
+            DetoxRankNavigationType.NAVIGATION_RAIL
+        }
+        WindowWidthSizeClass.Expanded -> {
+            DetoxRankNavigationType.PERMANENT_NAVIGATION_DRAWER
+        }
+        else -> {
+            DetoxRankNavigationType.BOTTOM_NAVIGATION
+        }
+    }
+
     val navigationItemContentList = listOf(
         NavigationItemContent(
             section = Section.Rank,
@@ -69,169 +84,44 @@ fun DetoxRankHomeScreen(
         )
     )
 
-    if (navigationType == DetoxRankNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-        PermanentNavigationDrawer(drawerContent = {
-            PermanentDrawerSheet(Modifier.width(240.dp)) {
-                NavigationDrawerContent(
-                    selectedDestination = detoxRankUiState.currentSection,
-                    onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList
-                )
-            }
-        }
-        ) {
-            DetoxRankContent(
-                viewModel = viewModel,
-                navigationType = navigationType,
-                detoxRankUiState = detoxRankUiState,
-                timerService = timerService,
-                onTabPressed = onTabPressed,
-                navigationItemContentList = navigationItemContentList,
-                navController = navController,
-                modifier = modifier
-            )
-        }
-    } else {
-        DetoxRankContent(
-            viewModel = viewModel,
-            navigationType = navigationType,
-            detoxRankUiState = detoxRankUiState,
-            timerService = timerService,
-            onTabPressed = onTabPressed,
-            navigationItemContentList = navigationItemContentList,
-            navController = navController,
-            modifier = modifier
-        )
-    }
-
-}
-
-@ExperimentalAnimationApi
-@Composable
-private fun DetoxRankContent(
-    viewModel: DetoxRankViewModel,
-    navigationType: DetoxRankNavigationType,
-    detoxRankUiState: DetoxRankUiState,
-    timerService: TimerService,
-    onTabPressed: ((Section) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>,
-    navController: NavHostController,
-    modifier: Modifier
-) {
-
-    Row(modifier = modifier.fillMaxSize()) {
-
-        // navigation rail (side)
-        AnimatedVisibility(
-            visible = navigationType == DetoxRankNavigationType.NAVIGATION_RAIL
-        ) {
-            DetoxRankNavigationRail(
-                currentTab = detoxRankUiState.currentSection,
-                onTabPressed = onTabPressed,
-                navigationItemContentList = navigationItemContentList
-            )
-        }
-
-
-        // keep everything centered when on mobile screen size
-        if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
-                    .fillMaxSize()
-            ) {
-
-                // filler element for space evenly to work
-                Spacer(modifier = Modifier.height(0.dp))
-
-                DetoxRankMainScreenContent(
-                    currentTab = detoxRankUiState.currentSection,
-                    viewModel = viewModel,
-                    onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList,
-                    timerService = timerService,
-                    navigationType = navigationType,
-                    navController = navController
-                )
-
-                // bottom navigation bar
-                DetoxRankBottomNavigationBar(
-                    currentTab = detoxRankUiState.currentSection,
-                    onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList,
-                    modifier = Modifier.padding(bottom = 0.dp)
-                )
-            }
-        } else {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-            ) {
-                DetoxRankMainScreenContent(
-                    currentTab = detoxRankUiState.currentSection,
-                    viewModel = viewModel,
-                    onTabPressed = onTabPressed,
-                    navigationItemContentList = navigationItemContentList,
-                    timerService = timerService,
-                    navigationType = navigationType,
-                    navController = navController
-                )
-                Spacer(modifier = Modifier.weight(1.0f)) // TODO just a filler to force navbar to go bottom
-            }
-        }
-
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-fun DetoxRankMainScreenContent(
-    currentTab: Section,
-    viewModel: DetoxRankViewModel,
-    timerService: TimerService,
-    modifier: Modifier = Modifier,
-    onTabPressed: ((Section) -> Unit),
-    navigationItemContentList: List<NavigationItemContent>,
-    navController: NavHostController,
-    navigationType: DetoxRankNavigationType
-) {
-    when (currentTab) {
+    when (detoxRankUiState.currentSection) {
         Section.Rank -> {
-
+            RankHomeScreen(
+                navigationItemContentList = navigationItemContentList,
+                onTabPressed = onTabPressed,
+                navigationType = navigationType,
+                detoxRankUiState = detoxRankUiState
+            )
         }
         Section.Tasks -> {
-            TasksMainScreen(
+            TasksHomeScreen(
                 modifier = modifier,
-                viewModel = viewModel,
-                currentTab = currentTab,
+                detoxRankUiState = detoxRankUiState,
+                navigationType = navigationType,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList
             )
         }
         Section.Timer -> {
-            TimerMainScreen(
+            TimerHomeScreen(
                 timerService = timerService,
-                viewModel = viewModel,
-                currentTab = currentTab,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
-                navigationType = navigationType
+                navigationType = navigationType,
+                detoxRankUiState = detoxRankUiState,
+                viewModel = viewModel
             )
         }
         Section.Theory -> {
-            TheoryMainScreen(
+            TheoryHomeScreen(
                 modifier = modifier,
-                viewModel = viewModel,
-                currentTab = currentTab,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
-                navController = navController,
-                navigationType = navigationType
+                navigationType = navigationType,
+                detoxRankUiState = detoxRankUiState
             )
         }
     }
-
 }
 
 @Composable
@@ -263,7 +153,7 @@ fun DetoxRankBottomNavigationBar(
  * Component that displays Navigation Rail
  */
 @Composable
-private fun DetoxRankNavigationRail(
+fun DetoxRankNavigationRail(
     currentTab: Section,
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier,
@@ -291,7 +181,7 @@ private fun DetoxRankNavigationRail(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun NavigationDrawerContent(
+fun NavigationDrawerContent(
     selectedDestination: Section,
     onTabPressed: ((Section) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,

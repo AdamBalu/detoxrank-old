@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,22 +29,29 @@ import com.example.detoxrank.ui.theme.Typography
 
 @Composable
 fun TimerDifficultySelectScreen(
+    timerViewModel: TimerViewModel,
     viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
-        viewModel.difficultySelectShown,
-        enter = slideInVertically(animationSpec = tween(durationMillis = 600)) { height -> height } + fadeIn(
-            animationSpec = tween(durationMillis = 600)
+        timerViewModel.difficultySelectShown,
+        enter = slideInVertically(animationSpec = tween(durationMillis = 500)) { height -> height } + fadeIn(
+            animationSpec = tween(durationMillis = 500)
         ),
-        exit = slideOutVertically(animationSpec = tween(durationMillis = 600)) { height -> height }
+        exit = slideOutVertically(animationSpec = tween(durationMillis = 500)) { height -> height }
     ) {
         LazyColumn(
             modifier = modifier
-                .fillMaxWidth().padding(20.dp)
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
         ) {
-            items(viewModel.difficultyList) { card ->
-                DifficultyCard(card, viewModel)
+            items(timerViewModel.difficultyList) { card ->
+                DifficultyCard(
+                    card = card,
+                    timerViewModel = timerViewModel,
+                    viewModel = viewModel,
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp, bottom = 5.dp, end = 20.dp)
+                )
             }
         }
     }
@@ -52,6 +60,7 @@ fun TimerDifficultySelectScreen(
 @Composable
 fun DifficultyCard(
     card: TimerDifficultyCard,
+    timerViewModel: TimerViewModel,
     viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -66,10 +75,10 @@ fun DifficultyCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
-                viewModel.setDifficultySelectShown(false)
-                viewModel.setSelectedTimerDifficulty(card.difficulty)
+                timerViewModel.setDifficultySelectShown(false)
+                viewModel.setTimerDifficulty(card.difficulty)
             }
-            .padding(bottom = 20.dp)
+            .padding(top = 7.dp)
             .height(card.height)
     ) {
         Box() {

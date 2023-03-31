@@ -330,25 +330,6 @@
     <string name="topbar_advice_pt2">Advice, pt. 2</string>
     <string name="topbar_advice_pt3">Advice, pt.3</string>
 
-    <string name="chapter_introduction_start_chapter_button_label">Get Started!</string>
-    <string name="chapter_dopamine_start_chapter_button_label">Learn About Dopamine</string>
-    <string name="chapter_reinforcement_start_chapter_button_label">Study Reinforcement</string>
-    <string name="chapter_tolerance_start_chapter_button_label">Find Out About Tolerance</string>
-    <string name="chapter_hedonic_circuit_start_chapter_button_label">Study Hedonic Circuit</string>
-    <string name="chapter_solution_start_chapter_button_label">Learn How To Detox</string>
-    <string name="chapter_name_introduction">Introduction</string>
-    <string name="chapter_name_dopamine">Dopamine</string>
-    <string name="chapter_name_reinforcement">Reinforcement</string>
-    <string name="chapter_name_tolerance">Tolerance</string>
-    <string name="chapter_name_hedonic_circuit">Hedonic circuit</string>
-    <string name="chapter_name_solution">Solution - Detox</string>
-    <string name="chapter_description_introduction">Welcome to dopamine detox theory! Here you will find some motivation for why you should study this section.</string>
-    <string name="chapter_description_dopamine">In this chapter, we will talk about how neurons and neurotransmitters work. We also get a brief look into what dopamine does in the brain and how it influences our motivation.</string>
-    <string name="chapter_description_reinforcement">This chapter looks deeper into brain\'s reward circuitry and explores the main behavior that this circuit executes - reinforcement learning.</string>
-    <string name="chapter_description_tolerance">Here we will talk about tolerance which is developed in the brain when exposing yourself to a large quantum of dopamine.</string>
-    <string name="chapter_description_hedonic_circuit">Let\'s learn about the hedonic circuit which is responsible for producing enjoyment in the brain!</string>
-    <string name="chapter_description_solution">The chapter talks about how to do a dopamine detox correctly.</string>
-
     <string name="section_theory_description">
         Here you can learn about dopamine detox and reasons why it\'s useful.
     </string>
@@ -362,48 +343,6 @@
     <string name="all_tasks_completed_description">You completed all of your tasks.</string>
     <string name="add_task">add a custom task</string>
     <string name="default_task_2">do something else</string>
-    
-    <!-- ***** -->
-    <!-- Tasks -->
-    <!-- ***** -->
-    
-    <!-- Daily -->
-    <string name="task_daily_run">Go for a run</string>
-    <string name="task_daily_read">Read at least 20 pages</string>
-    <string name="task_daily_meditate">Meditate for 10 minutes</string>
-    <string name="task_daily_waste_food">Don\'t eat waste food</string>
-    <string name="task_daily_sugar">Don\'t eat sugar</string>
-    <string name="task_daily_walk">Go for a short walk</string>
-    <string name="task_daily_dusk">Observe dusk</string>
-    <string name="task_daily_clean">Clean your room</string>
-    <string name="task_daily_chore">Do a household chore</string>
-    <string name="task_daily_apple">Eat an apple</string>
-    <string name="task_daily_prepare_dinner">Prepare healthy dinner</string>
-    <string name="task_daily_clean_table">Clean your table</string>
-    
-    <!-- Weekly -->
-    <string name="task_weekly_swim">Go for a swim</string>
-    <string name="task_weekly_hike">Go for a hike</string>
-    <string name="task_weekly_ride">Go for a bike ride (or a long walk if you don\'t have one)</string>
-    <string name="task_weekly_read">Read 100 pages</string>
-    <string name="task_weekly_meditate">Meditate 3 times</string>
-    <string name="task_weekly_hike_forest">Go for a hike in the forest</string>
-    <string name="task_weekly_lunch">Prepare lunch at least 2 times</string>
-    <string name="task_weekly_sport">Do a sports activity at least 2 times</string>
-    <string name="task_weekly_food">Learn how to prepare a new food</string>
-    <string name="task_weekly_eat_food">Eat at least 3 pieces of fruit</string>
-    <string name="task_weekly_walk_park">Take a walk in the park</string>
-    <string name="task_weekly_meditate_park">Meditate in the park</string>
-    
-    <string name="task_monthly_hike">Go for a long hike (at least 10km)</string>
-    <string name="task_monthly_meditate">Meditate each week at least once</string>
-    <string name="task_monthly_read">Read a book</string>
-    <string name="task_monthly_swim">Go for a swim</string>
-    <string name="task_monthly_cinema_night">Have a cinema night with friends</string>
-    <string name="task_monthly_eat_food">Eat at least 3 pieces of fruit each week</string>
-    <string name="task_monthly_trip">Go on a trip</string>
-    <string name="task_monthly_museum">Visit a museum</string>
-    <string name="task_monthly_desire">Visit some place you always wanted to go</string>
     
     <string name="task_run_3_km">Run 3 km</string>
     <string name="task_run_5_km">Run 5 km</string>
@@ -426,5 +365,5 @@
     <string name="shopping">impulsive shopping</string>
     <string name="music">music</string>
     <string name="parties">parties and big events</string>
-    <string name="sex">sex</string>
+    <string name="tasklist_heading_custom">Custom</string>
 </resources>

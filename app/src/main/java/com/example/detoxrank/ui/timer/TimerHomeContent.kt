@@ -26,117 +26,230 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.service.ServiceHelper
 import com.example.detoxrank.service.StopwatchState
 import com.example.detoxrank.service.TimerService
-import com.example.detoxrank.ui.DetoxRankViewModel
-import com.example.detoxrank.ui.NavigationItemContent
-import com.example.detoxrank.ui.DetoxRankBottomNavigationBar
+import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.rank_color
 import com.example.detoxrank.ui.theme.rank_color_ultra_dark
+import com.example.detoxrank.ui.theory.TheoryScreen
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_CANCEL
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_START
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
+@ExperimentalMaterial3Api
 @Composable
-fun TimerMainScreen(
-    timerService: TimerService,
-    currentTab: Section,
-    viewModel: DetoxRankViewModel,
-    onTabPressed: ((Section) -> Unit),
+fun TimerHomeScreen(
     navigationItemContentList: List<NavigationItemContent>,
+    detoxRankUiState: DetoxRankUiState,
+    onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
+    timerService: TimerService,
+    viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
-    val darkTheme = isSystemInDarkTheme()
-    val days by timerService.days
-
-    TimerDifficultySelectScreen(
-        viewModel = viewModel,
-        modifier = modifier
-    )
-
-    Scaffold(
-        bottomBar = {
-            if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
-                DetoxRankBottomNavigationBar(
-                    currentTab = currentTab,
+    val navController: NavHostController = rememberNavController()
+    if (navigationType == DetoxRankNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+        PermanentNavigationDrawer(drawerContent = {
+            PermanentDrawerSheet(modifier.width(240.dp)) {
+                NavigationDrawerContent(
+                    selectedDestination = detoxRankUiState.currentSection,
                     onTabPressed = onTabPressed,
                     navigationItemContentList = navigationItemContentList
                 )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = modifier
-                .padding(innerPadding)
-                .fillMaxWidth()
-                .height(560.dp)
-        ) {
-            TimerTimeInNumbers(
-                timerService = timerService,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(top = 10.dp)
-            )
-            TimerStartStopButton(
-                timerService = timerService,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-            )
-            ProgressBars(
-                timerService = timerService,
-                modifier = Modifier
-                    .align(Alignment.Center)
-            )
-        }
-
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.85f)
-        ) {
-            Row(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth(0.8f),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Text(
-                        text = "DAY STREAK",
-                        style = Typography.bodySmall
-                    )
-                    Text(
-                        "$days",
-                        style = Typography.headlineLarge,
-                        textAlign = TextAlign.Center,
-                        fontSize = 50.sp
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "DIFFICULTY",
-                        style = Typography.bodySmall
-                    )
-                    DifficultySelect(
-                        darkTheme = darkTheme,
-                        viewModel = viewModel,
-                        onClick = { viewModel.setDifficultySelectShown(true) }
-                    )
-                }
             }
+        }
+        ) {
+            TimerContent(
+                navigationItemContentList = navigationItemContentList,
+                detoxRankUiState = detoxRankUiState,
+                onTabPressed = onTabPressed,
+                navigationType = navigationType,
+                navController = navController,
+                timerService = timerService,
+                viewModel = viewModel
+            )
+        }
+    } else {
+        TimerContent(
+            navigationItemContentList = navigationItemContentList,
+            detoxRankUiState = detoxRankUiState,
+            onTabPressed = onTabPressed,
+            navigationType = navigationType,
+            navController = navController,
+            timerService = timerService,
+            viewModel = viewModel
+        )
+    }
+}
+@ExperimentalAnimationApi
+@ExperimentalMaterial3Api
+@Composable
+fun TimerContent(
+    navigationItemContentList: List<NavigationItemContent>,
+    detoxRankUiState: DetoxRankUiState,
+    onTabPressed: ((Section) -> Unit),
+    navigationType: DetoxRankNavigationType,
+    navController: NavHostController,
+    timerService: TimerService,
+    viewModel: DetoxRankViewModel,
+    modifier: Modifier = Modifier,
+    timerViewModel: TimerViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentScreen = TheoryScreen.valueOf(
+        backStackEntry?.destination?.route ?: TheoryScreen.Chapters.name
+    )
+
+    Row(modifier = modifier.fillMaxSize()) {
+        // navigation rail (side)
+        AnimatedVisibility(
+            visible = navigationType == DetoxRankNavigationType.NAVIGATION_RAIL
+        ) {
+            DetoxRankNavigationRail(
+                currentTab = detoxRankUiState.currentSection,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList
+            )
+        }
+        Scaffold(
+            bottomBar = {
+                if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
+                    AnimatedVisibility(
+                        !timerViewModel.difficultySelectShown,
+                        enter = slideInVertically(animationSpec = tween(durationMillis = 500, delayMillis = 500)) { height -> height } + fadeIn(
+                            animationSpec = tween(durationMillis = 700)
+                        ),
+                        exit = slideOutVertically(animationSpec = tween(durationMillis = 500)) { height -> height }
+                    ) {
+                        DetoxRankBottomNavigationBar(
+                            currentTab = detoxRankUiState.currentSection,
+                            onTabPressed = onTabPressed,
+                            navigationItemContentList = navigationItemContentList
+                        )
+                    }
+            }
+        ) { paddingValues ->
+            // keep everything centered when on mobile screen size
+            if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
+                TimerBody(
+                    timerService = timerService,
+                    detoxRankUiState = detoxRankUiState,
+                    timerViewModel = timerViewModel,
+                    viewModel = viewModel,
+                    modifier = Modifier.padding(paddingValues)
+                )
+            } else {
+                TimerBody(
+                    timerService = timerService,
+                    detoxRankUiState = detoxRankUiState,
+                    timerViewModel = timerViewModel,
+                    viewModel = viewModel,
+                    modifier = Modifier.padding(paddingValues)
+                ) // TODO change layout
+            }
+        }
+    }
+}
+
+@ExperimentalAnimationApi
+@Composable
+fun TimerBody(
+    timerService: TimerService,
+    detoxRankUiState: DetoxRankUiState,
+    timerViewModel: TimerViewModel,
+    viewModel: DetoxRankViewModel,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.zIndex(1f)
+    ) {
+        TimerDifficultySelectScreen(
+            timerViewModel = timerViewModel,
+            viewModel = viewModel
+        )
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        TimerClock(
+            timerService = timerService,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+        )
+        TimerStartStopButton(
+            timerService = timerService,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+        TimerFooter(
+            timerService = timerService,
+            detoxRankUiState = detoxRankUiState,
+            viewModel = viewModel,
+            timerViewModel = timerViewModel,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        )
+    }
+}
+
+@ExperimentalAnimationApi
+@Composable
+fun TimerFooter(
+    timerService: TimerService,
+    detoxRankUiState: DetoxRankUiState,
+    viewModel: DetoxRankViewModel,
+    timerViewModel: TimerViewModel,
+    modifier: Modifier = Modifier
+) {
+    val days by timerService.days
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 35.dp, end = 35.dp, bottom = 50.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                text = "DAY STREAK",
+                style = Typography.bodySmall
+            )
+            Text(
+                "$days",
+                style = Typography.headlineLarge,
+                textAlign = TextAlign.Center,
+                fontSize = 43.sp
+            )
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "DIFFICULTY",
+                style = Typography.bodySmall
+            )
+            DifficultySelect(
+                onClick = { timerViewModel.setDifficultySelectShown(true) },
+                detoxRankUiState = detoxRankUiState
+            )
         }
     }
 }
@@ -166,7 +279,7 @@ fun BannedItem(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun ProgressBars(
+fun TimerClock(
     timerService: TimerService,
     modifier: Modifier = Modifier
 ) {
@@ -179,80 +292,92 @@ fun ProgressBars(
         targetValue = timerService.hours.value.toFloat() * calculateTimerFloatAddition(19.44f, 24)
     )
 
-    CircularProgressBar(
-        modifier = modifier.size(328.dp),
-        progress = progressSeconds,
-        progressMax = 100f,
-        progressBarColor =
-            MaterialTheme.colorScheme.primary,
-        progressBarWidth = 18.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 270f
-    )
-    CircularProgressBar(
-        modifier = modifier.size(314.dp),
-        progress = 50f,
-        progressMax = 100f,
-        progressBarColor =
-            MaterialTheme.colorScheme.primary,
-        progressBarWidth = 4.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 270f
-    )
-    CircularProgressBar(
-        modifier = modifier.size(285.dp),
-        progress = progressMinutes,
-        progressMax = 100f,
-        progressBarColor =
-            MaterialTheme.colorScheme.secondary,
-        progressBarWidth = 20.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 290f
-    )
-    CircularProgressBar(
-        modifier = modifier.size(269.dp),
-        progress = 39f,
-        progressMax = 100f,
-        progressBarColor =
-            MaterialTheme.colorScheme.secondary,
-        progressBarWidth = 4.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 290f
-    )
+    Box(
+        modifier = modifier.fillMaxWidth().padding(top = 100.dp)
+    ) {
 
-    CircularProgressBar(
-        modifier = modifier.size(240.dp),
-        progress = progressHours,
-        progressMax = 100f,
-        progressBarColor =
-            MaterialTheme.colorScheme.tertiary,
-        progressBarWidth = 25.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 325f
-    )
+        CircularProgressBar(
+            modifier = Modifier.size(328.dp).align(Alignment.Center),
+            progress = progressSeconds,
+            progressMax = 100f,
+            progressBarColor =
+            MaterialTheme.colorScheme.primary,
+            progressBarWidth = 18.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 270f
+        )
+        CircularProgressBar(
+            modifier = Modifier.size(314.dp).align(Alignment.Center),
+            progress = 50f,
+            progressMax = 100f,
+            progressBarColor =
+            MaterialTheme.colorScheme.primary,
+            progressBarWidth = 4.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 270f
+        )
+        CircularProgressBar(
+            modifier = Modifier.size(285.dp).align(Alignment.Center),
+            progress = progressMinutes,
+            progressMax = 100f,
+            progressBarColor =
+            MaterialTheme.colorScheme.secondary,
+            progressBarWidth = 20.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 290f
+        )
+        CircularProgressBar(
+            modifier = Modifier.size(269.dp).align(Alignment.Center),
+            progress = 39f,
+            progressMax = 100f,
+            progressBarColor =
+            MaterialTheme.colorScheme.secondary,
+            progressBarWidth = 4.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 290f
+        )
 
-    CircularProgressBar(
-        modifier = modifier.size(220.dp),
-        progress = 19.44f,
-        progressMax = 100f,
-        progressBarColor =
+        CircularProgressBar(
+            modifier = Modifier.size(240.dp).align(Alignment.Center),
+            progress = progressHours,
+            progressMax = 100f,
+            progressBarColor =
             MaterialTheme.colorScheme.tertiary,
-        progressBarWidth = 4.dp,
-        backgroundProgressBarColor = Color.Transparent,
-        backgroundProgressBarWidth = 1.dp,
-        roundBorder = true,
-        startAngle = 325f
-    )
+            progressBarWidth = 25.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 325f
+        )
+
+        CircularProgressBar(
+            modifier = Modifier.size(220.dp).align(Alignment.Center),
+            progress = 19.44f,
+            progressMax = 100f,
+            progressBarColor =
+            MaterialTheme.colorScheme.tertiary,
+            progressBarWidth = 4.dp,
+            backgroundProgressBarColor = Color.Transparent,
+            backgroundProgressBarWidth = 1.dp,
+            roundBorder = true,
+            startAngle = 325f
+        )
+
+        TimerTimeInNumbers(
+            timerService = timerService,
+            modifier = modifier
+                .align(Alignment.Center)
+                .padding(top = 130.dp)
+        )
+    }
 }
 
 private fun calculateTimerFloatAddition(
@@ -404,12 +529,11 @@ fun TimerStartStopButton(
 
 @Composable
 fun DifficultySelect(
-    darkTheme: Boolean,
     onClick: () -> Unit,
-    viewModel: DetoxRankViewModel,
+    detoxRankUiState: DetoxRankUiState,
     modifier: Modifier = Modifier
 ) {
-    val iconToDisplay = when (viewModel.selectedTimerDifficulty) {
+    val iconToDisplay = when (detoxRankUiState.currentTimerDifficulty) {
         TimerDifficulty.Easy -> R.drawable.timer_easy_difficulty_icon
         TimerDifficulty.Medium -> R.drawable.timer_medium_difficulty_icon
         TimerDifficulty.Hard -> R.drawable.timer_hard_difficulty_icon

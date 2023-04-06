@@ -7,7 +7,15 @@ import androidx.room.TypeConverters
 import com.example.detoxrank.data.Converters
 
 enum class TaskDurationCategory {
-    Daily, Weekly, Monthly, Uncategorized
+    Daily, Weekly, Monthly, Uncategorized;
+    override fun toString(): String {
+        return when (this) {
+            Daily -> "Daily"
+            Weekly -> "Weekly"
+            Monthly -> "Monthly"
+            Uncategorized -> ""
+        }
+    }
 }
 
 enum class TaskIconCategory {
@@ -37,6 +45,7 @@ data class Task(
     @ColumnInfo(name = "duration_category")
     @TypeConverters(Converters::class)
     val durationCategory: TaskDurationCategory,
+    @ColumnInfo(name = "icon_category")
     @TypeConverters(Converters::class)
     val iconCategory: TaskIconCategory,
     @ColumnInfo(name = "selected")

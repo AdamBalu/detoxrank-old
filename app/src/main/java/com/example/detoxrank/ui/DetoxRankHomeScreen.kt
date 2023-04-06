@@ -90,13 +90,16 @@ fun DetoxRankAppContent(
                 navigationItemContentList = navigationItemContentList,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
-                detoxRankUiState = detoxRankUiState
+                detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = viewModel
             )
         }
         Section.Tasks -> {
             TasksHomeScreen(
                 modifier = modifier,
+                timerService = timerService,
                 detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = viewModel,
                 navigationType = navigationType,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList
@@ -118,7 +121,8 @@ fun DetoxRankAppContent(
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList,
                 navigationType = navigationType,
-                detoxRankUiState = detoxRankUiState
+                detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = viewModel
             )
         }
     }

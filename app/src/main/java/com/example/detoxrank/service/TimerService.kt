@@ -37,6 +37,10 @@ class TimerService : Service() {
     private var duration: Duration = Duration.ZERO
     private lateinit var timer: Timer
 
+    private lateinit var taskTimer: Timer
+
+    private var taskDuration: Duration = Duration.ZERO
+
     var seconds = mutableStateOf("00")
         private set
     var minutes = mutableStateOf("00")
@@ -45,20 +49,30 @@ class TimerService : Service() {
         private set
     var days = mutableStateOf(0)
         private set
-    var currentState = mutableStateOf(StopwatchState.Idle)
+    var currentState = mutableStateOf(TimerState.Idle)
+        private set
+
+    var secondsDay = mutableStateOf("00")
+        private set
+    var minutesDay = mutableStateOf("00")
+        private set
+    var hoursDay = mutableStateOf("00")
+        private set
+
+    var daysMonth = mutableStateOf("00")
         private set
 
     override fun onBind(p0: Intent?) = binder
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.getStringExtra(STOPWATCH_STATE)) {
-            StopwatchState.Started.name -> {
+            TimerState.Started.name -> {
                 startForegroundService()
                 startTimer { hours, minutes, seconds ->
                     updateNotification(hours = hours, minutes = minutes, seconds = seconds)
                 }
             }
-            StopwatchState.Canceled.name -> {
+            TimerState.Canceled.name -> {
                 cancelTimer()
                 stopForegroundService()
             }
@@ -81,12 +95,28 @@ class TimerService : Service() {
     }
 
     private fun startTimer(onTick: (h: String, m: String, s: String) -> Unit) {
-        currentState.value = StopwatchState.Started
+        currentState.value = TimerState.Started
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
             duration = duration.plus(1.seconds)
             updateTimeUnits()
             onTick(hours.value, minutes.value, seconds.value)
         }
+    }
+
+    fun setTaskDuration(time: Duration) {
+        taskDuration = time
+    }
+
+    fun initTaskTimer() {
+        taskTimer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
+            taskDuration = taskDuration.minus(1.seconds)
+            updateTaskDayTimeUnits()
+        }
+    }
+
+    fun disableTaskTimer() {
+        if (this::taskTimer.isInitialized)
+            taskTimer.cancel()
     }
 
     private fun cancelTimer() {
@@ -95,7 +125,7 @@ class TimerService : Service() {
         }
         days.value = 0
         duration = Duration.ZERO
-        currentState.value = StopwatchState.Idle
+        currentState.value = TimerState.Idle
         updateTimeUnits()
     }
 
@@ -107,6 +137,15 @@ class TimerService : Service() {
         }
         if (this@TimerService.hours.value == "24") {
             resetClockNewDay()
+        }
+    }
+
+    private fun updateTaskDayTimeUnits() {
+        taskDuration.toComponents { days, hours, minutes, seconds, _ ->
+            this@TimerService.daysMonth.value = days.toString()
+            this@TimerService.hoursDay.value = hours.toString()
+            this@TimerService.minutesDay.value = minutes.pad()
+            this@TimerService.secondsDay.value = seconds.pad()
         }
     }
 
@@ -160,7 +199,7 @@ class TimerService : Service() {
     }
 }
 
-enum class StopwatchState {
+enum class TimerState {
     Idle,
     Started,
     Canceled

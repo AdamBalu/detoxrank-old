@@ -25,6 +25,7 @@ import com.example.detoxrank.R
 import com.example.detoxrank.data.chapter.Chapter
 import com.example.detoxrank.data.chapter.ChapterDifficulty
 import com.example.detoxrank.data.chapter.ChapterTag
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryViewModel
 import com.example.detoxrank.ui.utils.AnimationBox
@@ -157,9 +158,9 @@ fun TheoryChapterFooter(
     modifier: Modifier = Modifier
 ) {
     val rankPointsGain = when (chapter.difficulty) {
-        ChapterDifficulty.Easy -> 500
-        ChapterDifficulty.Medium -> 1000
-        ChapterDifficulty.Hard -> 1500
+        ChapterDifficulty.Easy -> 200
+        ChapterDifficulty.Medium -> 350
+        ChapterDifficulty.Hard -> 500
     }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -226,8 +227,9 @@ fun ContinueIconButton(
     OutlinedIconButton(
         onClick = onClick,
         modifier = modifier
-            .width(160.dp)
-            .padding(16.dp)
+            .fillMaxWidth()
+            .padding(top = 35.dp, start = 16.dp, end = 16.dp, bottom = 25.dp)
+            .height(60.dp)
     ) {
         Row {
             Text(
@@ -236,11 +238,10 @@ fun ContinueIconButton(
                 letterSpacing = 1.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(end = 5.dp)
                     .align(Alignment.CenterVertically)
             )
             Icon(
-                imageVector = Icons.Filled.ArrowRightAlt,
+                imageVector = Icons.Filled.ArrowRight,
                 contentDescription = null
             )
         }
@@ -253,18 +254,32 @@ fun CompleteChapterIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     chapterName: String,
+    detoxRankViewModel: DetoxRankViewModel,
     theoryViewModel: TheoryViewModel
 ) {
     val chapter = theoryViewModel.getChapterByName(chapterName).collectAsState(null)
-
-    OutlinedIconButton(
+    val coroutineScope = rememberCoroutineScope()
+    val rankPointsGain = when (chapter.value?.difficulty) {
+        ChapterDifficulty.Easy -> 200
+        ChapterDifficulty.Medium -> 350
+        ChapterDifficulty.Hard -> 500
+        else -> 0
+    }
+    FilledIconButton(
         onClick = {
             onClick()
             theoryViewModel.setChapterCompletionValue(chapter.value)
+            coroutineScope.launch {
+                if (chapter.value != null) {
+                    if (!chapter.value!!.wasCompleted)
+                        detoxRankViewModel.updateUserRankPoints(rankPointsGain)
+                }
+            }
         },
         modifier = modifier
-            .width(160.dp)
-            .padding(16.dp)
+            .fillMaxWidth()
+            .padding(top = 35.dp, start = 16.dp, end = 16.dp, bottom = 25.dp)
+            .height(60.dp)
     ) {
         Row {
             Text(
@@ -272,15 +287,15 @@ fun CompleteChapterIconButton(
                 style = Typography.bodyMedium,
                 letterSpacing = 1.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+//                color = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
                 modifier = Modifier
                     .padding(end = 5.dp)
                     .align(Alignment.CenterVertically)
             )
             Icon(
-                imageVector = Icons.Filled.Check,
+                imageVector = Icons.Filled.Verified,
                 contentDescription = null,
-                tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
+//                tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary,
             )
         }
 

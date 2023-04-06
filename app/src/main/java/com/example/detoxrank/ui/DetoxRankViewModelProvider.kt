@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.detoxrank.DetoxRankApp
+import com.example.detoxrank.ui.rank.RankViewModel
 import com.example.detoxrank.ui.tasks.home.TasksHomeViewModel
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
 import com.example.detoxrank.ui.theory.TheoryViewModel
@@ -14,7 +15,15 @@ import com.example.detoxrank.ui.timer.TimerViewModel
 object DetoxRankViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            DetoxRankViewModel()
+            DetoxRankViewModel(
+                userDataRepository = detoxRankApplication().container.userDataRepository
+            )
+        }
+
+        initializer {
+            RankViewModel(
+                userDataRepository = detoxRankApplication().container.userDataRepository
+            )
         }
 
         initializer {
@@ -25,8 +34,9 @@ object DetoxRankViewModelProvider {
 
         initializer {
             TaskViewModel(
-                this.createSavedStateHandle(),
-                tasksRepository = detoxRankApplication().container.tasksRepository
+                tasksRepository = detoxRankApplication().container.tasksRepository,
+                wmTasksRepository = detoxRankApplication().container.wmTasksRepository
+//                application = this[APPLICATION_KEY] as DetoxRankApp
             )
         }
 

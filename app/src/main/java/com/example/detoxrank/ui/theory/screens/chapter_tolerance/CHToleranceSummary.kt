@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theory.TheoryViewModel
 import com.example.detoxrank.ui.theory.screens.CompleteChapterIconButton
@@ -22,7 +23,8 @@ fun CHToleranceSummary(
     onChapterDone: () -> Unit,
     backHandler: () -> Unit,
     chapterName: String,
-    theoryViewModel: TheoryViewModel
+    theoryViewModel: TheoryViewModel,
+    detoxRankViewModel: DetoxRankViewModel
 ) {
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
@@ -37,7 +39,8 @@ fun CHToleranceSummary(
             onClick = onChapterDone,
             modifier = Modifier.align(Alignment.End),
             chapterName = chapterName,
-            theoryViewModel = theoryViewModel
+            theoryViewModel = theoryViewModel,
+            detoxRankViewModel = detoxRankViewModel
         )
     }
 }

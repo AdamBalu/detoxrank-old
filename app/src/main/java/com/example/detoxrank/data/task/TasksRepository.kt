@@ -12,6 +12,11 @@ interface TasksRepository {
                                           numberOfTasks: Int)
     suspend fun resetTasksFromCategory(durationCategory: TaskDurationCategory)
 
+    fun updateUserRankPoints(amount: Int)
+
+    fun getCompletedTaskNum(taskDurationCategory: TaskDurationCategory): Int
+
+    suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory)
     fun getSelectedTasks(): Flow<List<Task>>
 
     suspend fun updateRows(rows: List<Task>)

@@ -40,6 +40,7 @@ import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 fun TheoryHomeScreen(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankUiState: DetoxRankUiState,
+    detoxRankViewModel: DetoxRankViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
@@ -59,6 +60,7 @@ fun TheoryHomeScreen(
             TheoryContent(
                 navigationItemContentList = navigationItemContentList,
                 detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = detoxRankViewModel,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
                 navController = navController
@@ -68,6 +70,7 @@ fun TheoryHomeScreen(
         TheoryContent(
             navigationItemContentList = navigationItemContentList,
             detoxRankUiState = detoxRankUiState,
+            detoxRankViewModel = detoxRankViewModel,
             onTabPressed = onTabPressed,
             navigationType = navigationType,
             navController = navController
@@ -80,6 +83,7 @@ fun TheoryHomeScreen(
 fun TheoryContent(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankUiState: DetoxRankUiState,
+    detoxRankViewModel: DetoxRankViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     navController: NavHostController,
@@ -132,12 +136,14 @@ fun TheoryContent(
             if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
                 TheoryMainNavigation(
                     theoryViewModel = theoryViewModel,
+                    detoxRankViewModel = detoxRankViewModel,
                     navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 )
             } else {
                 TheoryMainNavigation(
                     theoryViewModel = theoryViewModel,
+                    detoxRankViewModel = detoxRankViewModel,
                     navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 ) // TODO change layout
@@ -192,7 +198,7 @@ fun TheoryAppBar(
     modifier: Modifier = Modifier,
     theoryViewModel: TheoryViewModel
 ) {
-//    val coroutineScope = rememberCoroutineScope() // DATA for custom button
+    val coroutineScope = rememberCoroutineScope() // DATA for custom button
 
     val animatedProgress = animateFloatAsState(
         targetValue = theoryViewModel.getProgressBarValue(),

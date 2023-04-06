@@ -28,20 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.service.ServiceHelper
-import com.example.detoxrank.service.StopwatchState
 import com.example.detoxrank.service.TimerService
+import com.example.detoxrank.service.TimerState
 import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.rank_color
 import com.example.detoxrank.ui.theme.rank_color_ultra_dark
-import com.example.detoxrank.ui.theory.TheoryScreen
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_CANCEL
 import com.example.detoxrank.ui.utils.Constants.ACTION_SERVICE_START
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
@@ -59,7 +55,6 @@ fun TimerHomeScreen(
     viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
-    val navController: NavHostController = rememberNavController()
     if (navigationType == DetoxRankNavigationType.PERMANENT_NAVIGATION_DRAWER) {
         PermanentNavigationDrawer(drawerContent = {
             PermanentDrawerSheet(modifier.width(240.dp)) {
@@ -76,7 +71,6 @@ fun TimerHomeScreen(
                 detoxRankUiState = detoxRankUiState,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
-                navController = navController,
                 timerService = timerService,
                 viewModel = viewModel
             )
@@ -87,7 +81,6 @@ fun TimerHomeScreen(
             detoxRankUiState = detoxRankUiState,
             onTabPressed = onTabPressed,
             navigationType = navigationType,
-            navController = navController,
             timerService = timerService,
             viewModel = viewModel
         )
@@ -101,18 +94,11 @@ fun TimerContent(
     detoxRankUiState: DetoxRankUiState,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
-    navController: NavHostController,
     timerService: TimerService,
     viewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-
-    val currentScreen = TheoryScreen.valueOf(
-        backStackEntry?.destination?.route ?: TheoryScreen.Chapters.name
-    )
-
     Row(modifier = modifier.fillMaxSize()) {
         // navigation rail (side)
         AnimatedVisibility(
@@ -467,7 +453,7 @@ fun TimerStartStopButton(
     val currentState by timerService.currentState
     val context = LocalContext.current
 
-    if (currentState == StopwatchState.Started) {
+    if (currentState == TimerState.Started) {
         OutlinedIconButton(
             onClick = {
                 ServiceHelper.triggerForegroundService(

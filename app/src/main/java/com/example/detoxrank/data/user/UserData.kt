@@ -1,5 +1,6 @@
 package com.example.detoxrank.data.user
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -10,27 +11,31 @@ enum class UiTheme {
     Default, Light, Dark, Monochrome, GreenShades, BlueShades
 }
 
-enum class Rank {
-    Bronze1, Bronze2, Bronze3,
-    Silver1, Silver2, Silver3,
-    Gold1, Gold2, Gold3,
-    Platinum1, Platinum2, Platinum3,
-    Diamond1, Diamond2, Diamond3,
-    Master1, Master2, Master3,
-    Legend
+enum class Rank(name: String) {
+    Bronze1("Bronze I"), Bronze2("Bronze II"), Bronze3("Bronze III"),
+    Silver1("Silver I"), Silver2("Silver II"), Silver3("Silver III"),
+    Gold1("Gold I"), Gold2("Gold II"), Gold3("Gold III"),
+    Platinum1("Platinum I"), Platinum2("Platinum II"), Platinum3("Platinum III"),
+    Diamond1("Diamond I"), Diamond2("Diamond II"), Diamond3("Diamond III"),
+    Master("Master"),
+    Legend("Legend")
 }
 
 @Entity(tableName = "user_data")
 data class UserData(
     @PrimaryKey(autoGenerate = false)
     val id: Int = 1,
-    val timerStartedTimeInMillis: Int,
-    val tasksStartedTimeInMillis: Int,
-    val brainPoints: Int,
-    val rankPoints: Int,
-    val xpPoints: Int,
+    @ColumnInfo(name = "timer_start_time")
+    val timerStartTimeMillis: Long = 0,
+    @ColumnInfo(name = "timer_started")
+    val timerStarted: Boolean = false,
+    @ColumnInfo(name = "rank_points")
+    val rankPoints: Int = 0,
+    @ColumnInfo(name = "xp_points")
+    val xpPoints: Int = 0,
     @TypeConverters(Converters::class)
-    val chosenTimerDifficulty: TimerDifficulty,
+    @ColumnInfo(name = "timer_difficulty")
+    val timerDifficulty: TimerDifficulty = TimerDifficulty.Easy,
     @TypeConverters(Converters::class)
-    val selectedTheme: UiTheme
+    val theme: UiTheme = UiTheme.Default
 )

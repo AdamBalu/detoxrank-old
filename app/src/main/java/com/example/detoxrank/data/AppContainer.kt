@@ -5,16 +5,23 @@ import com.example.detoxrank.data.chapter.ChaptersRepository
 import com.example.detoxrank.data.chapter.OfflineChaptersRepository
 import com.example.detoxrank.data.task.OfflineTasksRepository
 import com.example.detoxrank.data.task.TasksRepository
+import com.example.detoxrank.data.task.WMTasksRepository
+import com.example.detoxrank.data.task.WorkManagerTasksRepository
 import com.example.detoxrank.data.user.OfflineUserDataRepository
 import com.example.detoxrank.data.user.UserDataRepository
 
 interface AppContainer {
+    val wmTasksRepository: WMTasksRepository
     val tasksRepository: TasksRepository
     val chaptersRepository: ChaptersRepository
     val userDataRepository: UserDataRepository
 }
 
 class AppDataContainer(private val context: Context): AppContainer {
+    override val wmTasksRepository: WMTasksRepository by lazy {
+        WorkManagerTasksRepository(context)
+    }
+
     override val tasksRepository: TasksRepository by lazy {
         OfflineTasksRepository(AppDatabase.getDatabase(context).taskDao())
     }

@@ -305,7 +305,7 @@
     <string name="brain_neurons_content_description">brain with neuron pathways</string>
     <string name="neuron">Neuron</string>
     <string name="synapse_content_description">Image of a synapse with neurotransmitters</string>
-    <string name="button_complete_chapter">Complete</string>
+    <string name="button_complete_chapter">Finish Chapter</string>
 
     <string name="synapse_label">Synapse. Made of: 1&#160;-&#160;neurotransmitters, 2&#160;-&#160;receptors, 3&#160;-&#160;sending neuron, 4&#160;-&#160;receiving neuron</string>
     <string name="brain_neurons_label">Neurons sending signals in the brain</string>
@@ -348,7 +348,7 @@
     <string name="task_run_5_km">Run 5 km</string>
     <string name="task_run_7_km">Run 7 km</string>
     <string name="task_run_10_km">Run 10 km</string>
-    <string name="tasklist_time_left">Time left: %d</string>
+    <string name="tasklist_time_left">%s</string>
     <string name="tasklist_heading_daily">Daily</string>
     <string name="tasklist_heading_weekly">Weekly</string>
     <string name="tasklist_heading_monthly">Monthly</string>
@@ -365,5 +365,5 @@
     <string name="shopping">impulsive shopping</string>
     <string name="music">music</string>
     <string name="parties">parties and big events</string>
-    <string name="tasklist_heading_custom">Custom</string>
+    <string name="tasklist_heading_custom">Your own</string>
 </resources>

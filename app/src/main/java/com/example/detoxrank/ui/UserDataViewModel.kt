@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.detoxrank.data.user.UserData
 import com.example.detoxrank.data.user.UserDataRepository
 
 class UserDataViewModel(
@@ -17,6 +18,9 @@ class UserDataViewModel(
     }
 
     suspend fun updateUserData() {
-        userDataRepository.updateUserData(userDataUiState.toUserDate())
+        userDataRepository.updateUserData(userDataUiState.toUserData())
+    }
+    suspend fun insertUserData(userData: UserData) {
+        userDataRepository.insertUserData(userData)
     }
 }

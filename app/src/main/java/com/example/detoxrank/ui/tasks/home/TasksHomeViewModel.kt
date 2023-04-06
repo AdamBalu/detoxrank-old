@@ -29,6 +29,14 @@ class TasksHomeViewModel(tasksRepository: TasksRepository) : ViewModel() {
         private const val TIMEOUT_MILLIS = 5_000L
     }
 
+    private val _firstTimeOpened = mutableStateOf(true)
+    val firstTimeOpened: MutableState<Boolean>
+        get() = _firstTimeOpened
+
+    fun setFirstTimeOpened() {
+        _firstTimeOpened.value = false
+    }
+
     private val _createTaskMenuShown = mutableStateOf(false)
     val createTaskMenuShown: Boolean
         get() = _createTaskMenuShown.value
@@ -56,4 +64,7 @@ class TasksHomeViewModel(tasksRepository: TasksRepository) : ViewModel() {
 /**
  * Ui State for TasksHomeContent
  */
-data class TasksHomeUiState(val taskList: List<Task> = listOf())
+data class TasksHomeUiState(
+    val taskList: List<Task> = listOf(),
+    val firstTimeOpened: Boolean = true
+)

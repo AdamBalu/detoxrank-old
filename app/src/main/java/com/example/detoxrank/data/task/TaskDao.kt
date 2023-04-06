@@ -29,8 +29,16 @@ interface TaskDao {
     @Query("UPDATE task SET selected = 0, completed = 0 WHERE duration_category = :durationCategory")
     suspend fun resetTasksFromCategory(durationCategory: TaskDurationCategory)
 
+
+    @Transaction
+    @Query("UPDATE user_data SET rank_points = rank_points + :amount WHERE id = 1")
+    fun updateUserRankPoints(amount: Int)
+
     @Query("SELECT * FROM task WHERE selected = 1")
     fun getSelectedTasks(): Flow<List<Task>>
+
+    @Query("SELECT COUNT(*) FROM task WHERE duration_category = :taskDurationCategory AND completed = 1")
+    fun getCompletedTaskNum(taskDurationCategory: TaskDurationCategory): Int
 
     @Update
     suspend fun updateRows(taskRows: List<Task>)

@@ -13,9 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,9 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.detoxrank.*
 import com.example.detoxrank.R
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
+import com.example.detoxrank.service.TimerService
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.DetoxRankViewModelProvider
 import com.example.detoxrank.ui.tasks.home.TasksHeading
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
@@ -39,9 +40,12 @@ import com.example.detoxrank.ui.utils.getIcon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TaskList(
+    timerService: TimerService,
     taskList: List<Task>,
+    detoxRankViewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier,
     taskViewModel: TaskViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
@@ -84,87 +88,99 @@ fun TaskList(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            item {
-                OutlinedIconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            taskViewModel.getNewTasks(TaskDurationCategory.Daily, 3)
-                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
-                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
-
-//                          tasksToAdd.forEach { // DATA inserts new tasks to database
-//                                taskViewModel.updateUiState(it.toTaskUiState())
-//                                  taskViewModel.insertTaskToDatabase()
-//                          }
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp)
-                ) {
-                    Row {
-                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
-                        Text("Generate new tasks (temp btn)") // DATA generates new tasks
-                    }
-                }
-            }
+//            item {
+//                OutlinedIconButton(
+//                    onClick = {
+//                        coroutineScope.launch {
+//                            taskViewModel.getNewTasks(TaskDurationCategory.Daily, 3)
+//                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
+//                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
+//
+////                          tasksToAdd.forEach { // DATA inserts new tasks to database
+////                                taskViewModel.updateUiState(it.toTaskUiState())
+////                                  taskViewModel.insertTaskToDatabase()
+////                          }
+//                        }
+//                    },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(start = 20.dp, end = 20.dp)
+//                ) {
+//                    Row {
+//                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
+//                        Text("Generate new tasks (temp btn)") // DATA generates new tasks
+//                    }
+//                }
+//            }
             item {
                 if (!taskList.none { it.durationCategory == TaskDurationCategory.Uncategorized })
                     TasksHeading(
+                        timerService = timerService,
                         headingRes = R.string.tasklist_heading_custom,
-                        timeLeft = 0 /* TODO */,
-                        iconImageVector = Icons.Filled.Face
+                        category = TaskDurationCategory.Uncategorized,
+                        iconImageVector = Icons.Filled.Face,
+                        taskViewModel = taskViewModel
                     )
             }
             items(taskList.filter { it.durationCategory == TaskDurationCategory.Uncategorized }) { task ->
                 AnimationBox {
                     Task(
                         task = task,
+                        detoxRankViewModel = detoxRankViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
             }
             item {
                 TasksHeading(
+                    timerService = timerService,
                     headingRes = R.string.tasklist_heading_daily,
-                    timeLeft = 0 /* TODO */,
-                    iconImageVector = Icons.Filled.Today
+                    category = TaskDurationCategory.Daily,
+                    iconImageVector = Icons.Filled.Today,
+                    taskViewModel = taskViewModel
                 )
             }
             items(taskList.filter { it.durationCategory == TaskDurationCategory.Daily }) { task ->
                 AnimationBox {
                     Task(
                         task = task,
+                        detoxRankViewModel = detoxRankViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
             }
             item {
                 TasksHeading(
+                    timerService = timerService,
                     headingRes = R.string.tasklist_heading_weekly,
-                    timeLeft = 0 /* TODO */,
-                    iconImageVector = Icons.Filled.DateRange
+                    category = TaskDurationCategory.Weekly,
+                    iconImageVector = Icons.Filled.DateRange,
+                    taskViewModel = taskViewModel
                 )
             }
             items(taskList.filter { it.durationCategory == TaskDurationCategory.Weekly }) { task ->
                 AnimationBox {
                     Task(
                         task = task,
+                        detoxRankViewModel = detoxRankViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
             }
             item {
                 TasksHeading(
+                    timerService = timerService,
                     headingRes = R.string.tasklist_heading_monthly,
-                    timeLeft = 0 /* TODO */,
-                    iconImageVector = Icons.Filled.CalendarMonth
+                    category = TaskDurationCategory.Monthly,
+                    iconImageVector = Icons.Filled.CalendarMonth,
+                    taskViewModel = taskViewModel
                 )
             }
             items(taskList.filter { it.durationCategory == TaskDurationCategory.Monthly }) { task ->
                 AnimationBox {
                     Task(
                         task = task,
+                        detoxRankViewModel = detoxRankViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
@@ -180,14 +196,15 @@ fun TaskList(
 fun Task(
     task: Task,
     taskViewModel: TaskViewModel,
+    detoxRankViewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
     val rankPointsGain = when (task.durationCategory) {
-        TaskDurationCategory.Daily -> 100
-        TaskDurationCategory.Weekly -> 300
-        TaskDurationCategory.Monthly -> 600
-        TaskDurationCategory.Uncategorized -> 50
+        TaskDurationCategory.Daily -> DAILY_TASK_RP_GAIN
+        TaskDurationCategory.Weekly -> WEEKLY_TASK_RP_GAIN
+        TaskDurationCategory.Monthly -> MONTHLY_TASK_RP_GAIN
+        TaskDurationCategory.Uncategorized -> UNCATEGORIZED_TASK_RP_GAIN
     }
 
     val darkTheme = isSystemInDarkTheme()
@@ -209,8 +226,9 @@ fun Task(
                 }
                 if (task.durationCategory == TaskDurationCategory.Uncategorized) {
                     coroutineScope.launch {
-                        delay(1000)
+                        delay(600)
                         taskViewModel.deleteTask(task)
+                        detoxRankViewModel.updateUserRankPoints(rankPointsGain)
                     }
                 }
             }
@@ -334,6 +352,13 @@ fun Task(
                     )
                     coroutineScope.launch {
                         taskViewModel.updateTask()
+                    }
+                    if (task.durationCategory == TaskDurationCategory.Uncategorized) {
+                        coroutineScope.launch {
+                            delay(600)
+                            taskViewModel.deleteTask(task)
+                            detoxRankViewModel.updateUserRankPoints(rankPointsGain)
+                        }
                     }
                 }
             )

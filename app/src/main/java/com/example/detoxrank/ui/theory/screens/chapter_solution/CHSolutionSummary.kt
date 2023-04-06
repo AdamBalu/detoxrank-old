@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theory.TheoryImage
 import com.example.detoxrank.ui.theory.TheoryViewModel
@@ -24,7 +25,8 @@ fun CHSolutionSummary(
     onChapterDone: () -> Unit,
     backHandler: () -> Unit,
     chapterName: String,
-    theoryViewModel: TheoryViewModel
+    theoryViewModel: TheoryViewModel,
+    detoxRankViewModel: DetoxRankViewModel
 ) {
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
@@ -39,7 +41,8 @@ fun CHSolutionSummary(
             onClick = onChapterDone,
             modifier = Modifier.align(Alignment.End),
             chapterName = chapterName,
-            theoryViewModel = theoryViewModel
+            theoryViewModel = theoryViewModel,
+            detoxRankViewModel = detoxRankViewModel
         )
     }
 }

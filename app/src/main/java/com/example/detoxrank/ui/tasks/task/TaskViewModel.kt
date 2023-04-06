@@ -4,33 +4,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TasksRepository
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import com.example.detoxrank.data.task.WMTasksRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
-class TaskViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val tasksRepository: TasksRepository
-) : ViewModel() {
+class TaskViewModel(private val tasksRepository: TasksRepository,
+                    private val wmTasksRepository: WMTasksRepository) : ViewModel() {
     var taskUiState by mutableStateOf(TaskUiState())
         private set
 
-    private val taskId: Int = 0 // checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
+    private val scope = CoroutineScope(Dispatchers.IO)
 
-    init {
-        viewModelScope.launch {
-            taskUiState = tasksRepository.getTaskStream(taskId)
-                .filterNotNull()
-                .first()
-                .toTaskUiState()
-        }
-    }
+    val isShown = mutableStateOf(false)
 
     fun updateUiState(newTaskUiState: TaskUiState) {
         taskUiState = newTaskUiState.copy()
@@ -43,6 +32,14 @@ class TaskViewModel(
     suspend fun updateTask() {
         if (taskUiState.isValid())
             tasksRepository.updateTask(taskUiState.toTask())
+    }
+
+    fun getNewTasks() {
+        wmTasksRepository.getNewTasks()
+    }
+
+    fun checkNewMonthTasksTest() {
+        wmTasksRepository.checkNewMonthTasksTest()
     }
 
     suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory, numberOfTasks: Int) {
@@ -68,17 +65,4 @@ class TaskViewModel(
             }
         }
     }
-
-//
-//
-//
-//    fun removeCompletedTasks() {
-//        _taskList.removeAll(_taskList.filter { it.completed.value })
-//    }
-//
-//    fun resetTaskCompletionValues(tasks: List<Task>) {
-//        tasks.forEach {
-//            it.completed = mutableStateOf(false)
-//        }
-//    }
 }

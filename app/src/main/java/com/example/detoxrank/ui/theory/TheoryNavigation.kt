@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theory.screens.TheoryChapterSelectScreen
 import com.example.detoxrank.ui.theory.screens.chapter_dopamine.*
 import com.example.detoxrank.ui.theory.screens.chapter_hedonic_circuit.CHHedonicCircuitExample
@@ -104,6 +105,7 @@ private fun onChapterContinue(
 @Composable
 fun TheoryMainNavigation(
     theoryViewModel: TheoryViewModel,
+    detoxRankViewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
@@ -150,7 +152,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
 
@@ -195,7 +198,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
 
@@ -239,7 +243,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
 
@@ -275,7 +280,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
 
@@ -311,7 +317,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
 
@@ -355,7 +362,8 @@ fun TheoryMainNavigation(
                 onChapterDone = { onChaptersDone(navController, theoryViewModel) },
                 backHandler = { backHandler(navController, theoryViewModel, currentChapterScreenNum) },
                 chapterName = theoryViewModel.currentChapterName.value,
-                theoryViewModel = theoryViewModel
+                theoryViewModel = theoryViewModel,
+                detoxRankViewModel = detoxRankViewModel
             )
         }
     }

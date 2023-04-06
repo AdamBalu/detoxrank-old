@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
 import com.example.detoxrank.ui.theme.md_theme_light_tertiary
@@ -29,7 +30,8 @@ fun CHReinforcementSummary(
     onChapterDone: () -> Unit,
     backHandler: () -> Unit,
     chapterName: String,
-    theoryViewModel: TheoryViewModel
+    theoryViewModel: TheoryViewModel,
+    detoxRankViewModel: DetoxRankViewModel
 ) {
     val scrollState = rememberScrollState()
     BackHandler(onBack = backHandler)
@@ -44,7 +46,8 @@ fun CHReinforcementSummary(
             onClick = onChapterDone,
             modifier = Modifier.align(Alignment.End),
             chapterName = chapterName,
-            theoryViewModel = theoryViewModel
+            theoryViewModel = theoryViewModel,
+            detoxRankViewModel = detoxRankViewModel
         )
     }
 }

@@ -6,33 +6,30 @@ import com.example.detoxrank.data.user.UserData
 
 data class UserDataUiState(
     val id: Int = 1,
-    val timerStartedTimeInMillis: Int = 0,
-    val tasksStartedTimeInMillis: Int = 0,
-    val brainPoints: Int = 0,
+    val timerStartTimeMillis: Long = 0,
+    val timerStarted: Boolean = false,
     val rankPoints: Int = 0,
     val xpPoints: Int = 0,
-    val chosenTimerDifficulty: TimerDifficulty = TimerDifficulty.Easy,
-    val selectedTheme: UiTheme = UiTheme.Default
+    val timerDifficulty: TimerDifficulty = TimerDifficulty.Easy,
+    val theme: UiTheme = UiTheme.Default,
 )
 
-fun UserDataUiState.toUserDate(): UserData = UserData(
+fun UserDataUiState.toUserData(): UserData = UserData(
     id = id,
-    timerStartedTimeInMillis = timerStartedTimeInMillis,
-    tasksStartedTimeInMillis = tasksStartedTimeInMillis,
-    brainPoints = brainPoints,
+    timerStartTimeMillis = timerStartTimeMillis,
+    timerStarted = timerStarted,
     rankPoints = rankPoints,
     xpPoints = xpPoints,
-    chosenTimerDifficulty = chosenTimerDifficulty,
-    selectedTheme = selectedTheme
+    timerDifficulty = timerDifficulty,
+    theme = theme
 )
 
 fun UserData.toUserDataUiState(): UserDataUiState = UserDataUiState(
     id = id,
-    timerStartedTimeInMillis = timerStartedTimeInMillis,
-    tasksStartedTimeInMillis = tasksStartedTimeInMillis,
-    brainPoints = brainPoints,
+    timerStartTimeMillis = timerStartTimeMillis,
+    timerStarted = timerStarted,
     rankPoints = rankPoints,
     xpPoints = xpPoints,
-    chosenTimerDifficulty = chosenTimerDifficulty,
-    selectedTheme = selectedTheme
+    timerDifficulty = timerDifficulty,
+    theme = theme
 )

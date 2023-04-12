@@ -36,6 +36,10 @@ data class UserData(
     @TypeConverters(Converters::class)
     @ColumnInfo(name = "timer_difficulty")
     val timerDifficulty: TimerDifficulty = TimerDifficulty.Easy,
-    @TypeConverters(Converters::class)
-    val theme: UiTheme = UiTheme.Default
+    @ColumnInfo(name = "monthly_tasks_last_refresh_time")
+    val monthlyTasksLastRefreshTime: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "tasks_finished")
+    val tasksFinished: Int = 0,
+    @ColumnInfo(name = "pages_read")
+    val pagesRead: Int = 0
 )

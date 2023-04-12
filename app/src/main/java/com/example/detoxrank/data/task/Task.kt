@@ -50,5 +50,7 @@ data class Task(
     val iconCategory: TaskIconCategory,
     @ColumnInfo(name = "selected")
     var selectedAsCurrentTask: Boolean = false,
-    val language: String = "EN"
+    val language: String = "EN",
+    @ColumnInfo(name = "special_task_id")
+    val specialTaskID: Int = 0
 )

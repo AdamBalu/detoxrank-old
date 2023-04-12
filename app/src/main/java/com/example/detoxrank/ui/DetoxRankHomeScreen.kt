@@ -1,9 +1,10 @@
 package com.example.detoxrank.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AvTimer
 import androidx.compose.material.icons.filled.Checklist
@@ -12,13 +13,16 @@ import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
@@ -29,6 +33,9 @@ import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryHomeScreen
 import com.example.detoxrank.ui.timer.TimerHomeScreen
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
+import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
+import com.example.detoxrank.ui.utils.getCurrentProgressBarProgression
+import com.example.detoxrank.ui.utils.getLevelDrawableId
 
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
@@ -112,6 +119,7 @@ fun DetoxRankAppContent(
                 navigationItemContentList = navigationItemContentList,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = viewModel,
                 viewModel = viewModel
             )
         }
@@ -219,6 +227,89 @@ fun NavigationDrawerContent(
                 ),
                 onClick = { onTabPressed(navItem.section) }
             )
+        }
+    }
+}
+
+@Composable
+fun DetoxRankTopAppBar(
+    detoxRankViewModel: DetoxRankViewModel,
+    modifier: Modifier = Modifier
+) {
+    val currentLevel = detoxRankViewModel.getCurrentLevel()
+
+    LaunchedEffect(Unit) {
+        val xpPoints = detoxRankViewModel.getUserXPPoints()
+        val currentLevelToUpdate = getCurrentLevelFromXP(xpPoints = xpPoints)
+        detoxRankViewModel.setCurrentLevel(currentLevelToUpdate)
+
+        val progress = getCurrentProgressBarProgression(xpPoints)
+        detoxRankViewModel.setLevelProgressBar(progress)
+    }
+
+    val animatedProgress = animateFloatAsState(
+        targetValue = detoxRankViewModel.getLevelProgressBarValue(),
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    ).value
+
+    val levelBadgeSize: Dp
+    val xpBarPaddingStart: Dp
+    val xpBarPaddingTop: Dp
+    val xpBarHeight: Dp
+    when (currentLevel) {
+        in 0..14 -> {
+            levelBadgeSize = 55.dp
+            xpBarPaddingStart = 42.dp
+            xpBarPaddingTop = 18.dp
+            xpBarHeight = 32.dp
+        }
+        in 15..25 -> {
+            levelBadgeSize = 65.dp
+            xpBarPaddingStart = 45.dp
+            xpBarPaddingTop = 25.dp
+            xpBarHeight = 40.dp
+        }
+        else -> {
+            levelBadgeSize = 40.dp
+            xpBarPaddingStart = 30.dp
+            xpBarPaddingTop = 25.dp
+            xpBarHeight = 45.dp
+        }
+    }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier.padding(top = 12.dp, start = 20.dp)
+    ) {
+//                    Text(
+//                        "Rank and Achievements",
+//                        style = Typography.titleMedium,
+//                        fontSize = 20.sp,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.fillMaxWidth()
+//                    )
+        Box {
+            Image(
+                painterResource(getLevelDrawableId(currentLevel)),
+                null,
+                modifier = Modifier.size(levelBadgeSize).zIndex(1f)
+            )
+
+            if (currentLevel != 25) {
+                LinearProgressIndicator(
+                    progress = animatedProgress,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier
+                        .height(xpBarHeight)
+                        .padding(start = xpBarPaddingStart, end = 16.dp, top = xpBarPaddingTop)
+                        .fillMaxWidth(0.35f)
+                        .clip(RoundedCornerShape(2.dp))
+                        .border(
+                            BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+                            RoundedCornerShape(2.dp)
+                        )
+                )
+            }
         }
     }
 }

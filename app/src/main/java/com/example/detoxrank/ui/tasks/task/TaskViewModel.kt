@@ -11,6 +11,7 @@ import com.example.detoxrank.data.task.TasksRepository
 import com.example.detoxrank.data.task.WMTasksRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 
 class TaskViewModel(private val tasksRepository: TasksRepository,
                     private val wmTasksRepository: WMTasksRepository) : ViewModel() {
@@ -54,6 +55,7 @@ class TaskViewModel(private val tasksRepository: TasksRepository,
     }
 
     suspend fun deleteTask(task: Task) {
+        delay(600)
         tasksRepository.deleteTask(task)
     }
 

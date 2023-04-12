@@ -64,10 +64,25 @@ val md_theme_dark_outlineVariant = Color(0xFF45464F)
 val md_theme_dark_scrim = Color(0xFF000000)
 
 val rank_color = Color(0xFFFFC000)
+val rank_color_shade = Color(0xFFFFCA25)
 val rank_color_ultra_light = Color(0xFFFFE081)
 val rank_color_light = Color(0xFFBB8E04)
 val rank_color_ultra_dark = Color(0xFF836918)
 val timer_color_dark = Color(0xfffa5443)
+
+val common_green = Color(0xFF2D7910)
+val rare_blue = Color(0xFF4477DD)
+val rarer_blue = Color(0xFF3943FF)
+val epic_purple = Color(0xFFA91EF5)
+val very_epic_magenta = Color(0xFFCB04DA)
+val legendary_orange = Color(0xFFE78216)
+
+val common_green_toned_down = Color(0xFF607757)
+val rare_blue_toned_down = Color(0xFF8DA3CC)
+val rarer_blue_toned_down = Color(0xFF9AA0FF)
+val epic_purple_toned_down = Color(0xFFD497F5)
+val very_epic_magenta_toned_down = Color(0xFFC270C9)
+val legendary_orange_toned_down = Color(0xFFDF9F5B)
 
 
 val seed = Color(0xFF004FF0)

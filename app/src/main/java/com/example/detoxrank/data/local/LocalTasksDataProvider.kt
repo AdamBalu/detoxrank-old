@@ -1,5 +1,6 @@
 package com.example.detoxrank.data.local
 
+import com.example.detoxrank.*
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
@@ -34,7 +35,8 @@ object LocalTasksDataProvider {
         Task(
             description = "Read at least 20 pages",
             durationCategory = TaskDurationCategory.Daily,
-            iconCategory = TaskIconCategory.Reading
+            iconCategory = TaskIconCategory.Reading,
+            specialTaskID = ID_READ_20_PAGES
         ),
         Task(
             description = "Meditate for 10 minutes",
@@ -57,7 +59,7 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.Walking
         ),
         Task(
-            description = "Don't eat waste food",
+            description = "Don't eat unhealthy food",
             durationCategory = TaskDurationCategory.Daily,
             iconCategory = TaskIconCategory.UnhealthyFood
         ),
@@ -72,6 +74,18 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.Cleaning
         ),
 
+        Task(
+            description = "Run 3km (in one go)",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Running,
+            specialTaskID = ID_RUN_3_KM
+        ),
+        Task(
+            description = "Run 5km (in one go)",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Running,
+            specialTaskID = ID_RUN_5_KM
+        ),
         Task(
             description = "Eat at least 3 pieces of fruit",
             durationCategory = TaskDurationCategory.Weekly,
@@ -108,9 +122,10 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.Hiking
         ),
         Task(
-            description = "Read 60 pages",
+            description = "Read 50 pages",
             durationCategory = TaskDurationCategory.Weekly,
-            iconCategory = TaskIconCategory.Reading
+            iconCategory = TaskIconCategory.Reading,
+            specialTaskID = ID_READ_50_PAGES
         ),
         Task(
             description = "Go for a bike ride (or a long walk if you don't have one)",
@@ -154,9 +169,10 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.HealthyFood
         ),
         Task(
-            description = "Read a book",
+            description = "Read a book (at least 250 pages)",
             durationCategory = TaskDurationCategory.Monthly,
-            iconCategory = TaskIconCategory.Reading
+            iconCategory = TaskIconCategory.Reading,
+            specialTaskID = ID_READ_250_PAGES
         ),
         Task(
             description = "Go for a swim",
@@ -187,6 +203,12 @@ object LocalTasksDataProvider {
             description = "Exercise each week at least once",
             durationCategory = TaskDurationCategory.Monthly,
             iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Run 7km (in one go)",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Running,
+            specialTaskID = ID_RUN_7_KM
         )
     )
 }

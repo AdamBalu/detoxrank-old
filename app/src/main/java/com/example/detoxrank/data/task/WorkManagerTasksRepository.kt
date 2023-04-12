@@ -1,7 +1,6 @@
 package com.example.detoxrank.data.task
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
@@ -43,8 +42,6 @@ class WorkManagerTasksRepository(context: Context) : WMTasksRepository {
         val millisUntilEndOfWeek = endOfWeek.timeInMillis - systemTimeMillis
         val millisUntilEndOfMonth = endOfMonth.timeInMillis - systemTimeMillis
 
-
-        Log.d("WorkManager", "Got into WMTR")
         val repeatingRequestDay = PeriodicWorkRequestBuilder<TaskWorker>(
             repeatInterval = 15,
             repeatIntervalTimeUnit = TimeUnit.MINUTES)

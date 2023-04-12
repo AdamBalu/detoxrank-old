@@ -49,6 +49,7 @@ import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 fun TimerHomeScreen(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankUiState: DetoxRankUiState,
+    detoxRankViewModel: DetoxRankViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     timerService: TimerService,
@@ -69,6 +70,7 @@ fun TimerHomeScreen(
             TimerContent(
                 navigationItemContentList = navigationItemContentList,
                 detoxRankUiState = detoxRankUiState,
+                detoxRankViewModel = detoxRankViewModel,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
                 timerService = timerService,
@@ -79,6 +81,7 @@ fun TimerHomeScreen(
         TimerContent(
             navigationItemContentList = navigationItemContentList,
             detoxRankUiState = detoxRankUiState,
+            detoxRankViewModel = detoxRankViewModel,
             onTabPressed = onTabPressed,
             navigationType = navigationType,
             timerService = timerService,
@@ -91,6 +94,7 @@ fun TimerHomeScreen(
 @Composable
 fun TimerContent(
     navigationItemContentList: List<NavigationItemContent>,
+    detoxRankViewModel: DetoxRankViewModel,
     detoxRankUiState: DetoxRankUiState,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
@@ -111,6 +115,7 @@ fun TimerContent(
             )
         }
         Scaffold(
+            topBar = { DetoxRankTopAppBar(detoxRankViewModel = detoxRankViewModel) },
             bottomBar = {
                 if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
                     AnimatedVisibility(
@@ -279,11 +284,15 @@ fun TimerClock(
     )
 
     Box(
-        modifier = modifier.fillMaxWidth().padding(top = 100.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 100.dp)
     ) {
 
         CircularProgressBar(
-            modifier = Modifier.size(328.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(328.dp)
+                .align(Alignment.Center),
             progress = progressSeconds,
             progressMax = 100f,
             progressBarColor =
@@ -295,7 +304,9 @@ fun TimerClock(
             startAngle = 270f
         )
         CircularProgressBar(
-            modifier = Modifier.size(314.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(314.dp)
+                .align(Alignment.Center),
             progress = 50f,
             progressMax = 100f,
             progressBarColor =
@@ -307,7 +318,9 @@ fun TimerClock(
             startAngle = 270f
         )
         CircularProgressBar(
-            modifier = Modifier.size(285.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(285.dp)
+                .align(Alignment.Center),
             progress = progressMinutes,
             progressMax = 100f,
             progressBarColor =
@@ -319,7 +332,9 @@ fun TimerClock(
             startAngle = 290f
         )
         CircularProgressBar(
-            modifier = Modifier.size(269.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(269.dp)
+                .align(Alignment.Center),
             progress = 39f,
             progressMax = 100f,
             progressBarColor =
@@ -332,7 +347,9 @@ fun TimerClock(
         )
 
         CircularProgressBar(
-            modifier = Modifier.size(240.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(240.dp)
+                .align(Alignment.Center),
             progress = progressHours,
             progressMax = 100f,
             progressBarColor =
@@ -345,7 +362,9 @@ fun TimerClock(
         )
 
         CircularProgressBar(
-            modifier = Modifier.size(220.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(220.dp)
+                .align(Alignment.Center),
             progress = 19.44f,
             progressMax = 100f,
             progressBarColor =

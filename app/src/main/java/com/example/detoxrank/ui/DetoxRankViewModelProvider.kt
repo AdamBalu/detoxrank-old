@@ -16,13 +16,14 @@ object DetoxRankViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             DetoxRankViewModel(
-                userDataRepository = detoxRankApplication().container.userDataRepository
+                userDataRepository = detoxRankApplication().container.userDataRepository,
+                achievementRepository = detoxRankApplication().container.achievementRepository
             )
         }
 
         initializer {
             RankViewModel(
-                userDataRepository = detoxRankApplication().container.userDataRepository
+                achievementRepository = detoxRankApplication().container.achievementRepository
             )
         }
 

@@ -1,7 +1,6 @@
 package com.example.detoxrank.ui
 
 import com.example.detoxrank.data.TimerDifficulty
-import com.example.detoxrank.data.user.UiTheme
 import com.example.detoxrank.data.user.UserData
 
 data class UserDataUiState(
@@ -11,7 +10,9 @@ data class UserDataUiState(
     val rankPoints: Int = 0,
     val xpPoints: Int = 0,
     val timerDifficulty: TimerDifficulty = TimerDifficulty.Easy,
-    val theme: UiTheme = UiTheme.Default,
+    val monthlyTasksLastRefreshTime: Long = System.currentTimeMillis(),
+    val tasksFinished: Int = 0,
+    val pagesRead: Int = 0
 )
 
 fun UserDataUiState.toUserData(): UserData = UserData(
@@ -21,7 +22,9 @@ fun UserDataUiState.toUserData(): UserData = UserData(
     rankPoints = rankPoints,
     xpPoints = xpPoints,
     timerDifficulty = timerDifficulty,
-    theme = theme
+    monthlyTasksLastRefreshTime = monthlyTasksLastRefreshTime,
+    tasksFinished = tasksFinished,
+    pagesRead = pagesRead
 )
 
 fun UserData.toUserDataUiState(): UserDataUiState = UserDataUiState(
@@ -31,5 +34,7 @@ fun UserData.toUserDataUiState(): UserDataUiState = UserDataUiState(
     rankPoints = rankPoints,
     xpPoints = xpPoints,
     timerDifficulty = timerDifficulty,
-    theme = theme
+    monthlyTasksLastRefreshTime = monthlyTasksLastRefreshTime,
+    tasksFinished = tasksFinished,
+    pagesRead = pagesRead
 )

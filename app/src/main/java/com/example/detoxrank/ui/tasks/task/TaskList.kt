@@ -37,7 +37,6 @@ import com.example.detoxrank.ui.theme.rank_color_ultra_light
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.RankPointsGain
 import com.example.detoxrank.ui.utils.getIcon
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -88,30 +87,30 @@ fun TaskList(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-//            item {
-//                OutlinedIconButton(
-//                    onClick = {
-//                        coroutineScope.launch {
-//                            taskViewModel.getNewTasks(TaskDurationCategory.Daily, 3)
-//                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
-//                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
-//
-////                          tasksToAdd.forEach { // DATA inserts new tasks to database
-////                                taskViewModel.updateUiState(it.toTaskUiState())
-////                                  taskViewModel.insertTaskToDatabase()
-////                          }
-//                        }
-//                    },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(start = 20.dp, end = 20.dp)
-//                ) {
-//                    Row {
-//                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
-//                        Text("Generate new tasks (temp btn)") // DATA generates new tasks
-//                    }
-//                }
-//            }
+            item {
+                OutlinedIconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            taskViewModel.getNewTasks(TaskDurationCategory.Daily, 3)
+                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
+                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
+
+//                          tasksToAdd.forEach { // DATA inserts new tasks to database
+//                                taskViewModel.updateUiState(it.toTaskUiState())
+//                                  taskViewModel.insertTaskToDatabase()
+//                          }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp)
+                ) {
+                    Row {
+                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
+                        Text("Generate new tasks (temp btn)") // DATA generates new tasks
+                    }
+                }
+            }
             item {
                 if (!taskList.none { it.durationCategory == TaskDurationCategory.Uncategorized })
                     TasksHeading(
@@ -226,7 +225,6 @@ fun Task(
                 }
                 if (task.durationCategory == TaskDurationCategory.Uncategorized) {
                     coroutineScope.launch {
-                        delay(600)
                         taskViewModel.deleteTask(task)
                         detoxRankViewModel.updateUserRankPoints(rankPointsGain)
                     }
@@ -355,7 +353,6 @@ fun Task(
                     }
                     if (task.durationCategory == TaskDurationCategory.Uncategorized) {
                         coroutineScope.launch {
-                            delay(600)
                             taskViewModel.deleteTask(task)
                             detoxRankViewModel.updateUserRankPoints(rankPointsGain)
                         }

@@ -1,0 +1,13 @@
+package com.example.detoxrank.data.achievements
+
+import kotlinx.coroutines.flow.Flow
+
+class OfflineAchievementRepository(
+    private val achievementDao: AchievementDao
+) : AchievementRepository {
+    override fun getAllAchievements(): Flow<List<Achievement>> = achievementDao.getAllAchievements()
+    override fun getAchievementById(id: Int): Flow<Achievement?> = achievementDao.getById(id)
+
+    override suspend fun update(achievement: Achievement) = achievementDao.update(achievement)
+    override suspend fun insert(achievement: Achievement) = achievementDao.insert(achievement)
+}

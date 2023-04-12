@@ -207,7 +207,7 @@ fun TheoryAppBar(
     Column(
         modifier = modifier.padding(bottom = 7.dp)
     ) {
-        // DATA fill the chapters with this button after db reset
+//        // DATA fill chapters with this button after db reset
 //        Button(onClick = {
 //            val chaptersToAdd = LocalChapterDataProvider.allChapters
 //            coroutineScope.launch {

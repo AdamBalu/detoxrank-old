@@ -18,9 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
@@ -129,18 +127,7 @@ fun TasksContent(
                     )
                 }
             },
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Tasks",
-                            style = Typography.headlineLarge,
-                            textAlign = TextAlign.Center,
-                            fontSize = 35.sp
-                        )
-                    }
-                )
-            },
+            topBar = { DetoxRankTopAppBar(detoxRankViewModel) },
             bottomBar = {
                 if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
                     DetoxRankBottomNavigationBar(
@@ -331,7 +318,7 @@ fun TaskTimer(
                 )
             }
             TaskDurationCategory.Weekly -> {
-                val formattedTimer = if (daysRemainingWeek > 1) {
+                val formattedTimer = if (daysRemainingWeek >= 1) {
                     "${daysRemainingWeek}d ${hoursRemaining}h"
                 } else {
                     "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
@@ -344,8 +331,8 @@ fun TaskTimer(
             }
             TaskDurationCategory.Monthly -> {
                 val daysRemainingMonthInt = daysRemainingMonth.toInt()
-                val formattedTimer = if (daysRemainingMonthInt > 7) "${daysRemainingMonth}d"
-                    else if (daysRemainingMonthInt > 1) "${daysRemainingMonth}d ${hoursRemaining}h"
+                val formattedTimer = if (daysRemainingMonthInt >= 7) "${daysRemainingMonth}d"
+                    else if (daysRemainingMonthInt >= 1) "${daysRemainingMonth}d ${hoursRemaining}h"
                     else "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
 
                 Text(

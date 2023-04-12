@@ -14,8 +14,8 @@ interface TaskDao {
     @Update
     suspend fun update(task: Task)
 
-    @Query("SELECT * FROM task WHERE id = :id")
-    fun getTask(id: Int): Flow<Task>
+    @Query("SELECT * FROM task WHERE duration_category = :taskDurationCategory AND completed = 1")
+    fun getCompletedTasksByDuration(taskDurationCategory: TaskDurationCategory): Flow<List<Task>>
 
     @Query("SELECT * FROM task")
     fun getAllTasks(): Flow<List<Task>>
@@ -28,11 +28,6 @@ interface TaskDao {
     @Transaction
     @Query("UPDATE task SET selected = 0, completed = 0 WHERE duration_category = :durationCategory")
     suspend fun resetTasksFromCategory(durationCategory: TaskDurationCategory)
-
-
-    @Transaction
-    @Query("UPDATE user_data SET rank_points = rank_points + :amount WHERE id = 1")
-    fun updateUserRankPoints(amount: Int)
 
     @Query("SELECT * FROM task WHERE selected = 1")
     fun getSelectedTasks(): Flow<List<Task>>

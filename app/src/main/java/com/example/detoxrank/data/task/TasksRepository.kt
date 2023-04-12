@@ -7,12 +7,10 @@ interface TasksRepository {
     suspend fun deleteTask(task: Task)
     suspend fun updateTask(task: Task)
     fun getAllTasksStream(): Flow<List<Task>>
-    fun getTaskStream(id: Int): Flow<Task?>
+    fun getCompletedTasksByDuration(taskDurationCategory: TaskDurationCategory): Flow<List<Task>>
     suspend fun selectNRandomTasksByDuration(durationCategory: TaskDurationCategory,
                                           numberOfTasks: Int)
     suspend fun resetTasksFromCategory(durationCategory: TaskDurationCategory)
-
-    fun updateUserRankPoints(amount: Int)
 
     fun getCompletedTaskNum(taskDurationCategory: TaskDurationCategory): Int
 

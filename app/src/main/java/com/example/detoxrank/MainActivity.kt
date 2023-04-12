@@ -26,10 +26,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.detoxrank.data.AppDatabase
+import com.example.detoxrank.data.user.UserData
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.DetoxRankAppContent
 import com.example.detoxrank.ui.theme.DetoxRankTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -61,20 +67,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-//        val isFirstRun = sharedPreferences.getBoolean("is_first_run_2", true)
-//
-//        if (isFirstRun) { // DATA later only get starting data from default database, not like this TODO delete
-//            CoroutineScope(Dispatchers.IO).launch {
-//                // Insert data into Room database
-//                val database = AppDatabase.getDatabase(this@MainActivity)
-//                database.userDataDao().insert(UserData())
-//                withContext(Dispatchers.Main) {
-//                    // Update shared preferences
-//                    sharedPreferences.edit().putBoolean("is_first_run_2", false).apply()
-//                }
-//            }
-//        }
+        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("is_first_run_5", true)
+
+        if (isFirstRun) { // DATA later only get starting data from default database, not like this TODO delete
+            CoroutineScope(Dispatchers.IO).launch {
+                // Insert data into Room database
+                val database = AppDatabase.getDatabase(this@MainActivity)
+                database.userDataDao().insert(UserData())
+                withContext(Dispatchers.Main) {
+                    // Update shared preferences
+                    sharedPreferences.edit().putBoolean("is_first_run_5", false).apply()
+                }
+            }
+        }
 
         setContent {
             DetoxRankTheme {

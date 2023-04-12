@@ -1,6 +1,8 @@
 package com.example.detoxrank.data
 
 import android.content.Context
+import com.example.detoxrank.data.achievements.AchievementRepository
+import com.example.detoxrank.data.achievements.OfflineAchievementRepository
 import com.example.detoxrank.data.chapter.ChaptersRepository
 import com.example.detoxrank.data.chapter.OfflineChaptersRepository
 import com.example.detoxrank.data.task.OfflineTasksRepository
@@ -15,20 +17,27 @@ interface AppContainer {
     val tasksRepository: TasksRepository
     val chaptersRepository: ChaptersRepository
     val userDataRepository: UserDataRepository
+    val achievementRepository: AchievementRepository
 }
 
 class AppDataContainer(private val context: Context): AppContainer {
     override val wmTasksRepository: WMTasksRepository by lazy {
         WorkManagerTasksRepository(context)
     }
-
     override val tasksRepository: TasksRepository by lazy {
-        OfflineTasksRepository(AppDatabase.getDatabase(context).taskDao())
+        OfflineTasksRepository(
+            AppDatabase.getDatabase(context).taskDao(),
+            OfflineAchievementRepository(AppDatabase.getDatabase(context).achievementDao()),
+            OfflineUserDataRepository(AppDatabase.getDatabase(context).userDataDao())
+        )
     }
     override val chaptersRepository: ChaptersRepository by lazy {
         OfflineChaptersRepository(AppDatabase.getDatabase(context).chapterDao())
     }
     override val userDataRepository: UserDataRepository by lazy {
         OfflineUserDataRepository(AppDatabase.getDatabase(context).userDataDao())
+    }
+    override val achievementRepository: AchievementRepository by lazy {
+        OfflineAchievementRepository(AppDatabase.getDatabase(context).achievementDao())
     }
 }

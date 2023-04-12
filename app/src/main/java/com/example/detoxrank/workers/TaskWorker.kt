@@ -6,8 +6,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.detoxrank.KEY_TASK_DURATION
 import com.example.detoxrank.data.AppDatabase
+import com.example.detoxrank.data.achievements.OfflineAchievementRepository
 import com.example.detoxrank.data.task.OfflineTasksRepository
 import com.example.detoxrank.data.task.TaskDurationCategory
+import com.example.detoxrank.data.user.OfflineUserDataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -19,7 +21,9 @@ class TaskWorker(
         val taskDurationCategory = inputData.getString(KEY_TASK_DURATION)
         Log.d("TaskWorker", "Got into task worker, taskDurationCategory:<$taskDurationCategory>")
         val taskDao = AppDatabase.getDatabase(applicationContext).taskDao()
-        val tasksRepository = OfflineTasksRepository(taskDao)
+        val achievementRepository = OfflineAchievementRepository(AppDatabase.getDatabase(applicationContext).achievementDao())
+        val userDataRepository = OfflineUserDataRepository(AppDatabase.getDatabase(applicationContext).userDataDao())
+        val tasksRepository = OfflineTasksRepository(taskDao, achievementRepository, userDataRepository)
         return withContext(Dispatchers.IO) {
             return@withContext try {
                 val category = when (taskDurationCategory) {

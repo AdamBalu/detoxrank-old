@@ -6,18 +6,25 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.TimerDifficulty
+import com.example.detoxrank.data.achievements.AchievementRepository
 import com.example.detoxrank.data.user.Rank
 import com.example.detoxrank.data.user.UserDataRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 class DetoxRankViewModel(
-    private val userDataRepository: UserDataRepository
+    private val userDataRepository: UserDataRepository,
+    private val achievementRepository: AchievementRepository
 ) : ViewModel() {
     /** UI state exposed to the UI **/
     private val _uiState = MutableStateFlow(DetoxRankUiState())
     val uiState: StateFlow<DetoxRankUiState> = _uiState.asStateFlow()
 
     var userDataUiState by mutableStateOf(UserDataUiState())
+        private set
+
+    var achievementUiState by mutableStateOf(AchievementUiState())
         private set
 
     /**
@@ -50,13 +57,12 @@ class DetoxRankViewModel(
         return _uiState.value.levelProgressBarProgression
     }
 
-    fun updateRankProgressBarProgression(valueToAdd: Float) {
-        val progression = getRankProgressBarValue() + valueToAdd
-        _uiState.update {
-            it.copy(
-                rankProgressBarProgression = progression
-            )
-        }
+    fun getCurrentRank(): Rank {
+        return _uiState.value.currentRank
+    }
+
+    fun getCurrentLevel(): Int {
+        return _uiState.value.currentLevel
     }
 
     fun setRankProgressBar(value: Float) {
@@ -67,19 +73,11 @@ class DetoxRankViewModel(
         }
     }
 
-    fun resetRankProgressBarProgression() {
-        _uiState.update {
-            it.copy(
-                rankProgressBarProgression = 0f
-            )
-        }
-    }
-
     suspend fun getUserRankPoints(): Int {
         return userDataRepository.getUserStream().first().rankPoints
     }
 
-    suspend fun updateUserData() {
+    private suspend fun updateUserData() {
         userDataRepository.updateUserData(userDataUiState.toUserData())
     }
 
@@ -87,10 +85,59 @@ class DetoxRankViewModel(
         userDataUiState = newDataUiState.copy()
     }
 
+    fun updateAchievementUiState(newAchievementUiState: AchievementUiState) {
+        achievementUiState = newAchievementUiState.copy()
+    }
+
+    suspend fun insertAchievementToDatabase() {
+        achievementRepository.insert(achievementUiState.toAchievement())
+    }
+
     suspend fun updateUserRankPoints(toAdd: Int) {
+        withContext(Dispatchers.IO) {
+            userDataRepository.updateRankPoints(toAdd)
+        }
+    }
+
+    suspend fun completeAchievement(achievementId: Int) {
+        achievementRepository.getAchievementById(achievementId).collect { achievement ->
+            if (achievement != null && !achievement.achieved)
+                achievementRepository.update(achievement.copy(achieved = true))
+        }
+    }
+
+    suspend fun getUserXPPoints(): Int {
+        return userDataRepository.getUserStream().first().xpPoints
+    }
+
+    suspend fun updateUserXPPoints(toAdd: Int) {
         val user = userDataRepository.getUserStream().first()
-        updateUiState(user.copy(rankPoints = user.rankPoints + toAdd).toUserDataUiState())
+        updateUiState(user.copy(xpPoints = user.xpPoints + toAdd).toUserDataUiState())
         updateUserData()
+    }
+
+    fun setLevelProgressBar(value: Float) {
+        _uiState.update {
+            it.copy(
+                levelProgressBarProgression = value
+            )
+        }
+    }
+
+    fun setCurrentLevel(value: Int) {
+        _uiState.update {
+            it.copy(
+                currentLevel = value
+            )
+        }
+    }
+
+    fun setCurrentRank(rank: Rank) {
+        _uiState.update {
+            it.copy(
+                currentRank = rank
+            )
+        }
     }
 
     fun getCurrentRank(rankPoints: Int): Pair<Rank, Pair<Int, Int>> {

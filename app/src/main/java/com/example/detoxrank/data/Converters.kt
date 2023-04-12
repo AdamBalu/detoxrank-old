@@ -1,6 +1,7 @@
 package com.example.detoxrank.data
 
 import androidx.room.TypeConverter
+import com.example.detoxrank.data.achievements.AchievementDifficulty
 import com.example.detoxrank.data.chapter.ChapterDifficulty
 import com.example.detoxrank.data.chapter.ChapterTag
 import com.example.detoxrank.data.task.TaskDurationCategory
@@ -39,4 +40,10 @@ class Converters {
     fun fromRank(rank: Rank): String = rank.name
     @TypeConverter
     fun toRank(rank: String): Rank = Rank.valueOf(rank)
+
+    @TypeConverter
+    fun fromAchievementDifficulty(difficulty: AchievementDifficulty): String = difficulty.name
+
+    @TypeConverter
+    fun toAchievementDifficulty(difficulty: String): AchievementDifficulty = AchievementDifficulty.valueOf(difficulty)
 }

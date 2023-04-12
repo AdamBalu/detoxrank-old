@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.detoxrank.*
 import com.example.detoxrank.R
 import com.example.detoxrank.data.chapter.Chapter
 import com.example.detoxrank.data.chapter.ChapterDifficulty
@@ -265,15 +266,33 @@ fun CompleteChapterIconButton(
         ChapterDifficulty.Hard -> 500
         else -> 0
     }
+    val xpPointsGain = when (chapter.value?.difficulty) {
+        ChapterDifficulty.Easy -> 80
+        ChapterDifficulty.Medium -> 120
+        ChapterDifficulty.Hard -> 175
+        else -> 0
+    }
     FilledIconButton(
         onClick = {
             onClick()
             theoryViewModel.setChapterCompletionValue(chapter.value)
             coroutineScope.launch {
                 if (chapter.value != null) {
-                    if (!chapter.value!!.wasCompleted)
+                    if (!chapter.value!!.wasCompleted) {
                         detoxRankViewModel.updateUserRankPoints(rankPointsGain)
+                        detoxRankViewModel.updateUserXPPoints(xpPointsGain)
+                    }
                 }
+                val idOfAchievementToComplete = when (chapter.value?.id) {
+                    1 -> ID_FINISH_CH_1
+                    2 -> ID_FINISH_CH_2
+                    3 -> ID_FINISH_CH_3
+                    4 -> ID_FINISH_CH_4
+                    5 -> ID_FINISH_CH_5
+                    6 -> ID_FINISH_CH_6
+                    else -> ID_FINISH_CH_1
+                }
+                detoxRankViewModel.completeAchievement(idOfAchievementToComplete)
             }
         },
         modifier = modifier

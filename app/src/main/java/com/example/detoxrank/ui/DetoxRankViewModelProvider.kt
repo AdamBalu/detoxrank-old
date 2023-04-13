@@ -35,6 +35,7 @@ object DetoxRankViewModelProvider {
 
         initializer {
             TaskViewModel(
+                detoxRankApplication(),
                 tasksRepository = detoxRankApplication().container.tasksRepository,
                 wmTasksRepository = detoxRankApplication().container.wmTasksRepository
 //                application = this[APPLICATION_KEY] as DetoxRankApp

@@ -10,4 +10,6 @@ class OfflineUserDataRepository(private val userDataDao: UserDataDao) : UserData
     override fun updatePagesRead(amount: Int) = userDataDao.updatePagesRead(amount)
     override fun updateRankPoints(amount: Int) = userDataDao.updateRankPoints(amount)
     override fun updateXpPoints(amount: Int) = userDataDao.updateXpPoints(amount)
+    override fun updateTimerStartTimeMillis(time: Long) = userDataDao.updateTimerStartTimeMillis(time)
+    override fun updateTimerStarted(value: Boolean) = userDataDao.updateTimerStarted(value)
 }

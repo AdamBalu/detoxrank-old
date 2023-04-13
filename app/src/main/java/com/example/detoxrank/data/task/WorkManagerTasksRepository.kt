@@ -5,7 +5,7 @@ import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.detoxrank.KEY_TASK_DURATION
+import com.example.detoxrank.ui.utils.Constants.KEY_TASK_DURATION
 import com.example.detoxrank.workers.TaskWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -43,8 +43,8 @@ class WorkManagerTasksRepository(context: Context) : WMTasksRepository {
         val millisUntilEndOfMonth = endOfMonth.timeInMillis - systemTimeMillis
 
         val repeatingRequestDay = PeriodicWorkRequestBuilder<TaskWorker>(
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES)
+            repeatInterval = 1,
+            repeatIntervalTimeUnit = TimeUnit.DAYS)
             .setInitialDelay(millisUntilMidnight, TimeUnit.MILLISECONDS)
             .setInputData(createInputDataForWorkRequest(TaskDurationCategory.Daily))
             .build()
@@ -97,24 +97,7 @@ class WorkManagerTasksRepository(context: Context) : WMTasksRepository {
 //            workManager.enqueue(oneTimeRequestMonth)
 //        }
     }
-    override fun checkNewMonthTasksTest() {
-        /* TODO */
-    }
-// TODO idk how to run this each month at the end of it..
-//    override fun checkNewMonthTasksTest() {
-//        val endOfMonth = Calendar.getInstance().apply {
-//            set(Calendar.HOUR_OF_DAY, 19)
-//            set(Calendar.MINUTE, 55)
-//            set(Calendar.SECOND, 30)
-//        }
-//        if (endOfMonth.timeInMillis <= System.currentTimeMillis()) {
-//            val oneTimeRequestMonth = OneTimeWorkRequestBuilder<TaskWorker>()
-//                .setInputData(createInputDataForWorkRequest(TaskDurationCategory.Monthly))
-//                .build()
-//            workManager.enqueue(oneTimeRequestMonth)
-//            endOfMonth.set(Calendar.DAY_OF_MONTH, 1)
-//        }
-//    }
+    override fun checkNewMonthTasksTest() {}
 }
 
 private fun createInputDataForWorkRequest(taskDurationCategory: TaskDurationCategory): Data {

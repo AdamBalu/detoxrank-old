@@ -4,12 +4,12 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.detoxrank.KEY_TASK_DURATION
 import com.example.detoxrank.data.AppDatabase
 import com.example.detoxrank.data.achievements.OfflineAchievementRepository
 import com.example.detoxrank.data.task.OfflineTasksRepository
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.user.OfflineUserDataRepository
+import com.example.detoxrank.ui.utils.Constants.KEY_TASK_DURATION
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -34,6 +34,7 @@ class TaskWorker(
                 }
                 Log.d("TaskWorker", "Got into coroutine context, category:<${category}>")
                 tasksRepository.getNewTasks(category)
+                Log.d("TaskWorker", "Got new tasks")
                 Result.success()
             } catch(throwable: Throwable) {
                 Result.failure()

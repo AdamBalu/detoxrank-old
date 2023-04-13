@@ -118,7 +118,7 @@ fun CreateTaskMenu(
                             TaskUiState(
                                 description = viewModel.createdTaskDescription.value,
                                 completed = false,
-                                category = TaskDurationCategory.Uncategorized,
+                                durationCategory = TaskDurationCategory.Uncategorized,
                                 iconCategory = viewModel.createdTaskSelectedIcon.value,
                                 selectedAsCurrentTask = true
                             )

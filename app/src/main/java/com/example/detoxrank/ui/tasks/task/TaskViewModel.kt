@@ -1,26 +1,46 @@
 package com.example.detoxrank.ui.tasks.task
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TasksRepository
 import com.example.detoxrank.data.task.WMTasksRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_DAILY
+import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
+import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_WEEKLY
 import kotlinx.coroutines.delay
 
-class TaskViewModel(private val tasksRepository: TasksRepository,
-                    private val wmTasksRepository: WMTasksRepository) : ViewModel() {
+class TaskViewModel(
+    application: Application,
+    private val tasksRepository: TasksRepository,
+    private val wmTasksRepository: WMTasksRepository
+    ) : AndroidViewModel(application) {
+    private val sharedPrefs = application.getSharedPreferences(
+        application.packageName + "_preferences",
+        Context.MODE_PRIVATE
+    )
+
+    suspend fun firstRunGetTasks() {
+        val firstRun = sharedPrefs.getBoolean("first_run", true)
+        Log.d("Tasks", "First run: $firstRun")
+        if (firstRun) {
+            getNewTasks(TaskDurationCategory.Daily, NUMBER_OF_TASKS_DAILY)
+            getNewTasks(TaskDurationCategory.Weekly, NUMBER_OF_TASKS_WEEKLY)
+            getNewTasks(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
+            wmTasksRepository.getNewTasks()
+            sharedPrefs.edit().putBoolean("first_run", false).apply()
+        }
+    }
+
     var taskUiState by mutableStateOf(TaskUiState())
         private set
-
-    private val scope = CoroutineScope(Dispatchers.IO)
-
-    val isShown = mutableStateOf(false)
 
     fun updateUiState(newTaskUiState: TaskUiState) {
         taskUiState = newTaskUiState.copy()
@@ -35,15 +55,11 @@ class TaskViewModel(private val tasksRepository: TasksRepository,
             tasksRepository.updateTask(taskUiState.toTask())
     }
 
-    fun getNewTasks() {
-        wmTasksRepository.getNewTasks()
-    }
-
     fun checkNewMonthTasksTest() {
         wmTasksRepository.checkNewMonthTasksTest()
     }
 
-    suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory, numberOfTasks: Int) {
+    private suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory, numberOfTasks: Int) {
         tasksRepository.resetTasksFromCategory(durationCategory = taskDurationCategory)
         tasksRepository.selectNRandomTasksByDuration(taskDurationCategory, numberOfTasks)
     }

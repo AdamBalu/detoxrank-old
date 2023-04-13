@@ -30,6 +30,12 @@ import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.theory.TheoryViewModel
 import com.example.detoxrank.ui.utils.AnimationBox
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_1
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_2
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_3
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_4
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_5
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
 import com.example.detoxrank.ui.utils.RankPointsGain
 import kotlinx.coroutines.launch
 

@@ -116,6 +116,18 @@ class DetoxRankViewModel(
         updateUserData()
     }
 
+    suspend fun updateTimerStartedTimeMillis() {
+        withContext(Dispatchers.IO) {
+            userDataRepository.updateTimerStartTimeMillis(System.currentTimeMillis())
+        }
+    }
+
+    suspend fun updateTimerStarted(value: Boolean) {
+        withContext(Dispatchers.IO) {
+            userDataRepository.updateTimerStarted(value)
+        }
+    }
+
     fun setLevelProgressBar(value: Float) {
         _uiState.update {
             it.copy(

@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui.timer
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -40,6 +41,9 @@ fun TimerDifficultySelectScreen(
         ),
         exit = slideOutVertically(animationSpec = tween(durationMillis = 500)) { height -> height }
     ) {
+        BackHandler {
+            timerViewModel.setDifficultySelectShown(false)
+        }
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()

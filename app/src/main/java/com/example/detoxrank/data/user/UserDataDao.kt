@@ -25,4 +25,12 @@ interface UserDataDao {
     @Transaction
     @Query("UPDATE user_data SET xp_points = xp_points + :amount WHERE id = 1")
     fun updateXpPoints(amount: Int)
+
+    @Transaction
+    @Query("UPDATE user_data SET timer_start_time = :time WHERE id = 1")
+    fun updateTimerStartTimeMillis(time: Long)
+
+    @Transaction
+    @Query("UPDATE user_data SET timer_started = :value WHERE id = 1")
+    fun updateTimerStarted(value: Boolean)
 }

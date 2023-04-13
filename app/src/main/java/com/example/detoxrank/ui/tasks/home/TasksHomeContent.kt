@@ -1,6 +1,5 @@
 package com.example.detoxrank.ui.tasks.home
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -99,6 +97,10 @@ fun TasksContent(
     val tasksToAdd = LocalTasksDataProvider.tasks
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        taskViewModel.firstRunGetTasks()
+    }
+
     Row(modifier = modifier.fillMaxSize()) {
         // navigation rail (side)
         AnimatedVisibility(
@@ -114,11 +116,13 @@ fun TasksContent(
             floatingActionButton = {
                 FloatingActionButton(onClick = {
 //                    coroutineScope.launch { // DATA uncomment to fill task db
+////                        taskViewModel.deleteAllTasksInDb()
 //                        tasksToAdd.forEach {
 //                            taskViewModel.updateUiState(it.toTaskUiState())
 //                            taskViewModel.insertTaskToDatabase()
 //                        }
 //                    }
+
                     viewModel.invertCreateTaskMenuShownValue()
                 }) {
                     Icon(
@@ -220,15 +224,6 @@ fun TasksHeading(
     val currentTimeMillis = System.currentTimeMillis()
 
     taskViewModel.checkNewMonthTasksTest()
-
-    val context = LocalContext.current // DATA add back later
-    val prefs = remember { context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE) }
-    val isFirstLaunch = remember { prefs.getBoolean("first_run_tasks_v1", true) }
-    if (isFirstLaunch) {
-        prefs.edit().putBoolean("first_run_tasks_v1", false).apply()
-        taskViewModel.getNewTasks()
-        taskViewModel.isShown.value = true
-    }
 
     val timeDiff = midnight.timeInMillis - currentTimeMillis
 

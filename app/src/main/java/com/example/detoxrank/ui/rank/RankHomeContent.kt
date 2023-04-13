@@ -186,11 +186,10 @@ fun RankMainScreenBody(
         }
         Button(
             onClick = {
-                /* TODO display lazy vertical grid of achievements */
                 rankViewModel.setAchievementsDisplayed(true)
             },
             modifier = Modifier
-                .padding(top = 135.dp)
+                .padding(top = 5.dp)
                 .fillMaxWidth(0.75f)
         ) {
             Text(

@@ -1,8 +1,37 @@
 package com.example.detoxrank.data.local
 
-import com.example.detoxrank.*
 import com.example.detoxrank.data.achievements.Achievement
 import com.example.detoxrank.data.achievements.AchievementDifficulty
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_100_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_10_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_250_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_25_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_50_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_5_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_ALL_CH
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_1
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_2
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_3
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_4
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_5
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
+import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_5_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_A_BOOK
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_10_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_3_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_5_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_7_KM
+import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_14_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_30_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_3_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_7_DAYS
 
 object LocalAchievementDataProvider {
     val allAchievements = listOf(
@@ -140,7 +169,7 @@ object LocalAchievementDataProvider {
         ),
         Achievement(
             id = ID_FINISH_50_TASKS,
-            name = "Nobody stops me",
+            name = "Proud tasker",
             description = "Finish 50 tasks",
             difficulty = AchievementDifficulty.VERY_HARD
         ),

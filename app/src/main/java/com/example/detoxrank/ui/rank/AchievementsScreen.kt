@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui.rank
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -53,6 +54,9 @@ fun AchievementsScreen(
         enter = slideInVertically(initialOffsetY = { 2 * (it / 2) }, animationSpec = tween(durationMillis = 600)),
         exit = slideOutVertically(targetOffsetY = {-it * 2}, animationSpec = tween(durationMillis = 600) {x -> -x})
     ) {
+        BackHandler {
+            rankViewModel.setAchievementsDisplayed(false)
+        }
         Box(modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)) {

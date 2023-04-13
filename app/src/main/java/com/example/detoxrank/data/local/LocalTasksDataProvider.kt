@@ -1,9 +1,14 @@
 package com.example.detoxrank.data.local
 
-import com.example.detoxrank.*
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
+import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_3_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_5_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_7_KM
 
 object LocalTasksDataProvider {
     val tasks = listOf(

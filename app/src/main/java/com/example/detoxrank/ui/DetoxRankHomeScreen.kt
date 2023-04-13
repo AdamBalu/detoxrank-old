@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
@@ -240,6 +241,7 @@ fun DetoxRankTopAppBar(
 
     LaunchedEffect(Unit) {
         val xpPoints = detoxRankViewModel.getUserXPPoints()
+        Log.d("XPPoints", "$xpPoints")
         val currentLevelToUpdate = getCurrentLevelFromXP(xpPoints = xpPoints)
         detoxRankViewModel.setCurrentLevel(currentLevelToUpdate)
 
@@ -258,10 +260,10 @@ fun DetoxRankTopAppBar(
     val xpBarHeight: Dp
     when (currentLevel) {
         in 0..14 -> {
-            levelBadgeSize = 55.dp
-            xpBarPaddingStart = 42.dp
-            xpBarPaddingTop = 18.dp
-            xpBarHeight = 32.dp
+            levelBadgeSize = 42.dp
+            xpBarPaddingStart = 32.dp
+            xpBarPaddingTop = 12.dp
+            xpBarHeight = 25.dp
         }
         in 15..25 -> {
             levelBadgeSize = 65.dp
@@ -280,13 +282,6 @@ fun DetoxRankTopAppBar(
         verticalArrangement = Arrangement.Center,
         modifier = modifier.padding(top = 12.dp, start = 20.dp)
     ) {
-//                    Text(
-//                        "Rank and Achievements",
-//                        style = Typography.titleMedium,
-//                        fontSize = 20.sp,
-//                        textAlign = TextAlign.Start,
-//                        modifier = Modifier.fillMaxWidth()
-//                    )
         Box {
             Image(
                 painterResource(getLevelDrawableId(currentLevel)),

@@ -20,7 +20,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun chapterDao(): ChapterDao
     abstract fun userDataDao(): UserDataDao
-
     abstract fun achievementDao(): AchievementDao
 
     companion object {
@@ -34,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-//                    .createFromAsset("database/app_database.db")
+                    .createFromAsset("database/app_database.db")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also {

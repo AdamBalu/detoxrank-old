@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.CardDefaults.elevatedCardColors
@@ -72,11 +72,13 @@ fun AchievementsScreen(
 //            }
             Column(modifier = Modifier.align(Alignment.TopCenter)) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowDownward,
+                    imageVector = Icons.Filled.KeyboardArrowDown,
+                    tint = MaterialTheme.colorScheme.inversePrimary,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 20.dp)
+                        .padding(top = 8.dp)
+                        .size(30.dp)
                         .clickable {
                             rankViewModel.setAchievementsDisplayed(false)
                         }
@@ -89,7 +91,7 @@ fun AchievementsScreen(
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 10.dp, top = 10.dp)
+                                .padding(bottom = 10.dp, top = 2.dp)
                         )
                     }
                     items(state.achievementList) { achievement ->

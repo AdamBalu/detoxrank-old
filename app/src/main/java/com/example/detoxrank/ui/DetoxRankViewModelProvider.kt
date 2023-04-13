@@ -1,7 +1,6 @@
 package com.example.detoxrank.ui
 
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -23,7 +22,8 @@ object DetoxRankViewModelProvider {
 
         initializer {
             RankViewModel(
-                achievementRepository = detoxRankApplication().container.achievementRepository
+                achievementRepository = detoxRankApplication().container.achievementRepository,
+                userDataRepository = detoxRankApplication().container.userDataRepository
             )
         }
 
@@ -44,7 +44,6 @@ object DetoxRankViewModelProvider {
 
         initializer {
             TheoryViewModel(
-                this.createSavedStateHandle(),
                 chaptersRepository = detoxRankApplication().container.chaptersRepository
             )
         }

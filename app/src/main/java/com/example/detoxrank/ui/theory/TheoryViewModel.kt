@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.detoxrank.data.chapter.Chapter
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class TheoryViewModel(
-    savedStateHandle: SavedStateHandle,
     private val chaptersRepository: ChaptersRepository
 ) : ViewModel() {
     val theoryHomeUiState: StateFlow<TheoryHomeUiState> = chaptersRepository

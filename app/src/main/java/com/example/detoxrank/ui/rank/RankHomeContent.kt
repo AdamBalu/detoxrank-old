@@ -1,33 +1,25 @@
 package com.example.detoxrank.ui.rank
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
-import com.example.detoxrank.data.user.Rank
 import com.example.detoxrank.ui.*
-import com.example.detoxrank.ui.theme.rank_color
-import com.example.detoxrank.ui.theme.rank_color_shade
-import com.example.detoxrank.ui.theme.rank_color_ultra_dark
+import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun RankHomeScreen(
     navigationItemContentList: List<NavigationItemContent>,
@@ -38,7 +30,6 @@ fun RankHomeScreen(
     modifier: Modifier = Modifier,
     rankViewModel: RankViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
-    val coroutineScope = rememberCoroutineScope()
     if (navigationType == DetoxRankNavigationType.PERMANENT_NAVIGATION_DRAWER) {
         PermanentNavigationDrawer(drawerContent = {
             PermanentDrawerSheet(modifier.width(240.dp)) {
@@ -130,97 +121,68 @@ fun RankMainScreenBody(
     rankViewModel: RankViewModel,
     modifier: Modifier = Modifier
 ) {
-    var currRankPair: Pair<Rank, Pair<Int, Int>>
-
-    var currentRank = detoxRankViewModel.getCurrentRank()
-
     LaunchedEffect(Unit) {
+        rankViewModel.setLocalRankPoints()
         val rankPoints = detoxRankViewModel.getUserRankPoints()
-        currRankPair = detoxRankViewModel.getCurrentRank(rankPoints)
-        currentRank = currRankPair.first
+        val currRankPair = detoxRankViewModel.getCurrentRank(rankPoints)
+        val currentRank = currRankPair.first
+        rankViewModel.setLocalRankBounds(currRankPair.second)
         detoxRankViewModel.setCurrentRank(currentRank)
         detoxRankViewModel.setRankProgressBar((rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first))
     }
 
-    val animatedProgress = animateFloatAsState(
-        targetValue = detoxRankViewModel.getRankProgressBarValue(),
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-    ).value
-
-    Box(modifier = Modifier.fillMaxSize().zIndex(1f)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .zIndex(1f)) {
         AchievementsScreen(detoxRankViewModel = detoxRankViewModel, rankViewModel = rankViewModel)
     }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxSize()
     ) {
-        Image(
-            painterResource(id = getRankDrawableId(currentRank)),
-            contentDescription = null,
-            modifier = Modifier.padding(bottom = 35.dp, start = 16.dp, end = 16.dp)
-        )
-        Box {
-            LinearProgressIndicator(
-                progress = animatedProgress,
-                color = rank_color,
-                trackColor = rank_color_ultra_dark,
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .height(32.dp)
-                    .padding(start = 16.dp, end = 16.dp)
-                    .clip(RoundedCornerShape(19.dp))
-                    .border(BorderStroke(4.dp, rank_color), RoundedCornerShape(19.dp))
-            )
-            LinearProgressIndicator(
-                progress = animatedProgress - 0.1f,
-                color = rank_color_shade,
-                trackColor = Color.Transparent,
-                modifier = Modifier
-                    .fillMaxWidth(0.75f)
-                    .height(16.dp)
-                    .padding(start = 30.dp, top = 8.dp)
-                    .clip(RoundedCornerShape(29.dp))
+        AnimationBox(enter = slideInVertically() {x -> x / 40} + fadeIn()) {
+            RankWithProgressBar(
+                detoxRankViewModel = detoxRankViewModel,
+                rankViewModel = rankViewModel
             )
         }
-        Button(
-            onClick = {
-                rankViewModel.setAchievementsDisplayed(true)
-            },
-            modifier = Modifier
-                .padding(top = 5.dp)
-                .fillMaxWidth(0.75f)
-        ) {
-            Text(
-                "ACHIEVEMENTS",
-                modifier = Modifier.padding(top = 15.dp, bottom = 15.dp)
-            )
+
+        AnimationBox(enter = slideInVertically() { x -> x / 2 }) {
+            Button(
+                onClick = {
+                    rankViewModel.setAchievementsDisplayed(true)
+                },
+                shape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .fillMaxWidth(0.75f),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            ) {
+                Row(horizontalArrangement = Arrangement.Center) {
+                    Icon(
+                        Icons.Filled.KeyboardArrowUp,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 15.dp, top = 10.dp),
+                        tint = MaterialTheme.colorScheme.inversePrimary
+                    )
+                    Text(
+                        "ACHIEVEMENTS",
+                        modifier = Modifier.padding(top = 15.dp, bottom = 15.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Icon(
+                        Icons.Filled.KeyboardArrowUp,
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 15.dp, top = 10.dp),
+                        tint = MaterialTheme.colorScheme.inversePrimary
+                    )
+                }
+            }
         }
-    }
-}
-
-
-
-@DrawableRes
-private fun getRankDrawableId(rank: Rank): Int {
-    return when (rank) {
-        Rank.Bronze1 -> R.drawable.bronze_1
-        Rank.Bronze2 -> R.drawable.bronze_2
-        Rank.Bronze3 -> R.drawable.bronze_3
-        Rank.Silver1 -> R.drawable.silver_1
-        Rank.Silver2 -> R.drawable.silver_2
-        Rank.Silver3 -> R.drawable.silver_3
-        Rank.Gold1 -> R.drawable.gold_1
-        Rank.Gold2 -> R.drawable.gold_2
-        Rank.Gold3 -> R.drawable.gold_3
-        Rank.Platinum1 -> R.drawable.bronze_1
-        Rank.Platinum2 -> R.drawable.bronze_1
-        Rank.Platinum3 -> R.drawable.bronze_1
-        Rank.Diamond1 -> R.drawable.bronze_1
-        Rank.Diamond2 -> R.drawable.bronze_1
-        Rank.Diamond3 -> R.drawable.bronze_1
-        Rank.Master -> R.drawable.bronze_1
-        Rank.Legend -> R.drawable.bronze_1
     }
 }

@@ -11,7 +11,7 @@ enum class UiTheme {
     Default, Light, Dark, Monochrome, GreenShades, BlueShades
 }
 
-enum class Rank(name: String) {
+enum class Rank(val rankName: String) {
     Bronze1("Bronze I"), Bronze2("Bronze II"), Bronze3("Bronze III"),
     Silver1("Silver I"), Silver2("Silver II"), Silver3("Silver III"),
     Gold1("Gold I"), Gold2("Gold II"), Gold3("Gold III"),

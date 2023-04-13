@@ -199,7 +199,7 @@ fun TimerBody(
                 )
             }
         }
-        AnimationBox {
+        AnimationBox(enter = slideInVertically() {x -> x - 400 } + fadeIn()) {
             TimerFooter(
                 timerService = timerService,
                 detoxRankUiState = detoxRankUiState,

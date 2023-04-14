@@ -209,10 +209,10 @@ fun TheoryChapterFooter(
         if (!chapter.wasCompleted) {
             RankPointsGain(
                 rankPointsGain = rankPointsGain,
-                horizontalArrangement = Arrangement.End,
                 plusIconSize = 16.dp,
+                shieldIconSize = 20.dp,
                 fontSize = 16.sp,
-                shieldIconSize = 20.dp
+                horizontalArrangement = Arrangement.End
             )
 
         } else {

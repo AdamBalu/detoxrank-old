@@ -1,5 +1,6 @@
 package com.example.detoxrank.data.user
 
+import com.example.detoxrank.data.TimerDifficulty
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
@@ -11,4 +12,5 @@ interface UserDataRepository {
     fun updateXpPoints(amount: Int)
     fun updateTimerStartTimeMillis(time: Long)
     fun updateTimerStarted(value: Boolean)
+    fun updateTimerDifficulty(value: TimerDifficulty)
 }

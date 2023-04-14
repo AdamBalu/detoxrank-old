@@ -1,5 +1,6 @@
 package com.example.detoxrank.data.task
 
+import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.data.achievements.AchievementRepository
 import com.example.detoxrank.data.user.UserDataRepository
 import com.example.detoxrank.ui.utils.Constants.DAILY_TASK_RP_GAIN
@@ -33,6 +34,9 @@ import com.example.detoxrank.ui.utils.Constants.PAGES_50
 import com.example.detoxrank.ui.utils.Constants.READ_10_BOOKS_PAGE_NUM
 import com.example.detoxrank.ui.utils.Constants.READ_1_BOOK_PAGE_NUM
 import com.example.detoxrank.ui.utils.Constants.READ_5_BOOKS_PAGE_NUM
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_HARD
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_MEDIUM
 import com.example.detoxrank.ui.utils.Constants.WEEKLY_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.WEEKLY_TASK_XP_GAIN
 import kotlinx.coroutines.flow.Flow
@@ -112,8 +116,15 @@ class OfflineTasksRepository(
         taskDurationCategory: TaskDurationCategory,
         completedTasksNum: Int
     ) {
+
+        val percentageGain = when (userDataRepository.getUserStream().first().timerDifficulty) {
+            TimerDifficulty.Easy -> RP_PERCENTAGE_GAIN_EASY / 100.0
+            TimerDifficulty.Medium -> RP_PERCENTAGE_GAIN_MEDIUM / 100.0
+            TimerDifficulty.Hard -> RP_PERCENTAGE_GAIN_HARD / 100.0
+        }
+
         if (completedTasksNum > 0) {
-            userDataRepository.updateRankPoints(rpGain * completedTasksNum)
+            userDataRepository.updateRankPoints(completedTasksNum * (rpGain + (rpGain * percentageGain).toInt()))
             userDataRepository.updateXpPoints(xpGain * completedTasksNum)
         }
         resetTasksFromCategory(taskDurationCategory)

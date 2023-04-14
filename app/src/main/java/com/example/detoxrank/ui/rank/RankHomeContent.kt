@@ -104,7 +104,7 @@ fun RankContent(
                     modifier = Modifier.padding(paddingValues)
                 )
             } else {
-                RankMainScreenBody(
+                RankMainScreenBodyLarge(
                     detoxRankViewModel = detoxRankViewModel,
                     rankViewModel = rankViewModel,
                     modifier = Modifier.padding(paddingValues)
@@ -134,7 +134,7 @@ fun RankMainScreenBody(
     Box(modifier = Modifier
         .fillMaxSize()
         .zIndex(1f)) {
-        AchievementsScreen(detoxRankViewModel = detoxRankViewModel, rankViewModel = rankViewModel)
+        AchievementsScreen(rankViewModel = rankViewModel)
     }
 
     Column(
@@ -179,6 +179,79 @@ fun RankMainScreenBody(
                         Icons.Filled.KeyboardArrowUp,
                         contentDescription = null,
                         modifier = Modifier.padding(start = 15.dp, top = 10.dp),
+                        tint = MaterialTheme.colorScheme.inversePrimary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RankMainScreenBodyLarge(
+    detoxRankViewModel: DetoxRankViewModel,
+    rankViewModel: RankViewModel,
+    modifier: Modifier = Modifier
+) {
+    LaunchedEffect(Unit) {
+        rankViewModel.setLocalRankPoints()
+        val rankPoints = detoxRankViewModel.getUserRankPoints()
+        val currRankPair = detoxRankViewModel.getCurrentRank(rankPoints)
+        val currentRank = currRankPair.first
+        rankViewModel.setLocalRankBounds(currRankPair.second)
+        detoxRankViewModel.setCurrentRank(currentRank)
+        detoxRankViewModel.setRankProgressBar((rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first))
+    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .zIndex(1f)) {
+        AchievementsScreen(rankViewModel = rankViewModel)
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxSize()
+    ) {
+        AnimationBox(enter = slideInVertically() {x -> x / 40} + fadeIn()) {
+            RankWithProgressBarLarge(
+                detoxRankViewModel = detoxRankViewModel,
+                rankViewModel = rankViewModel
+            )
+        }
+
+        AnimationBox(enter = slideInVertically() { x -> x / 2 }) {
+            Button(
+                onClick = {
+                    rankViewModel.setAchievementsDisplayed(true)
+                },
+                shape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .fillMaxWidth(0.55f)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            ) {
+                Row(horizontalArrangement = Arrangement.Center) {
+                    Icon(
+                        Icons.Filled.KeyboardArrowUp,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 15.dp, top = 5.dp),
+                        tint = MaterialTheme.colorScheme.inversePrimary
+                    )
+                    Text(
+                        "ACHIEVEMENTS",
+                        modifier = Modifier.padding(top = 9.dp, bottom = 5.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Icon(
+                        Icons.Filled.KeyboardArrowUp,
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 15.dp, top = 5.dp),
                         tint = MaterialTheme.colorScheme.inversePrimary
                     )
                 }

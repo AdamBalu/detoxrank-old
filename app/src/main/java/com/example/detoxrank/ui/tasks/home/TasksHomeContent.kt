@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -94,6 +95,7 @@ fun TasksContent(
 ) {
     val tasksHomeUiState by viewModel.tasksHomeUiState.collectAsState()
 
+    val customTaskStartEndPadding = (LocalConfiguration.current.screenWidthDp / 6).dp
     val tasksToAdd = LocalTasksDataProvider.tasks
     val coroutineScope = rememberCoroutineScope()
 
@@ -157,7 +159,7 @@ fun TasksContent(
                         taskViewModel = taskViewModel,
                         modifier = Modifier
                             .fillMaxHeight(0.75f)
-                            .padding(start = 25.dp, end = 25.dp)
+                            .padding(start = 6.dp, end = 6.dp)
                     )
                 }
                 TaskList(
@@ -181,8 +183,8 @@ fun TasksContent(
                         viewModel = viewModel,
                         taskViewModel = taskViewModel,
                         modifier = Modifier
-                            .fillMaxHeight(0.75f)
-                            .padding(start = 35.dp, end = 35.dp)
+                            .fillMaxHeight(0.85f)
+                            .padding(start = customTaskStartEndPadding, end = customTaskStartEndPadding)
                     )
                 }
                 TaskList(

@@ -1,5 +1,6 @@
 package com.example.detoxrank.data.user
 
+import com.example.detoxrank.data.TimerDifficulty
 import kotlinx.coroutines.flow.Flow
 
 class OfflineUserDataRepository(private val userDataDao: UserDataDao) : UserDataRepository {
@@ -12,4 +13,5 @@ class OfflineUserDataRepository(private val userDataDao: UserDataDao) : UserData
     override fun updateXpPoints(amount: Int) = userDataDao.updateXpPoints(amount)
     override fun updateTimerStartTimeMillis(time: Long) = userDataDao.updateTimerStartTimeMillis(time)
     override fun updateTimerStarted(value: Boolean) = userDataDao.updateTimerStarted(value)
+    override fun updateTimerDifficulty(value: TimerDifficulty) = userDataDao.updateTimerDifficulty(value)
 }

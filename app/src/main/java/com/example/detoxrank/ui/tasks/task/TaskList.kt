@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui.tasks.task
 
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
@@ -16,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -24,23 +26,25 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.*
 import com.example.detoxrank.R
+import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.DetoxRankViewModelProvider
 import com.example.detoxrank.ui.tasks.home.TasksHeading
-import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
-import com.example.detoxrank.ui.theme.md_theme_light_tertiary
-import com.example.detoxrank.ui.theme.rank_color_ultra_dark
-import com.example.detoxrank.ui.theme.rank_color_ultra_light
+import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.Constants.DAILY_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.MONTHLY_TASK_RP_GAIN
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_HARD
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_MEDIUM
 import com.example.detoxrank.ui.utils.Constants.UNCATEGORIZED_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.WEEKLY_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.RankPointsGain
 import com.example.detoxrank.ui.utils.getIcon
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -203,11 +207,32 @@ fun Task(
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
+    var ownTaskWasTapped by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        val timerDifficultyFromDb = detoxRankViewModel.getUserTimerDifficulty()
+        detoxRankViewModel.setCurrentTimerDifficulty(timerDifficultyFromDb)
+        val isTimerStartedFromDb = detoxRankViewModel.getUserTimerStarted()
+        detoxRankViewModel.setTimerStarted(isTimerStartedFromDb)
+    }
+
+    val uiState = detoxRankViewModel.uiState.collectAsState().value
+    val multiplier = if (uiState.isTimerStarted) {
+        when (uiState.currentTimerDifficulty) {
+            TimerDifficulty.Easy -> RP_PERCENTAGE_GAIN_EASY / 100.0
+            TimerDifficulty.Medium -> RP_PERCENTAGE_GAIN_MEDIUM / 100.0
+            TimerDifficulty.Hard -> RP_PERCENTAGE_GAIN_HARD / 100.0
+        }
+    } else {
+        0.0
+    }
+
     val rankPointsGain = when (task.durationCategory) {
-        TaskDurationCategory.Daily -> DAILY_TASK_RP_GAIN
-        TaskDurationCategory.Weekly -> WEEKLY_TASK_RP_GAIN
-        TaskDurationCategory.Monthly -> MONTHLY_TASK_RP_GAIN
-        TaskDurationCategory.Uncategorized -> UNCATEGORIZED_TASK_RP_GAIN
+        TaskDurationCategory.Daily -> DAILY_TASK_RP_GAIN + (DAILY_TASK_RP_GAIN * multiplier).toInt()
+        TaskDurationCategory.Weekly -> WEEKLY_TASK_RP_GAIN + (WEEKLY_TASK_RP_GAIN * multiplier).toInt()
+        TaskDurationCategory.Monthly -> MONTHLY_TASK_RP_GAIN + (MONTHLY_TASK_RP_GAIN * multiplier).toInt()
+        TaskDurationCategory.Uncategorized -> UNCATEGORIZED_TASK_RP_GAIN + (UNCATEGORIZED_TASK_RP_GAIN * multiplier).toInt()
     }
 
     val darkTheme = isSystemInDarkTheme()
@@ -219,18 +244,37 @@ fun Task(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                taskViewModel.updateUiState(
-                    task
-                        .copy(completed = !task.completed)
-                        .toTaskUiState()
-                )
+                if (task.durationCategory != TaskDurationCategory.Uncategorized) {
+                    taskViewModel.updateUiState(
+                        task
+                            .copy(completed = !task.completed)
+                            .toTaskUiState()
+                    )
+                } else {
+                    if (ownTaskWasTapped) {
+                        taskViewModel.updateUiState(
+                            task
+                                .copy(completed = !task.completed)
+                                .toTaskUiState()
+                        )
+                    }
+                }
+
                 coroutineScope.launch {
                     taskViewModel.updateTask()
                 }
                 if (task.durationCategory == TaskDurationCategory.Uncategorized) {
                     coroutineScope.launch {
-                        taskViewModel.deleteTask(task)
-                        detoxRankViewModel.updateUserRankPoints(rankPointsGain)
+                        if (!ownTaskWasTapped) {
+                            ownTaskWasTapped = true
+                            delay(1000)
+                            Toast.makeText(context, "Double tap to complete!", Toast.LENGTH_SHORT).show()
+                            ownTaskWasTapped = false
+                        } else {
+                            ownTaskWasTapped = false
+                            taskViewModel.deleteTask(task)
+                            detoxRankViewModel.updateUserRankPoints(rankPointsGain)
+                        }
                     }
                 }
             }
@@ -257,7 +301,7 @@ fun Task(
                     if (darkTheme)
                         CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
                     else
-                        CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer)
+                        CardDefaults.cardColors(md_theme_light_tertiaryContainerVariant)
                 TaskDurationCategory.Monthly ->
                     if (darkTheme)
                         CardDefaults.cardColors(MaterialTheme.colorScheme.onError)
@@ -303,10 +347,10 @@ fun Task(
                     ) {
                         RankPointsGain(
                             rankPointsGain = rankPointsGain,
-                            horizontalArrangement = Arrangement.Center,
                             plusIconSize = 10.dp,
+                            shieldIconSize = 11.dp,
                             fontSize = 10.sp,
-                            shieldIconSize = 11.dp
+                            horizontalArrangement = Arrangement.Center
                         )
                     }
                 }

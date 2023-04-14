@@ -1,6 +1,7 @@
 package com.example.detoxrank.data.user
 
 import androidx.room.*
+import com.example.detoxrank.data.TimerDifficulty
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,4 +34,7 @@ interface UserDataDao {
     @Transaction
     @Query("UPDATE user_data SET timer_started = :value WHERE id = 1")
     fun updateTimerStarted(value: Boolean)
+
+    @Query("UPDATE user_data SET timer_difficulty = :value WHERE id = 1")
+    fun updateTimerDifficulty(value: TimerDifficulty)
 }

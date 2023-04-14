@@ -11,5 +11,6 @@ data class DetoxRankUiState(
     val rankProgressBarProgression: Float = 0.0f,
     val levelProgressBarProgression: Float = 0.0f,
     val currentLevel: Int = 1,
-    val currentRank: Rank = Rank.Bronze1
+    val currentRank: Rank = Rank.Bronze1,
+    val isTimerStarted: Boolean = false
 )

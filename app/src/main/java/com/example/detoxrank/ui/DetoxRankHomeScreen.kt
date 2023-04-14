@@ -120,8 +120,7 @@ fun DetoxRankAppContent(
                 navigationItemContentList = navigationItemContentList,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
-                detoxRankViewModel = viewModel,
-                viewModel = viewModel
+                detoxRankViewModel = viewModel
             )
         }
         Section.Theory -> {

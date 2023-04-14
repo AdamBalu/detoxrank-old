@@ -1,11 +1,14 @@
 package com.example.detoxrank.ui.tasks.home
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,14 +18,11 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
 import com.example.detoxrank.ui.tasks.task.TaskUiState
@@ -44,12 +44,16 @@ fun CreateTaskMenu(
         enter = slideInVertically(animationSpec = tween(durationMillis = 500)) { height -> height },
         exit = slideOutVertically(animationSpec = tween(durationMillis = 500)) { height -> height }
     ) {
+        BackHandler {
+            viewModel.invertCreateTaskMenuShownValue()
+        }
         Column(
             modifier = modifier
                 .background(
-                    MaterialTheme.colorScheme.tertiaryContainer,
+                    MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
                 )
+                .border(BorderStroke(2.dp, MaterialTheme.colorScheme.outlineVariant), shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
                 .padding(start = 30.dp)
         ) {
             val context = LocalContext.current
@@ -60,7 +64,7 @@ fun CreateTaskMenu(
                 Text(
                     text = "Custom task",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(top = 5.dp)
@@ -74,7 +78,7 @@ fun CreateTaskMenu(
                     Icon(
                         Icons.Default.Close,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .align(Alignment.Top)
                             .size(32.dp)
@@ -83,9 +87,8 @@ fun CreateTaskMenu(
             }
             CategoryDropdownMenu(
                 options = TaskIconCategory.values(),
-                onValueSelected = { value -> viewModel.setCreatedTaskIcon(value) },
-                modifier = Modifier.padding(top = 20.dp, end = 30.dp),
-                viewModel = viewModel
+                viewModel = viewModel,
+                modifier = Modifier.padding(top = 20.dp, end = 30.dp)
             )
             OutlinedTextField(
                 viewModel.createdTaskDescription.value,
@@ -95,11 +98,11 @@ fun CreateTaskMenu(
                     .fillMaxWidth()
                     .padding(top = 20.dp, end = 30.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    focusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    focusedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    textColor = MaterialTheme.colorScheme.onSurface,
+                    focusedBorderColor = MaterialTheme.colorScheme.outline,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.outlineVariant,
+                    focusedLabelColor = MaterialTheme.colorScheme.outline
                 ),
                 maxLines = 3,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text),
@@ -113,10 +116,9 @@ fun CreateTaskMenu(
                         Toast.makeText(context, "Task is empty!", Toast.LENGTH_SHORT).show()
                     } else {
                         wasClicked = false
-
                         taskViewModel.updateUiState(
                             TaskUiState(
-                                description = viewModel.createdTaskDescription.value,
+                                description = viewModel.createdTaskDescription.value.trim(),
                                 completed = false,
                                 durationCategory = TaskDurationCategory.Uncategorized,
                                 iconCategory = viewModel.createdTaskSelectedIcon.value,
@@ -163,7 +165,6 @@ fun CreateTaskMenu(
 @Composable
 fun CategoryDropdownMenu(
     options: Array<TaskIconCategory>,
-    onValueSelected: (TaskIconCategory) -> Unit,
     viewModel: TasksHomeViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -183,16 +184,16 @@ fun CategoryDropdownMenu(
             leadingIcon = { Icon(getIcon(selectedItem), contentDescription = null) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                unfocusedLeadingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                focusedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer
+                containerColor = MaterialTheme.colorScheme.surface,
+                textColor = MaterialTheme.colorScheme.onSurface,
+                focusedBorderColor = MaterialTheme.colorScheme.outline,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
+                unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTrailingIconColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.outline
             )
         )
         ExposedDropdownMenu(
@@ -200,7 +201,7 @@ fun CategoryDropdownMenu(
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .height(250.dp)
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                .background(color = MaterialTheme.colorScheme.surface)
         ) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
@@ -213,23 +214,15 @@ fun CategoryDropdownMenu(
                         Icon(
                             getIcon(selectionOption),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            tint = MaterialTheme.colorScheme.secondary
                         )},
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     colors = MenuDefaults.itemColors(
-                        textColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        textColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
         }
 
     }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-fun CreateTaskMenuPreview() {
-    CreateTaskMenu(viewModel = viewModel(), taskViewModel = viewModel())
 }

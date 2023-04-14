@@ -34,13 +34,11 @@ import androidx.compose.ui.unit.dp
 import com.example.detoxrank.R
 import com.example.detoxrank.data.achievements.AchievementDifficulty
 import com.example.detoxrank.data.local.LocalAchievementDataProvider
-import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.utils.getAchievementDrawableFromId
 
 @Composable
 fun AchievementsScreen(
-    detoxRankViewModel: DetoxRankViewModel,
     rankViewModel: RankViewModel,
     modifier: Modifier = Modifier
 ) {

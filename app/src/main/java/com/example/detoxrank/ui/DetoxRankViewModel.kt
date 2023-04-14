@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.data.achievements.AchievementRepository
@@ -11,6 +12,7 @@ import com.example.detoxrank.data.user.Rank
 import com.example.detoxrank.data.user.UserDataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetoxRankViewModel(
@@ -41,11 +43,19 @@ class DetoxRankViewModel(
     /**
      * Update [timerDifficulty]
      */
-    fun setTimerDifficulty(value: TimerDifficulty) {
+    fun setTimerDifficultyUiState(value: TimerDifficulty) {
         _uiState.update {
             it.copy(
                 currentTimerDifficulty = value
             )
+        }
+    }
+
+    fun setTimerDifficultyDatabase(value: TimerDifficulty) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                userDataRepository.updateTimerDifficulty(value)
+            }
         }
     }
 
@@ -77,7 +87,7 @@ class DetoxRankViewModel(
         return userDataRepository.getUserStream().first().rankPoints
     }
 
-    private suspend fun updateUserData() {
+    suspend fun updateUserData() {
         userDataRepository.updateUserData(userDataUiState.toUserData())
     }
 
@@ -108,6 +118,14 @@ class DetoxRankViewModel(
 
     suspend fun getUserXPPoints(): Int {
         return userDataRepository.getUserStream().first().xpPoints
+    }
+
+    suspend fun getUserTimerDifficulty(): TimerDifficulty {
+        return userDataRepository.getUserStream().first().timerDifficulty
+    }
+
+    suspend fun getUserTimerStarted(): Boolean {
+        return userDataRepository.getUserStream().first().timerStarted
     }
 
     suspend fun updateUserXPPoints(toAdd: Int) {
@@ -148,6 +166,22 @@ class DetoxRankViewModel(
         _uiState.update {
             it.copy(
                 currentRank = rank
+            )
+        }
+    }
+
+    fun setCurrentTimerDifficulty(timerDifficulty: TimerDifficulty) {
+        _uiState.update {
+            it.copy(
+                currentTimerDifficulty = timerDifficulty
+            )
+        }
+    }
+
+    fun setTimerStarted(timerStarted: Boolean) {
+        _uiState.update {
+            it.copy(
+                isTimerStarted = timerStarted
             )
         }
     }

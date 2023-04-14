@@ -84,5 +84,7 @@ val epic_purple_toned_down = Color(0xFFD497F5)
 val very_epic_magenta_toned_down = Color(0xFFC270C9)
 val legendary_orange_toned_down = Color(0xFFDF9F5B)
 
+val md_theme_light_tertiaryContainerVariant = Color(0xFFBFFFA0)
+
 
 val seed = Color(0xFF004FF0)

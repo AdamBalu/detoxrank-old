@@ -31,8 +31,7 @@ fun RankPointsGain(
     plusIconSize: Dp,
     shieldIconSize: Dp,
     fontSize: TextUnit,
-    horizontalArrangement: Arrangement.Horizontal,
-    modifier: Modifier = Modifier
+    horizontalArrangement: Arrangement.Horizontal
 ) {
     // rank points gain
     Row(

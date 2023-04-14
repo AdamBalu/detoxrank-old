@@ -67,4 +67,8 @@ object Constants {
     const val PAGES_50 = 50
     const val PAGES_100 = 100
     const val PAGES_250 = 250
+
+    const val RP_PERCENTAGE_GAIN_EASY = 10
+    const val RP_PERCENTAGE_GAIN_MEDIUM = 20
+    const val RP_PERCENTAGE_GAIN_HARD = 30
 }

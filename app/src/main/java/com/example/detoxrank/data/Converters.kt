@@ -6,8 +6,6 @@ import com.example.detoxrank.data.chapter.ChapterDifficulty
 import com.example.detoxrank.data.chapter.ChapterTag
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
-import com.example.detoxrank.data.user.Rank
-import com.example.detoxrank.data.user.UiTheme
 
 class Converters {
     @TypeConverter
@@ -32,18 +30,9 @@ class Converters {
     fun fromTimerDifficulty(difficulty: TimerDifficulty): String = difficulty.name
     @TypeConverter
     fun toTimerDifficulty(difficulty: String): TimerDifficulty = TimerDifficulty.valueOf(difficulty)
-    @TypeConverter
-    fun fromSelectedTheme(theme: UiTheme): String = theme.name
-    @TypeConverter
-    fun toSelectedTheme(theme: String): UiTheme = UiTheme.valueOf(theme)
-    @TypeConverter
-    fun fromRank(rank: Rank): String = rank.name
-    @TypeConverter
-    fun toRank(rank: String): Rank = Rank.valueOf(rank)
 
     @TypeConverter
     fun fromAchievementDifficulty(difficulty: AchievementDifficulty): String = difficulty.name
-
     @TypeConverter
     fun toAchievementDifficulty(difficulty: String): AchievementDifficulty = AchievementDifficulty.valueOf(difficulty)
 }

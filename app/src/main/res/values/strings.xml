@@ -366,4 +366,8 @@
     <string name="music">music</string>
     <string name="parties">parties and big events</string>
     <string name="tasklist_heading_custom">Your own</string>
+    <string name="save_timer_progress_dialog_title">Save progress</string>
+    <string name="save_timer_progress_dialog_text">Did you do the detox correctly and wish to save the progress?</string>
+    <string name="save_timer_progress_dialog_confirm">Save</string>
+    <string name="save_timer_progress_dialog_dismiss">Delete</string>
 </resources>

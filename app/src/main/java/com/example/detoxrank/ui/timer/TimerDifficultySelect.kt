@@ -1,11 +1,8 @@
 package com.example.detoxrank.ui.timer
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +14,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,13 +24,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.data.TimerDifficultyCard
+import com.example.detoxrank.service.TimerService
+import com.example.detoxrank.service.TimerState
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.Typography
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_HARD
+import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_MEDIUM
 
+@ExperimentalAnimationApi
 @Composable
 fun TimerDifficultySelectScreen(
     timerViewModel: TimerViewModel,
-    viewModel: DetoxRankViewModel,
+    timerService: TimerService,
+    detoxRankViewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
@@ -49,11 +55,34 @@ fun TimerDifficultySelectScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(top = 0.dp, bottom = 0.dp, start = 16.dp, end = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        "Difficulty select",
+                        style = Typography.headlineMedium
+                    )
+                    Text(
+                        "You get bonus RP gain from tasks depending on your timer " +
+                                "difficulty level when the timer is launched!",
+                        style = Typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .fillMaxWidth(0.8f)
+                    )
+                }
+            }
             items(timerViewModel.difficultyList) { card ->
                 DifficultyCard(
                     card = card,
                     timerViewModel = timerViewModel,
-                    viewModel = viewModel,
+                    timerService = timerService,
+                    detoxRankViewModel = detoxRankViewModel,
                     modifier = Modifier.padding(start = 20.dp, top = 5.dp, bottom = 5.dp, end = 20.dp)
                 )
             }
@@ -61,26 +90,45 @@ fun TimerDifficultySelectScreen(
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun DifficultyCard(
     card: TimerDifficultyCard,
     timerViewModel: TimerViewModel,
-    viewModel: DetoxRankViewModel,
+    timerService: TimerService,
+    detoxRankViewModel: DetoxRankViewModel,
     modifier: Modifier = Modifier
 ) {
-    val cardColor = when (card.difficulty) {
-        TimerDifficulty.Easy -> MaterialTheme.colorScheme.tertiary
-        TimerDifficulty.Medium -> MaterialTheme.colorScheme.primary
-        TimerDifficulty.Hard -> MaterialTheme.colorScheme.error
+    val currentState by timerService.currentState
+
+    val difficultyTitle = when(card.difficulty) {
+        TimerDifficulty.Easy -> "Apprentice (+$RP_PERCENTAGE_GAIN_EASY% RP)"
+        TimerDifficulty.Medium -> "Runner (+$RP_PERCENTAGE_GAIN_MEDIUM% RP)"
+        TimerDifficulty.Hard -> "Master (+$RP_PERCENTAGE_GAIN_HARD% RP)"
+    }
+
+    val currentDifficulty = detoxRankViewModel.uiState.collectAsState().value.currentTimerDifficulty
+
+    val cardEnabled = currentState != TimerState.Started
+
+    val cardColor = if (currentDifficulty == card.difficulty) {
+        when (card.difficulty) {
+            TimerDifficulty.Easy -> MaterialTheme.colorScheme.tertiary
+            TimerDifficulty.Medium -> MaterialTheme.colorScheme.primary
+            TimerDifficulty.Hard -> MaterialTheme.colorScheme.error
+        }
+    } else {
+        MaterialTheme.colorScheme.outline
     }
 
     Card(
         border = BorderStroke(4.dp, cardColor),
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
+            .clickable(enabled = cardEnabled) {
                 timerViewModel.setDifficultySelectShown(false)
-                viewModel.setTimerDifficulty(card.difficulty)
+                detoxRankViewModel.setTimerDifficultyUiState(card.difficulty)
+                detoxRankViewModel.setTimerDifficultyDatabase(card.difficulty)
             }
             .padding(top = 7.dp)
             .height(card.height)
@@ -98,7 +146,7 @@ fun DifficultyCard(
                 .padding(5.dp)
             ) {
                 Text(
-                    text = card.difficulty.toString(),
+                    text = difficultyTitle,
                     style = Typography.headlineMedium,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(start = 15.dp, bottom = 5.dp, top = 5.dp),

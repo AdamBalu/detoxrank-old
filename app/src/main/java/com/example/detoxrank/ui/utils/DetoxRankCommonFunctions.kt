@@ -82,6 +82,9 @@ fun getCurrentProgressBarProgression(xpPoints: Int): Float {
     return (xpPoints.toFloat() - lowerBound) / (accumulated - lowerBound)
 }
 
+fun calculateTimerFloatAddition(progressLength: Float, numberOfUnitsInBiggerUnit: Int): Float =
+    progressLength / (numberOfUnitsInBiggerUnit - 1)
+
 @DrawableRes
 fun getAchievementDrawableFromId(id: Int): Int {
     return when (id) {

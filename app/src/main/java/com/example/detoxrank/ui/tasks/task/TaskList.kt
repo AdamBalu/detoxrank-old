@@ -32,6 +32,7 @@ import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.DetoxRankViewModelProvider
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.tasks.home.TasksHeading
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.utils.AnimationBox
@@ -40,6 +41,7 @@ import com.example.detoxrank.ui.utils.Constants.MONTHLY_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_HARD
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_MEDIUM
+import com.example.detoxrank.ui.utils.Constants.SPECIAL_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.UNCATEGORIZED_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.Constants.WEEKLY_TASK_RP_GAIN
 import com.example.detoxrank.ui.utils.RankPointsGain
@@ -53,6 +55,7 @@ fun TaskList(
     timerService: TimerService,
     taskList: List<Task>,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     modifier: Modifier = Modifier,
     taskViewModel: TaskViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
@@ -134,6 +137,7 @@ fun TaskList(
                     Task(
                         task = task,
                         detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
@@ -152,6 +156,7 @@ fun TaskList(
                     Task(
                         task = task,
                         detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
@@ -170,6 +175,7 @@ fun TaskList(
                     Task(
                         task = task,
                         detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
@@ -188,6 +194,27 @@ fun TaskList(
                     Task(
                         task = task,
                         detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
+                        taskViewModel = taskViewModel
+                    )
+                }
+            }
+            item {
+                if (!taskList.none { it.durationCategory == TaskDurationCategory.Special })
+                    TasksHeading(
+                        timerService = timerService,
+                        headingRes = R.string.tasklist_heading_special,
+                        category = TaskDurationCategory.Special,
+                        iconImageVector = Icons.Filled.ElectricBolt,
+                        taskViewModel = taskViewModel
+                    )
+            }
+            items(taskList.filter { it.durationCategory == TaskDurationCategory.Special }) { task ->
+                AnimationBox {
+                    Task(
+                        task = task,
+                        detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
                         taskViewModel = taskViewModel
                     )
                 }
@@ -204,6 +231,7 @@ fun Task(
     task: Task,
     taskViewModel: TaskViewModel,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -233,6 +261,7 @@ fun Task(
         TaskDurationCategory.Weekly -> WEEKLY_TASK_RP_GAIN + (WEEKLY_TASK_RP_GAIN * multiplier).toInt()
         TaskDurationCategory.Monthly -> MONTHLY_TASK_RP_GAIN + (MONTHLY_TASK_RP_GAIN * multiplier).toInt()
         TaskDurationCategory.Uncategorized -> UNCATEGORIZED_TASK_RP_GAIN + (UNCATEGORIZED_TASK_RP_GAIN * multiplier).toInt()
+        TaskDurationCategory.Special -> SPECIAL_TASK_RP_GAIN + (SPECIAL_TASK_RP_GAIN * multiplier).toInt()
     }
 
     val darkTheme = isSystemInDarkTheme()
@@ -244,7 +273,7 @@ fun Task(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                if (task.durationCategory != TaskDurationCategory.Uncategorized) {
+                if (task.durationCategory != TaskDurationCategory.Uncategorized && task.durationCategory != TaskDurationCategory.Special) {
                     taskViewModel.updateUiState(
                         task
                             .copy(completed = !task.completed)
@@ -263,16 +292,25 @@ fun Task(
                 coroutineScope.launch {
                     taskViewModel.updateTask()
                 }
-                if (task.durationCategory == TaskDurationCategory.Uncategorized) {
+                if (task.durationCategory == TaskDurationCategory.Uncategorized || task.durationCategory == TaskDurationCategory.Special) {
                     coroutineScope.launch {
                         if (!ownTaskWasTapped) {
                             ownTaskWasTapped = true
                             delay(1000)
-                            Toast.makeText(context, "Double tap to complete!", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, "Double tap to complete!", Toast.LENGTH_SHORT)
+                                .show()
                             ownTaskWasTapped = false
                         } else {
                             ownTaskWasTapped = false
-                            taskViewModel.deleteTask(task)
+                            if (task.durationCategory == TaskDurationCategory.Uncategorized) {
+                                taskViewModel.deleteTask(task)
+                            } else { // special tasks get updated completion parameter
+                                taskViewModel.updateUiState(task.copy(completed = true, selectedAsCurrentTask = false).toTaskUiState())
+                                achievementViewModel.achieveAchievement(task.specialTaskID)
+                                delay(600)
+                                taskViewModel.updateTask()
+                            }
                             detoxRankViewModel.updateUserRankPoints(rankPointsGain)
                         }
                     }
@@ -312,6 +350,11 @@ fun Task(
                         CardDefaults.cardColors(rank_color_ultra_dark)
                     else
                         CardDefaults.cardColors(rank_color_ultra_light)
+                TaskDurationCategory.Special ->
+                    if (darkTheme)
+                        CardDefaults.cardColors(epic_purple)
+                    else
+                        CardDefaults.cardColors(epic_purple_toned_down)
             }
         }
     ) {
@@ -399,9 +442,15 @@ fun Task(
                     coroutineScope.launch {
                         taskViewModel.updateTask()
                     }
-                    if (task.durationCategory == TaskDurationCategory.Uncategorized) {
+                    if (task.durationCategory == TaskDurationCategory.Uncategorized || task.durationCategory == TaskDurationCategory.Special) {
                         coroutineScope.launch {
-                            taskViewModel.deleteTask(task)
+                            if (task.durationCategory == TaskDurationCategory.Uncategorized) {
+                                taskViewModel.deleteTask(task)
+                            } else { // special tasks get updated completion parameter
+                                taskViewModel.updateUiState(task.copy(completed = true, selectedAsCurrentTask = false).toTaskUiState())
+                                delay(600)
+                                taskViewModel.updateTask()
+                            }
                             detoxRankViewModel.updateUserRankPoints(rankPointsGain)
                         }
                     }

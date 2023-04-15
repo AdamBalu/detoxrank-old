@@ -80,25 +80,25 @@ object LocalAchievementDataProvider {
         Achievement(
             id = ID_READ_250_PAGES,
             name = "More, more, more!",
-            description = "Read 500 pages",
+            description = "Read 250 pages",
             difficulty = AchievementDifficulty.HARD
         ),
         Achievement(
             id = ID_READ_A_BOOK,
             name = "My first book",
-            description = "Read a book",
+            description = "Read a book (500 pages)",
             difficulty = AchievementDifficulty.MEDIUM
         ),
         Achievement(
             id = ID_READ_5_BOOKS,
             name = "Feeling educated",
-            description = "Read 5 books",
+            description = "Read 5 books (2500 pages)",
             difficulty = AchievementDifficulty.VERY_HARD
         ),
         Achievement(
             id = ID_READ_10_BOOKS,
             name = "Nerd",
-            description = "Read 10 books",
+            description = "Read 10 books (5000 pages)",
             difficulty = AchievementDifficulty.INSANE
         ),
         Achievement(
@@ -194,25 +194,25 @@ object LocalAchievementDataProvider {
         Achievement(
             id = ID_TIMER_3_DAYS,
             name = "Bored already?",
-            description = "Have the timer on for 3 days",
+            description = "End the timer with a 3-day streak",
             difficulty = AchievementDifficulty.MEDIUM
         ),
         Achievement(
             id = ID_TIMER_7_DAYS,
             name = "Staying strong",
-            description = "Have the timer on for 7 days",
+            description = "End the timer with a 7-day streak",
             difficulty = AchievementDifficulty.VERY_HARD
         ),
         Achievement(
             id = ID_TIMER_14_DAYS,
             name = "Guru",
-            description = "Have the timer on for 14 days",
+            description = "End the timer with a 14-day streak",
             difficulty = AchievementDifficulty.INSANE
         ),
         Achievement(
             id = ID_TIMER_30_DAYS,
             name = "Unstoppable",
-            description = "Have the timer on for 30 days",
+            description = "End the timer with a 30-day streak",
             difficulty = AchievementDifficulty.LEGENDARY
         )
     )

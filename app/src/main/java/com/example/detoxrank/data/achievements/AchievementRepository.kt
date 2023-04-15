@@ -8,6 +8,11 @@ interface AchievementRepository {
     suspend fun update(achievement: Achievement)
 
     suspend fun insert(achievement: Achievement)
+    suspend fun delete(achievement: Achievement)
 
     fun getAchievementById(id: Int): Flow<Achievement?>
+
+    fun devCompleteAllAchievements()
+
+    fun devUnCompleteAllAchievements()
 }

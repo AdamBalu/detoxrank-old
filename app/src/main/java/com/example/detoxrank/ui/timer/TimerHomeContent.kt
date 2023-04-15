@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.*
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
@@ -27,6 +28,7 @@ fun TimerHomeScreen(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankUiState: DetoxRankUiState,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     timerService: TimerService,
@@ -47,6 +49,7 @@ fun TimerHomeScreen(
                 navigationItemContentList = navigationItemContentList,
                 detoxRankUiState = detoxRankUiState,
                 detoxRankViewModel = detoxRankViewModel,
+                achievementViewModel = achievementViewModel,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
                 timerService = timerService
@@ -57,6 +60,7 @@ fun TimerHomeScreen(
             navigationItemContentList = navigationItemContentList,
             detoxRankUiState = detoxRankUiState,
             detoxRankViewModel = detoxRankViewModel,
+            achievementViewModel = achievementViewModel,
             onTabPressed = onTabPressed,
             navigationType = navigationType,
             timerService = timerService
@@ -70,6 +74,7 @@ fun TimerContent(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankViewModel: DetoxRankViewModel,
     detoxRankUiState: DetoxRankUiState,
+    achievementViewModel: AchievementViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     timerService: TimerService,
@@ -113,12 +118,14 @@ fun TimerContent(
                     detoxRankUiState = detoxRankUiState,
                     timerViewModel = timerViewModel,
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     modifier = Modifier.padding(paddingValues)
                 )
             } else {
                 TimerBodyLarge(
                     timerService = timerService,
                     detoxRankUiState = detoxRankUiState,
+                    achievementViewModel = achievementViewModel,
                     timerViewModel = timerViewModel,
                     detoxRankViewModel = detoxRankViewModel,
                     modifier = Modifier.padding(paddingValues)
@@ -134,6 +141,7 @@ fun TimerBody(
     timerService: TimerService,
     detoxRankUiState: DetoxRankUiState,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     timerViewModel: TimerViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -161,6 +169,7 @@ fun TimerBody(
                 TimerStartStopButton(
                     timerService = timerService,
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     modifier = Modifier
                         .padding(start = 40.dp, end = 40.dp, top = 150.dp)
                         .align(Alignment.Center)
@@ -186,6 +195,7 @@ fun TimerBodyLarge(
     timerService: TimerService,
     detoxRankUiState: DetoxRankUiState,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     timerViewModel: TimerViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -216,6 +226,7 @@ fun TimerBodyLarge(
                     TimerStartStopButtonLarge(
                         timerService = timerService,
                         detoxRankViewModel = detoxRankViewModel,
+                        achievementViewModel = achievementViewModel,
                         modifier = Modifier
                             .padding(start = 0.dp, end = 0.dp, top = 120.dp)
                             .align(Alignment.Center)

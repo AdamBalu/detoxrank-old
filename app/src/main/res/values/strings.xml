@@ -31,7 +31,8 @@
         and these reasons are enough for you to actually do it.
     </string>
     <string name="chapter_intro_screen_2_pt_2">
-        If that\'s true, you can omit this entire section and explore other parts of this app.
+        If that\'s true, you can omit this entire section and explore other parts of this app.\n\nHowever, remember that this app does not actually
+        check if you are cheating or not, so stay truthful if you want the best experience!
     </string>
     <string name="chapter_intro_screen_3_pt_1">
         But maybe this isn\'t enough,
@@ -67,7 +68,7 @@
         is a signaling molecule secreted by a neuron. Basically, it functions as a messenger who delivers
         the information from point A to point B through the neurotic pathways called
     </string>
-    <string name="chapter_dopamine_screen_3_pt_2">On the picture you can see a synapse. Neurotransmitters travel through these synapses from a sending neuron to a
+    <string name="chapter_dopamine_screen_3_pt_2">In the picture you can see a synapse. Neurotransmitters travel through these synapses from a sending neuron to a
         receiving neuron and they are caught on the other end by the receptors.</string>
 
     <string name="chapter_dopamine_screen_4_pt_1">
@@ -295,7 +296,7 @@
     <string name="chapter_solution_screen_5_pt_2">
         Choose the difficulty you prefer and try to stay truthful.\n\nYou should tolerate some screw-ups,
         but don\'t keep the timer going if you know you completely failed, just go again and
-        maybe choose an easier difficulty, there\'s no point giving up :-)\n\nGood luck!
+        maybe choose an easier difficulty, there\'s no point in giving up :-)\n\nGood luck!
     </string>
 
     <string name="button_continue">Continue</string>
@@ -370,4 +371,5 @@
     <string name="save_timer_progress_dialog_text">Did you do the detox correctly and wish to save the progress?</string>
     <string name="save_timer_progress_dialog_confirm">Save</string>
     <string name="save_timer_progress_dialog_dismiss">Delete</string>
+    <string name="tasklist_heading_special">Special</string>
 </resources>

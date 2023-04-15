@@ -7,12 +7,13 @@ import androidx.room.TypeConverters
 import com.example.detoxrank.data.Converters
 
 enum class TaskDurationCategory {
-    Daily, Weekly, Monthly, Uncategorized;
+    Daily, Weekly, Monthly, Uncategorized, Special;
     override fun toString(): String {
         return when (this) {
             Daily -> "Daily"
             Weekly -> "Weekly"
             Monthly -> "Monthly"
+            Special -> "Special"
             Uncategorized -> ""
         }
     }
@@ -33,6 +34,8 @@ enum class TaskIconCategory {
     Hiking,
     Fun,
     Places,
+    Creating,
+    Music,
     Other
 }
 

@@ -10,4 +10,9 @@ class OfflineAchievementRepository(
 
     override suspend fun update(achievement: Achievement) = achievementDao.update(achievement)
     override suspend fun insert(achievement: Achievement) = achievementDao.insert(achievement)
+    override suspend fun delete(achievement: Achievement) = achievementDao.delete(achievement)
+
+    override fun devCompleteAllAchievements() = achievementDao.devCompleteAllAchievements()
+
+    override fun devUnCompleteAllAchievements() = achievementDao.devUnCompleteAllAchievements()
 }

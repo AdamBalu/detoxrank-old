@@ -87,6 +87,10 @@ class DetoxRankViewModel(
         return userDataRepository.getUserStream().first().rankPoints
     }
 
+    suspend fun getUserXpPoints(): Int {
+        return userDataRepository.getUserStream().first().xpPoints
+    }
+
     suspend fun updateUserData() {
         userDataRepository.updateUserData(userDataUiState.toUserData())
     }

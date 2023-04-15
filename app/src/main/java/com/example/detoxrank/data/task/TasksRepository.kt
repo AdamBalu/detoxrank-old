@@ -18,4 +18,6 @@ interface TasksRepository {
     fun getSelectedTasks(): Flow<List<Task>>
 
     suspend fun updateRows(rows: List<Task>)
+
+    fun selectSpecialTasks()
 }

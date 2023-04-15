@@ -152,14 +152,14 @@ fun RankWithProgressBarLarge(
     ).value
 
     val currentRank = detoxRankViewModel.getCurrentRank()
-    val rankImageWidth = minOf(LocalConfiguration.current.screenHeightDp / (1 + 0.9), LocalConfiguration.current.screenWidthDp / 2.0).toInt().dp
+    val rankImageWidth = minOf(LocalConfiguration.current.screenHeightDp / (2.0), LocalConfiguration.current.screenWidthDp / 2.9).toInt().dp
 
     Column(modifier = modifier.fillMaxWidth().padding(top = 10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Row {
             Image(
                 painterResource(id = getRankDrawableId(currentRank)),
                 contentDescription = null,
-                modifier = Modifier.padding(bottom = 20.dp, start = 16.dp, end = 16.dp).width(rankImageWidth)
+                modifier = Modifier.padding(bottom = 5.dp, start = 16.dp, end = 16.dp).width(rankImageWidth)
             )
             Column {
                 Text(
@@ -174,7 +174,8 @@ fun RankWithProgressBarLarge(
                 Text(
                     currentRank.rankName,
                     textAlign = TextAlign.Center,
-                    style = Typography.headlineLarge
+                    style = Typography.headlineLarge,
+                    modifier = Modifier.padding(end = 50.dp)
                 )
             }
         }
@@ -250,22 +251,22 @@ fun RankWithProgressBarLarge(
 @DrawableRes
 private fun getRankDrawableId(rank: Rank): Int {
     return when (rank) {
-        Rank.Bronze1 -> R.drawable.bronze_1
-        Rank.Bronze2 -> R.drawable.bronze_2
-        Rank.Bronze3 -> R.drawable.bronze_3
-        Rank.Silver1 -> R.drawable.silver_1
-        Rank.Silver2 -> R.drawable.silver_2
-        Rank.Silver3 -> R.drawable.silver_3
-        Rank.Gold1 -> R.drawable.gold_1
-        Rank.Gold2 -> R.drawable.gold_2
-        Rank.Gold3 -> R.drawable.gold_3
-        Rank.Platinum1 -> R.drawable.bronze_1
-        Rank.Platinum2 -> R.drawable.bronze_1
-        Rank.Platinum3 -> R.drawable.bronze_1
-        Rank.Diamond1 -> R.drawable.bronze_1
-        Rank.Diamond2 -> R.drawable.bronze_1
-        Rank.Diamond3 -> R.drawable.bronze_1
-        Rank.Master -> R.drawable.bronze_1
-        Rank.Legend -> R.drawable.bronze_1
+        Rank.Bronze1 -> R.drawable.bronze1
+        Rank.Bronze2 -> R.drawable.bronze2
+        Rank.Bronze3 -> R.drawable.bronze3
+        Rank.Silver1 -> R.drawable.silver1
+        Rank.Silver2 -> R.drawable.silver2
+        Rank.Silver3 -> R.drawable.silver3
+        Rank.Gold1 -> R.drawable.gold1
+        Rank.Gold2 -> R.drawable.gold2
+        Rank.Gold3 -> R.drawable.gold3
+        Rank.Platinum1 -> R.drawable.plat1
+        Rank.Platinum2 -> R.drawable.plat2
+        Rank.Platinum3 -> R.drawable.plat3
+        Rank.Diamond1 -> R.drawable.diamond1
+        Rank.Diamond2 -> R.drawable.diamond2
+        Rank.Diamond3 -> R.drawable.diamond3
+        Rank.Master -> R.drawable.master
+        Rank.Legend -> R.drawable.legend
     }
 }

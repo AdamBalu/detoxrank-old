@@ -13,12 +13,9 @@ import com.example.detoxrank.ui.utils.Constants.ID_FINISH_50_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_5_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
 import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
-import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
 import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
-import com.example.detoxrank.ui.utils.Constants.ID_READ_5_BOOKS
-import com.example.detoxrank.ui.utils.Constants.ID_READ_A_BOOK
 import com.example.detoxrank.ui.utils.Constants.ID_RUN_10_KM
 import com.example.detoxrank.ui.utils.Constants.ID_RUN_3_KM
 import com.example.detoxrank.ui.utils.Constants.ID_RUN_5_KM
@@ -31,9 +28,6 @@ import com.example.detoxrank.ui.utils.Constants.PAGES_100
 import com.example.detoxrank.ui.utils.Constants.PAGES_20
 import com.example.detoxrank.ui.utils.Constants.PAGES_250
 import com.example.detoxrank.ui.utils.Constants.PAGES_50
-import com.example.detoxrank.ui.utils.Constants.READ_10_BOOKS_PAGE_NUM
-import com.example.detoxrank.ui.utils.Constants.READ_1_BOOK_PAGE_NUM
-import com.example.detoxrank.ui.utils.Constants.READ_5_BOOKS_PAGE_NUM
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_HARD
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_MEDIUM
@@ -135,6 +129,8 @@ class OfflineTasksRepository(
 
     override suspend fun updateRows(rows: List<Task>) = taskDao.updateRows(rows)
 
+    override fun selectSpecialTasks() = taskDao.selectSpecialTasks()
+
     private suspend fun updateAchievementsProgression(taskDurationCategory: TaskDurationCategory) {
         updateCompletedTaskNumAchievements()
         val taskList = getCompletedTasksByDuration(taskDurationCategory).first()
@@ -189,24 +185,6 @@ class OfflineTasksRepository(
                         else -> 0
                     }
                     userDataRepository.updatePagesRead(pages)
-                    val user = userDataRepository.getUserStream().first()
-                    val achievementIDToEdit =
-                        if (user.pagesRead >= READ_10_BOOKS_PAGE_NUM) {
-                            ID_READ_10_BOOKS
-                        } else if (user.pagesRead >= READ_5_BOOKS_PAGE_NUM) {
-                            ID_READ_5_BOOKS
-                        } else if (user.pagesRead >= READ_1_BOOK_PAGE_NUM) {
-                            ID_READ_A_BOOK
-                        } else if (user.pagesRead >= pages) {
-                            it.specialTaskID
-                        } else {
-                            0
-                        }
-
-                    val achievement = achievementRepository.getAchievementById(achievementIDToEdit).first()
-                        if ((achievement != null) && !achievement.achieved) {
-                            achievementRepository.update(achievement.copy(achieved = true))
-                        }
                 }
             }
         }

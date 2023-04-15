@@ -26,11 +26,14 @@ import com.example.detoxrank.data.local.LocalTasksDataProvider
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.*
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.tasks.task.TaskList
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
+import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import java.util.*
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -44,6 +47,7 @@ fun TasksHomeScreen(
     timerService: TimerService,
     detoxRankUiState: DetoxRankUiState,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     modifier: Modifier = Modifier
@@ -64,6 +68,7 @@ fun TasksHomeScreen(
                 timerService = timerService,
                 detoxRankUiState = detoxRankUiState,
                 detoxRankViewModel = detoxRankViewModel,
+                achievementViewModel = achievementViewModel,
                 onTabPressed = onTabPressed,
                 navigationType = navigationType
             )
@@ -74,6 +79,7 @@ fun TasksHomeScreen(
             timerService = timerService,
             detoxRankUiState = detoxRankUiState,
             detoxRankViewModel = detoxRankViewModel,
+            achievementViewModel = achievementViewModel,
             onTabPressed = onTabPressed,
             navigationType = navigationType
         )
@@ -89,6 +95,7 @@ fun TasksContent(
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     modifier: Modifier = Modifier,
     viewModel: TasksHomeViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory),
     taskViewModel: TaskViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
@@ -101,6 +108,16 @@ fun TasksContent(
 
     LaunchedEffect(Unit) {
         taskViewModel.firstRunGetTasks()
+        val userXp = detoxRankViewModel.getUserXpPoints()
+        val level = getCurrentLevelFromXP(userXp)
+
+        val specialTaskList = taskViewModel.getCompletedTasksByDuration(TaskDurationCategory.Special).first()
+        val noSpecialTasksCompleted = specialTaskList.none { it.completed }
+
+        if (level >= 20 && noSpecialTasksCompleted && !taskViewModel.wereTasksOpened.value) {
+            taskViewModel.selectSpecialTasks()
+            taskViewModel.wereTasksOpened.value = true
+        }
     }
 
     Row(modifier = modifier.fillMaxSize()) {
@@ -166,6 +183,7 @@ fun TasksContent(
                     timerService = timerService,
                     taskList = tasksHomeUiState.taskList,
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     modifier = Modifier
                         .padding(paddingValues)
                         .fillMaxWidth()
@@ -191,6 +209,7 @@ fun TasksContent(
                     timerService = timerService,
                     taskList = tasksHomeUiState.taskList,
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     modifier = Modifier
                         .padding(paddingValues)
                         .fillMaxWidth()
@@ -337,6 +356,9 @@ fun TaskTimer(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium
                 )
+            }
+            TaskDurationCategory.Special -> {
+                Icon(Icons.Filled.AllInclusive, contentDescription = null)
             }
             else -> { }
         }

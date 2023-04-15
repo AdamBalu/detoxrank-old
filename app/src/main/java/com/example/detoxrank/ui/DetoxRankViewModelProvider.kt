@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.detoxrank.DetoxRankApp
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.rank.RankViewModel
 import com.example.detoxrank.ui.tasks.home.TasksHomeViewModel
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
@@ -54,6 +55,13 @@ object DetoxRankViewModelProvider {
 
         initializer {
             UserDataViewModel(
+                userDataRepository = detoxRankApplication().container.userDataRepository
+            )
+        }
+
+        initializer {
+            AchievementViewModel(
+                achievementRepository = detoxRankApplication().container.achievementRepository,
                 userDataRepository = detoxRankApplication().container.userDataRepository
             )
         }

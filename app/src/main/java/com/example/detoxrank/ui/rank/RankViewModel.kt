@@ -58,6 +58,8 @@ class RankViewModel(
     }
 
     fun getFormattedRankPointsProgress(): String {
+        if (rankPoints.value >= 20000)
+            return "M A X"
         return "${rankPoints.value - currentRankBounds.value.first} / ${
             currentRankBounds.value.second + 1 - currentRankBounds.value.first
         }"

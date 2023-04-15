@@ -2,6 +2,36 @@ package com.example.detoxrank.ui.utils
 
 import androidx.annotation.DrawableRes
 import com.example.detoxrank.R
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_100_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_10_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_250_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_25_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_50_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_5_TASKS
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_ALL_CH
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_1
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_2
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_3
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_4
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_5
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
+import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
+import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_5_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_A_BOOK
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_10_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_3_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_5_KM
+import com.example.detoxrank.ui.utils.Constants.ID_RUN_7_KM
+import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_14_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_30_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_3_DAYS
+import com.example.detoxrank.ui.utils.Constants.ID_TIMER_7_DAYS
 
 
 fun formatTime(seconds: String, minutes: String, hours: String): String {
@@ -86,8 +116,74 @@ fun calculateTimerFloatAddition(progressLength: Float, numberOfUnitsInBiggerUnit
     progressLength / (numberOfUnitsInBiggerUnit - 1)
 
 @DrawableRes
-fun getAchievementDrawableFromId(id: Int): Int {
-    return when (id) {
-        else -> R.drawable.gold_1
+fun getAchievementDrawableFromId(id: Int, isDarkTheme: Boolean): Int {
+    return if (isDarkTheme) {
+        when (id) {
+            ID_RUN_3_KM -> R.drawable.run3km
+            ID_RUN_5_KM -> R.drawable.run5km
+            ID_RUN_7_KM -> R.drawable.run7km
+            ID_RUN_10_KM -> R.drawable.run10km
+            ID_READ_20_PAGES -> R.drawable.read20pages
+            ID_READ_50_PAGES -> R.drawable.read50pages
+            ID_READ_100_PAGES -> R.drawable.read100pages
+            ID_READ_250_PAGES -> R.drawable.read250pages
+            ID_READ_A_BOOK -> R.drawable.read1book
+            ID_READ_5_BOOKS -> R.drawable.read5books
+            ID_READ_10_BOOKS -> R.drawable.read10books
+            ID_FINISH_CH_1 -> R.drawable.finishchapterintroduction
+            ID_FINISH_CH_2 -> R.drawable.finishchapterdopamine
+            ID_FINISH_CH_3 -> R.drawable.finishchapterreinforcement
+            ID_FINISH_CH_4 -> R.drawable.finishchaptertolerance
+            ID_FINISH_CH_5 -> R.drawable.finishchapterhedoniccircuit
+            ID_FINISH_CH_6 -> R.drawable.finishchaptersolution
+            ID_FINISH_ALL_CH -> R.drawable.finishallchapters
+            ID_FINISH_FIRST_TASK -> R.drawable.finishfirsttask
+            ID_FINISH_5_TASKS -> R.drawable.finish5tasks
+            ID_FINISH_10_TASKS -> R.drawable.finish10tasks
+            ID_FINISH_25_TASKS -> R.drawable.finish25tasks
+            ID_FINISH_50_TASKS -> R.drawable.finish50tasks
+            ID_FINISH_100_TASKS -> R.drawable.finish100tasks
+            ID_FINISH_250_TASKS -> R.drawable.finish250tasks
+            ID_START_TIMER -> R.drawable.startthetimer
+            ID_TIMER_3_DAYS -> R.drawable.timer3days
+            ID_TIMER_7_DAYS -> R.drawable.timer7days
+            ID_TIMER_14_DAYS -> R.drawable.timer14days
+            ID_TIMER_30_DAYS -> R.drawable.timer30days
+            else -> R.drawable.gold_1
+        }
+    } else {
+        when (id) {
+            ID_RUN_3_KM -> R.drawable.run3kmlight
+            ID_RUN_5_KM -> R.drawable.run5kmlight
+            ID_RUN_7_KM -> R.drawable.run7kmlight
+            ID_RUN_10_KM -> R.drawable.run10kmlight
+            ID_READ_20_PAGES -> R.drawable.read20pageslight
+            ID_READ_50_PAGES -> R.drawable.read50pageslight
+            ID_READ_100_PAGES -> R.drawable.read100pageslight
+            ID_READ_250_PAGES -> R.drawable.read250pageslight
+            ID_READ_A_BOOK -> R.drawable.read1book
+            ID_READ_5_BOOKS -> R.drawable.read5books
+            ID_READ_10_BOOKS -> R.drawable.read10books
+            ID_FINISH_CH_1 -> R.drawable.finishchapterintroduction
+            ID_FINISH_CH_2 -> R.drawable.finishchapterdopaminelight
+            ID_FINISH_CH_3 -> R.drawable.finishchapterreinforcement
+            ID_FINISH_CH_4 -> R.drawable.finishchaptertolerancelight
+            ID_FINISH_CH_5 -> R.drawable.finishchapterhedoniccircuit
+            ID_FINISH_CH_6 -> R.drawable.finishchaptersolution
+            ID_FINISH_ALL_CH -> R.drawable.finishallchapters
+            ID_FINISH_FIRST_TASK -> R.drawable.finishfirsttask
+            ID_FINISH_5_TASKS -> R.drawable.finish5tasks
+            ID_FINISH_10_TASKS -> R.drawable.finish10tasks
+            ID_FINISH_25_TASKS -> R.drawable.finish25tasks
+            ID_FINISH_50_TASKS -> R.drawable.finish50tasks
+            ID_FINISH_100_TASKS -> R.drawable.finish100tasks
+            ID_FINISH_250_TASKS -> R.drawable.finish250tasks
+            ID_START_TIMER -> R.drawable.startthetimer
+            ID_TIMER_3_DAYS -> R.drawable.timer3days
+            ID_TIMER_7_DAYS -> R.drawable.timer7days
+            ID_TIMER_14_DAYS -> R.drawable.timer14days
+            ID_TIMER_30_DAYS -> R.drawable.timer30days
+            else -> R.drawable.gold_1
+        }
     }
 }

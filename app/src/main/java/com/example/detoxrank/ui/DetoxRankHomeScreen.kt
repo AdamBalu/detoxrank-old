@@ -23,11 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.service.TimerService
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.rank.RankHomeScreen
 import com.example.detoxrank.ui.tasks.home.TasksHomeScreen
 import com.example.detoxrank.ui.theme.*
@@ -37,6 +39,7 @@ import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import com.example.detoxrank.ui.utils.getCurrentProgressBarProgression
 import com.example.detoxrank.ui.utils.getLevelDrawableId
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
@@ -45,7 +48,8 @@ fun DetoxRankAppContent(
     windowSize: WindowWidthSizeClass,
     timerService: TimerService,
     modifier: Modifier = Modifier,
-    viewModel: DetoxRankViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
+    viewModel: DetoxRankViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory),
+    achievementViewModel: AchievementViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
     val detoxRankUiState = viewModel.uiState.collectAsState().value
     val onTabPressed = { section: Section -> viewModel.updateCurrentSection(section = section) } // TODO reset home screen states if needed
@@ -99,6 +103,7 @@ fun DetoxRankAppContent(
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
+                achievementViewModel = achievementViewModel,
                 detoxRankViewModel = viewModel
             )
         }
@@ -108,6 +113,7 @@ fun DetoxRankAppContent(
                 timerService = timerService,
                 detoxRankUiState = detoxRankUiState,
                 detoxRankViewModel = viewModel,
+                achievementViewModel = achievementViewModel,
                 navigationType = navigationType,
                 onTabPressed = onTabPressed,
                 navigationItemContentList = navigationItemContentList
@@ -120,7 +126,8 @@ fun DetoxRankAppContent(
                 navigationItemContentList = navigationItemContentList,
                 navigationType = navigationType,
                 detoxRankUiState = detoxRankUiState,
-                detoxRankViewModel = viewModel
+                detoxRankViewModel = viewModel,
+                achievementViewModel = achievementViewModel
             )
         }
         Section.Theory -> {
@@ -237,6 +244,7 @@ fun DetoxRankTopAppBar(
     modifier: Modifier = Modifier
 ) {
     val currentLevel = detoxRankViewModel.getCurrentLevel()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         val xpPoints = detoxRankViewModel.getUserXPPoints()
@@ -277,34 +285,48 @@ fun DetoxRankTopAppBar(
             xpBarHeight = 45.dp
         }
     }
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier.padding(top = 12.dp, start = 20.dp)
-    ) {
-        Box {
-            Image(
-                painterResource(getLevelDrawableId(currentLevel)),
-                null,
-                modifier = Modifier.size(levelBadgeSize).zIndex(1f)
-            )
-
-            if (currentLevel != 25) {
-                LinearProgressIndicator(
-                    progress = animatedProgress,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+    Row {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier.padding(top = 12.dp, start = 20.dp)
+        ) {
+            Box {
+                Image(
+                    painterResource(getLevelDrawableId(currentLevel)),
+                    null,
                     modifier = Modifier
-                        .height(xpBarHeight)
-                        .padding(start = xpBarPaddingStart, end = 16.dp, top = xpBarPaddingTop)
-                        .fillMaxWidth(0.35f)
-                        .clip(RoundedCornerShape(2.dp))
-                        .border(
-                            BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
-                            RoundedCornerShape(2.dp)
-                        )
+                        .size(levelBadgeSize)
+                        .zIndex(1f)
                 )
+
+                if (currentLevel != 25) {
+                    LinearProgressIndicator(
+                        progress = animatedProgress,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                        modifier = Modifier
+                            .height(xpBarHeight)
+                            .padding(start = xpBarPaddingStart, end = 16.dp, top = xpBarPaddingTop)
+                            .fillMaxWidth(0.35f)
+                            .clip(RoundedCornerShape(2.dp))
+                            .border(
+                                BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+                                RoundedCornerShape(2.dp)
+                            )
+                    )
+                }
             }
         }
+        Button(onClick = {
+            coroutineScope.launch {
+                detoxRankViewModel.updateUserRankPoints(500)
+                detoxRankViewModel.updateUserXPPoints(1000)
+            } },
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text("Get Rank+XP (dev)", style = Typography.bodySmall, fontSize = 10.sp)
+        }
+
     }
 }
 

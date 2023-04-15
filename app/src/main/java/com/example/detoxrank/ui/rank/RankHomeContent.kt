@@ -27,6 +27,7 @@ fun RankHomeScreen(
     onTabPressed: ((Section) -> Unit),
     navigationType: DetoxRankNavigationType,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     modifier: Modifier = Modifier,
     rankViewModel: RankViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
@@ -47,6 +48,7 @@ fun RankHomeScreen(
                 onTabPressed = onTabPressed,
                 navigationType = navigationType,
                 detoxRankViewModel = detoxRankViewModel,
+                achievementViewModel = achievementViewModel,
                 rankViewModel = rankViewModel
             )
         }
@@ -57,6 +59,7 @@ fun RankHomeScreen(
             onTabPressed = onTabPressed,
             navigationType = navigationType,
             detoxRankViewModel = detoxRankViewModel,
+            achievementViewModel = achievementViewModel,
             rankViewModel = rankViewModel
         )
     }
@@ -67,6 +70,7 @@ fun RankHomeScreen(
 fun RankContent(
     navigationItemContentList: List<NavigationItemContent>,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     detoxRankUiState: DetoxRankUiState,
     rankViewModel: RankViewModel,
     onTabPressed: ((Section) -> Unit),
@@ -100,12 +104,14 @@ fun RankContent(
             if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION) {
                 RankMainScreenBody(
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     rankViewModel = rankViewModel,
                     modifier = Modifier.padding(paddingValues)
                 )
             } else {
                 RankMainScreenBodyLarge(
                     detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     rankViewModel = rankViewModel,
                     modifier = Modifier.padding(paddingValues)
                 ) // TODO change layout
@@ -118,9 +124,11 @@ fun RankContent(
 @Composable
 fun RankMainScreenBody(
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     rankViewModel: RankViewModel,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         rankViewModel.setLocalRankPoints()
         val rankPoints = detoxRankViewModel.getUserRankPoints()
@@ -128,13 +136,18 @@ fun RankMainScreenBody(
         val currentRank = currRankPair.first
         rankViewModel.setLocalRankBounds(currRankPair.second)
         detoxRankViewModel.setCurrentRank(currentRank)
-        detoxRankViewModel.setRankProgressBar((rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first))
+        val progressBarPercentage = if (rankPoints >= 20000) {
+            1.0f
+        } else {
+            (rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first)
+        }
+        detoxRankViewModel.setRankProgressBar(progressBarPercentage)
     }
 
     Box(modifier = Modifier
         .fillMaxSize()
         .zIndex(1f)) {
-        AchievementsScreen(rankViewModel = rankViewModel)
+        AchievementsScreen(rankViewModel = rankViewModel, achievementViewModel = achievementViewModel, detoxRankViewModel = detoxRankViewModel)
     }
 
     Column(
@@ -153,6 +166,9 @@ fun RankMainScreenBody(
             Button(
                 onClick = {
                     rankViewModel.setAchievementsDisplayed(true)
+//                    coroutineScope.launch {// DATA to remove achievs
+//                        achievementViewModel.deleteAllAchievementsInDb()
+//                    }
                 },
                 shape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
                 modifier = Modifier
@@ -190,6 +206,7 @@ fun RankMainScreenBody(
 @Composable
 fun RankMainScreenBodyLarge(
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     rankViewModel: RankViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -200,13 +217,18 @@ fun RankMainScreenBodyLarge(
         val currentRank = currRankPair.first
         rankViewModel.setLocalRankBounds(currRankPair.second)
         detoxRankViewModel.setCurrentRank(currentRank)
-        detoxRankViewModel.setRankProgressBar((rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first))
+        val progressBarPercentage = if (rankPoints >= 20000) {
+            1.0f
+        } else {
+            (rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first)
+        }
+        detoxRankViewModel.setRankProgressBar(progressBarPercentage)
     }
 
     Box(modifier = Modifier
         .fillMaxSize()
         .zIndex(1f)) {
-        AchievementsScreen(rankViewModel = rankViewModel)
+        AchievementsScreen(rankViewModel = rankViewModel, achievementViewModel = achievementViewModel, detoxRankViewModel = detoxRankViewModel)
     }
 
     Column(

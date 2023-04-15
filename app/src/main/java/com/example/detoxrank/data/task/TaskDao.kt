@@ -35,6 +35,9 @@ interface TaskDao {
     @Query("SELECT COUNT(*) FROM task WHERE duration_category = :taskDurationCategory AND completed = 1")
     fun getCompletedTaskNum(taskDurationCategory: TaskDurationCategory): Int
 
+    @Query("UPDATE task SET selected = 1 WHERE duration_category = \"Special\"")
+    fun selectSpecialTasks()
+
     @Update
     suspend fun updateRows(taskRows: List<Task>)
 }

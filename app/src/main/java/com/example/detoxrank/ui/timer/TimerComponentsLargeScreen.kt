@@ -27,8 +27,10 @@ import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.service.TimerState
 import com.example.detoxrank.ui.DetoxRankUiState
 import com.example.detoxrank.ui.DetoxRankViewModel
+import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.utils.Constants
+import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.delay
@@ -215,6 +217,7 @@ fun TimerClockLarge(
 fun TimerStartStopButtonLarge(
     timerService: TimerService,
     detoxRankViewModel: DetoxRankViewModel,
+    achievementViewModel: AchievementViewModel,
     modifier: Modifier = Modifier
 ) {
     val currentState by timerService.currentState
@@ -275,6 +278,7 @@ fun TimerStartStopButtonLarge(
                             action = Constants.ACTION_SERVICE_CANCEL
                         )
                         coroutineScope.launch {
+                            achievementViewModel.achieveTimerAchievements(timerService.days.value)
                             detoxRankViewModel.updateTimerStarted(false)
                         }
                         wasButtonClicked = false
@@ -310,6 +314,7 @@ fun TimerStartStopButtonLarge(
                         action = Constants.ACTION_SERVICE_START
                     )
                     coroutineScope.launch {
+                        achievementViewModel.achieveAchievement(ID_START_TIMER)
                         detoxRankViewModel.updateTimerStartedTimeMillis()
                         detoxRankViewModel.updateTimerStarted(true)
                     }

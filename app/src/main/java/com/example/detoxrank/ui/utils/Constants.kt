@@ -23,6 +23,7 @@ object Constants {
     const val WEEKLY_TASK_RP_GAIN = 250
     const val MONTHLY_TASK_RP_GAIN = 500
     const val UNCATEGORIZED_TASK_RP_GAIN = 30
+    const val SPECIAL_TASK_RP_GAIN = 1000
 
     const val DAILY_TASK_XP_GAIN = 70
     const val WEEKLY_TASK_XP_GAIN = 100
@@ -59,14 +60,13 @@ object Constants {
     const val ID_TIMER_14_DAYS = 29
     const val ID_TIMER_30_DAYS = 30
 
-    const val READ_10_BOOKS_PAGE_NUM = 5000
-    const val READ_5_BOOKS_PAGE_NUM = 2500
-    const val READ_1_BOOK_PAGE_NUM = 500
-
     const val PAGES_20 = 20
     const val PAGES_50 = 50
     const val PAGES_100 = 100
     const val PAGES_250 = 250
+    const val BOOKS_1_PAGE_COUNT = 500
+    const val BOOKS_5_PAGE_COUNT = 2500
+    const val BOOKS_10_PAGE_COUNT = 5000
 
     const val RP_PERCENTAGE_GAIN_EASY = 10
     const val RP_PERCENTAGE_GAIN_MEDIUM = 20

@@ -35,6 +35,8 @@ import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -118,6 +120,19 @@ fun TasksContent(
         if (level >= 20 && noSpecialTasksCompleted && !taskViewModel.wereTasksOpened.value) {
             taskViewModel.selectSpecialTasks()
             taskViewModel.wereTasksOpened.value = true
+        }
+
+        val timeInstance = detoxRankViewModel.getUserMonthlyTasksRefreshedTimeInstance()
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInstance
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
+        val currentTime = Calendar.getInstance()
+        currentTime.timeInMillis = System.currentTimeMillis()
+//        lastMonth.set(Calendar.MONTH, lastMonth.get(Calendar.MONTH) - 1)
+        val isFromLastMonth = currentTime.get(Calendar.MONTH) - 1 == month && currentTime.get(Calendar.YEAR) >= year
+        if (isFromLastMonth) {
+            taskViewModel.getMonthlyTasks()
         }
     }
 
@@ -244,8 +259,6 @@ fun TasksHeading(
     midnight.set(Calendar.SECOND, 59)
 
     val currentTimeMillis = System.currentTimeMillis()
-
-    taskViewModel.checkNewMonthTasksTest()
 
     val timeDiff = midnight.timeInMillis - currentTimeMillis
 

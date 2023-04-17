@@ -14,4 +14,5 @@ class OfflineUserDataRepository(private val userDataDao: UserDataDao) : UserData
     override fun updateTimerStartTimeMillis(time: Long) = userDataDao.updateTimerStartTimeMillis(time)
     override fun updateTimerStarted(value: Boolean) = userDataDao.updateTimerStarted(value)
     override fun updateTimerDifficulty(value: TimerDifficulty) = userDataDao.updateTimerDifficulty(value)
+    override fun updateMonthlyTasksLastRefreshTime(time: Long) = userDataDao.updateMonthlyTasksLastRefreshTime(time)
 }

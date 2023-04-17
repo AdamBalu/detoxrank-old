@@ -19,6 +19,9 @@ interface UserDataDao {
     @Query("UPDATE user_data SET pages_read = pages_read + :amount WHERE id = 1")
     fun updatePagesRead(amount: Int)
 
+    @Query("UPDATE user_data SET monthly_tasks_last_refresh_time = :time WHERE id = 1")
+    fun updateMonthlyTasksLastRefreshTime(time: Long)
+
     @Transaction
     @Query("UPDATE user_data SET rank_points = rank_points + :amount WHERE id = 1")
     fun updateRankPoints(amount: Int)

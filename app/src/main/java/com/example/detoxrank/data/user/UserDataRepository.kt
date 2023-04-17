@@ -13,4 +13,5 @@ interface UserDataRepository {
     fun updateTimerStartTimeMillis(time: Long)
     fun updateTimerStarted(value: Boolean)
     fun updateTimerDifficulty(value: TimerDifficulty)
+    fun updateMonthlyTasksLastRefreshTime(time: Long)
 }

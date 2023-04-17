@@ -13,6 +13,8 @@ import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TasksRepository
 import com.example.detoxrank.data.task.WMTasksRepository
+import com.example.detoxrank.data.user.OfflineUserDataRepository
+import com.example.detoxrank.data.user.UserDataRepository
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_DAILY
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_WEEKLY
@@ -25,7 +27,8 @@ import kotlinx.coroutines.withContext
 class TaskViewModel(
     application: Application,
     private val tasksRepository: TasksRepository,
-    private val wmTasksRepository: WMTasksRepository
+    private val wmTasksRepository: WMTasksRepository,
+    private val userDataRepository: UserDataRepository
     ) : AndroidViewModel(application) {
     private val sharedPrefs = application.getSharedPreferences(
         application.packageName + "_preferences",
@@ -41,8 +44,18 @@ class TaskViewModel(
             getNewTasks(TaskDurationCategory.Daily, NUMBER_OF_TASKS_DAILY)
             getNewTasks(TaskDurationCategory.Weekly, NUMBER_OF_TASKS_WEEKLY)
             getNewTasks(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
+            withContext(Dispatchers.IO) {
+                userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
+            }
             wmTasksRepository.getNewTasks()
             sharedPrefs.edit().putBoolean("first_run", false).apply()
+        }
+    }
+
+    suspend fun getMonthlyTasks() {
+        withContext(Dispatchers.IO) {
+            getNewTasks(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
+            userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
         }
     }
 
@@ -60,10 +73,6 @@ class TaskViewModel(
     suspend fun updateTask() {
         if (taskUiState.isValid())
             tasksRepository.updateTask(taskUiState.toTask())
-    }
-
-    fun checkNewMonthTasksTest() {
-        wmTasksRepository.checkNewMonthTasksTest()
     }
 
     fun selectSpecialTasks() {

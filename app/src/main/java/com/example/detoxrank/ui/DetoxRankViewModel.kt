@@ -91,6 +91,10 @@ class DetoxRankViewModel(
         return userDataRepository.getUserStream().first().xpPoints
     }
 
+    suspend fun getUserMonthlyTasksRefreshedTimeInstance(): Long {
+        return userDataRepository.getUserStream().first().monthlyTasksLastRefreshTime
+    }
+
     suspend fun updateUserData() {
         userDataRepository.updateUserData(userDataUiState.toUserData())
     }

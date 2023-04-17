@@ -65,6 +65,5 @@ class TasksHomeViewModel(tasksRepository: TasksRepository) : ViewModel() {
  * Ui State for TasksHomeContent
  */
 data class TasksHomeUiState(
-    val taskList: List<Task> = listOf(),
-    val firstTimeOpened: Boolean = true
+    val taskList: List<Task> = listOf()
 )

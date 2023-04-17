@@ -29,6 +29,7 @@ import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.rank.AchievementViewModel
 import com.example.detoxrank.ui.tasks.task.TaskList
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
+import com.example.detoxrank.ui.tasks.task.toTaskUiState
 import com.example.detoxrank.ui.theme.*
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
@@ -134,13 +135,13 @@ fun TasksContent(
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-//                    coroutineScope.launch { // DATA uncomment to fill task db
-////                        taskViewModel.deleteAllTasksInDb()
-//                        tasksToAdd.forEach {
-//                            taskViewModel.updateUiState(it.toTaskUiState())
-//                            taskViewModel.insertTaskToDatabase()
-//                        }
-//                    }
+                    coroutineScope.launch { // DATA uncomment to fill task db
+//                        taskViewModel.deleteAllTasksInDb()
+                        tasksToAdd.forEach {
+                            taskViewModel.updateUiState(it.toTaskUiState())
+                            taskViewModel.insertTaskToDatabase()
+                        }
+                    }
 
                     viewModel.invertCreateTaskMenuShownValue()
                 }) {

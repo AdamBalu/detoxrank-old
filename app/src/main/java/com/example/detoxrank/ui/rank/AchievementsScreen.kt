@@ -58,7 +58,7 @@ fun AchievementsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)) {
 //            Button(onClick = {
-//                coroutineScope.launch { // DATA uncomment to fill achievement db
+//                coroutineScope.launch { // DEVDATA uncomment to fill achievement db
 //                    achievementsToAdd.forEach {
 //                        detoxRankViewModel.updateAchievementUiState(it.toAchievementUiState())
 //                        detoxRankViewModel.insertAchievementToDatabase()
@@ -91,20 +91,20 @@ fun AchievementsScreen(
                                 .padding(bottom = 10.dp, top = 2.dp)
                         )
                     }
-                    item {
-                        Column {
-                            Button(onClick = {
-                                achievementViewModel.devCompleteAllAchievements()
-                            }) {
-                                Text("Complete all achievements (dev button)")
-                            }
-                            Button(onClick = {
-                                achievementViewModel.devUnCompleteAllAchievements()
-                            }) {
-                                Text("Un-complete all achievements (dev button)")
-                            }
-                        }
-                    }
+//                    item { DEVDATA achieves all achievements
+//                        Column {
+//                            Button(onClick = {
+//                                achievementViewModel.devCompleteAllAchievements()
+//                            }) {
+//                                Text("Complete all achievements (dev button)")
+//                            }
+//                            Button(onClick = {
+//                                achievementViewModel.devUnCompleteAllAchievements()
+//                            }) {
+//                                Text("Un-complete all achievements (dev button)")
+//                            }
+//                        }
+//                    }
                     items(state.achievementList) { achievement ->
                         val cardBorderColor = when (achievement.difficulty) {
                             AchievementDifficulty.EASY -> common_green

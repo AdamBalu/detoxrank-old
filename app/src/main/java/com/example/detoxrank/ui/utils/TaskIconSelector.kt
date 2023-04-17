@@ -24,6 +24,8 @@ fun getIcon(iconCategory: TaskIconCategory): ImageVector {
         TaskIconCategory.Other -> Icons.Filled.Task
         TaskIconCategory.Creating -> Icons.Filled.Draw
         TaskIconCategory.Music -> Icons.Filled.MusicNote
+        TaskIconCategory.Sports -> Icons.Filled.SportsBasketball
+        TaskIconCategory.Photography -> Icons.Filled.PhotoCamera
         else -> Icons.Filled.Task
     }
 }

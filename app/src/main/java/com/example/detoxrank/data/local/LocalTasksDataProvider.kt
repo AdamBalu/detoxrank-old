@@ -175,6 +175,9 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.Health
         ),
 
+
+
+
         Task(
             description = "Run 3km (in one go)",
             durationCategory = TaskDurationCategory.Weekly,
@@ -268,7 +271,133 @@ object LocalTasksDataProvider {
             durationCategory = TaskDurationCategory.Weekly,
             iconCategory = TaskIconCategory.HealthyFood
         ),
+        Task(
+            description = "Do yoga 2 times",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Play a sport with a friend",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Sports
+        ),
+        Task(
+            description = "Make a lemonade",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.HealthyFood
+        ),
+        Task(
+            description = "Photograph street art",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Photography
+        ),
+        Task(
+            description = "Drink only water",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.HealthyFood
+        ),
+        Task(
+            description = "Observe dawn 2 times",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Meditation
+        ),
+        Task(
+            description = "Make your web browser grayscale for a week",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Health
+        ),
+        Task(
+            description = "Make your phone grayscale for a week (there are apps that can do so)",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Health
+        ),
+        Task(
+            description = "Do 100 push-ups cumulatively",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Do 200 sit-ups cumulatively",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Exercise outside (or go for a run if you can't)",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Photograph an animal (not your own)",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Photography
+        ),
+        Task(
+            description = "Eat at least 3 pieces of vegetable",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.HealthyFood
+        ),
+        Task(
+            description = "Don't eat sweets",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.UnhealthyFood
+        ),
+        Task(
+            description = "Collect leaves from 7 different trees",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Hiking
+        ),
+        Task(
+            description = "Take a photo of 7 different flowers",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Photography
+        ),
+        Task(
+            description = "Take a photo of a blue, red, orange, green and a yellow building",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Photography
+        ),
+        Task(
+            description = "Collect a small sample of 5 different trees' branches",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Hiking
+        ),
+        Task(
+            description = "Do stretching exercises 2 times",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
+        Task(
+            description = "Jump rope 2 times",
+            durationCategory = TaskDurationCategory.Weekly,
+            iconCategory = TaskIconCategory.Exercise
+        ),
 
+
+        Task(
+            description = "Visit a new restaurant",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Places
+        ),
+        Task(
+            description = "Visit a lake",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Hiking
+        ),
+        Task(
+            description = "Go stargazing in the nature",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Hiking
+        ),
+        Task(
+            description = "Play a sport with a friend 2 times",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Sports
+        ),
+        Task(
+            description = "Play board games with friends",
+            durationCategory = TaskDurationCategory.Monthly,
+            iconCategory = TaskIconCategory.Fun
+        ),
         Task(
             description = "Organize a fun whole-day activity with friends",
             durationCategory = TaskDurationCategory.Monthly,
@@ -334,7 +463,7 @@ object LocalTasksDataProvider {
         Task(
             description = "Make a photo collage of your own",
             durationCategory = TaskDurationCategory.Monthly,
-            iconCategory = TaskIconCategory.Creating
+            iconCategory = TaskIconCategory.Photography
         ),
 
         Task(

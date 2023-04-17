@@ -218,26 +218,26 @@ class DetoxRankViewModel(
     }
 
     companion object {
-        private val bronze1 = Pair(0, 149)
-        private val bronze2 = Pair(150, 499)
-        private val bronze3 = Pair(500, 999)
+        private val bronze1 = Pair(0, 299)
+        private val bronze2 = Pair(300, 999)
+        private val bronze3 = Pair(1000, 1999)
 
-        private val silver1 = Pair(1000, 1599)
-        private val silver2 = Pair(1600, 2199)
-        private val silver3 = Pair(2200, 2999)
+        private val silver1 = Pair(2000, 2999)
+        private val silver2 = Pair(3000, 3999)
+        private val silver3 = Pair(4000, 5199)
 
-        private val gold1 = Pair(3000, 3699)
-        private val gold2 = Pair(3700, 4699)
-        private val gold3 = Pair(4700, 5699)
+        private val gold1 = Pair(5200, 6299)
+        private val gold2 = Pair(6300, 7399)
+        private val gold3 = Pair(7400, 8599)
 
-        private val platinum1 = Pair(5700, 6599)
-        private val platinum2 = Pair(6600, 7599)
-        private val platinum3 = Pair(7600, 8699)
+        private val platinum1 = Pair(8600, 9899)
+        private val platinum2 = Pair(9900, 11199)
+        private val platinum3 = Pair(11200, 12999)
 
-        private val diamond1 = Pair(8700, 9999)
-        private val diamond2 = Pair(10000, 11999)
-        private val diamond3 = Pair(12000, 14999)
+        private val diamond1 = Pair(13000, 15499)
+        private val diamond2 = Pair(15500, 16999)
+        private val diamond3 = Pair(17000, 18999)
 
-        private val master = Pair(15000, 19999)
+        private val master = Pair(19000, 24999)
     }
 }

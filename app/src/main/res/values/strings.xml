@@ -274,8 +274,8 @@
         The next important thing is food.\n\nThink about food which is unhealthy, but you always give in to the urge to buy and eat it.
     </string>
     <string name="chapter_solution_screen_3_pt_2">
-        There has also been a heavy rise in porn addiction.\n\nTry to reduce the consumption of
-        pornography as much as you can, at least for the duration of the detox.
+        There has also been a heavy rise in porn addiction.\n\nIf you are someone who struggles with that (or any other urge as a matter of fact), try to learn how to control your urges.
+        For example, look up urge surfing.
     </string>
 
     <string name="chapter_solution_screen_4_pt_1">
@@ -372,4 +372,5 @@
     <string name="save_timer_progress_dialog_confirm">Save</string>
     <string name="save_timer_progress_dialog_dismiss">Delete</string>
     <string name="tasklist_heading_special">Special</string>
+    <string name="timer_accumulated_points_heading">ACCUMULATED</string>
 </resources>

@@ -36,6 +36,8 @@ enum class TaskIconCategory {
     Places,
     Creating,
     Music,
+    Sports,
+    Photography,
     Other
 }
 

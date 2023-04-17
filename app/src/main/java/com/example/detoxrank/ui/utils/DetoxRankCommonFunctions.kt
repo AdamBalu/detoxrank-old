@@ -1,7 +1,10 @@
 package com.example.detoxrank.ui.utils
 
+import android.text.format.Time
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.example.detoxrank.R
+import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_100_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_10_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_250_TASKS
@@ -32,6 +35,7 @@ import com.example.detoxrank.ui.utils.Constants.ID_TIMER_14_DAYS
 import com.example.detoxrank.ui.utils.Constants.ID_TIMER_30_DAYS
 import com.example.detoxrank.ui.utils.Constants.ID_TIMER_3_DAYS
 import com.example.detoxrank.ui.utils.Constants.ID_TIMER_7_DAYS
+import com.example.detoxrank.ui.utils.Constants.TIMER_HOURLY_RP_GAIN
 
 
 fun formatTime(seconds: String, minutes: String, hours: String): String {
@@ -44,6 +48,11 @@ fun formatTimeWithLetters(days: String, hours: String, minutes: String): String 
 
 fun Int.pad(): String {
     return this.toString().padStart(2, '0')
+}
+
+@ExperimentalAnimationApi
+fun calculateTimerRPGain(timerService: TimerService): Int {
+    return timerService.days.value * TIMER_HOURLY_RP_GAIN * 24 + timerService.hours.value.toInt() * TIMER_HOURLY_RP_GAIN
 }
 
 @DrawableRes

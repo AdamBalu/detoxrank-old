@@ -7,19 +7,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.rank.AchievementViewModel
+import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
+import com.example.detoxrank.ui.utils.calculateTimerRPGain
 
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
@@ -164,7 +169,7 @@ fun TimerBody(
         AnimationBox(
             enter = expandVertically(animationSpec = tween(durationMillis = 700)) +
                     fadeIn(animationSpec = tween(durationMillis = 1200))) {
-            Box(contentAlignment = Alignment.TopCenter, modifier = Modifier.height(350.dp)) {
+            Box(contentAlignment = Alignment.TopCenter, modifier = Modifier.height(320.dp)) {
                 TimerClock(timerService)
                 TimerStartStopButton(
                     timerService = timerService,
@@ -181,13 +186,20 @@ fun TimerBody(
                 timerService = timerService,
                 detoxRankUiState = detoxRankUiState,
                 detoxRankViewModel = detoxRankViewModel,
-                timerViewModel = timerViewModel,
-                modifier = Modifier.padding(top = 50.dp)
+                timerViewModel = timerViewModel
             )
         }
     }
 }
 
+@ExperimentalAnimationApi
+@Composable
+fun GeneratedPoints(
+    timerService: TimerService,
+    modifier: Modifier = Modifier
+) {
+
+}
 
 @ExperimentalAnimationApi
 @Composable

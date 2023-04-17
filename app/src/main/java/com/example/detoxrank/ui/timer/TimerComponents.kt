@@ -43,6 +43,7 @@ import com.example.detoxrank.ui.theme.rank_color_ultra_dark
 import com.example.detoxrank.ui.utils.Constants
 import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
+import com.example.detoxrank.ui.utils.calculateTimerRPGain
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -258,6 +259,7 @@ fun TimerStartStopButton(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var wasButtonClicked by remember { mutableStateOf(false) }
+    val timerRPGain = calculateTimerRPGain(timerService)
 //    var wasDismissAlertClicked by remember { mutableStateOf(false) }
 //    var showEndDetoxDialog by remember { mutableStateOf(false) }
 
@@ -315,6 +317,7 @@ fun TimerStartStopButton(
                         coroutineScope.launch {
                             achievementViewModel.achieveTimerAchievements(timerService.days.value)
                             detoxRankViewModel.updateTimerStarted(false)
+                            detoxRankViewModel.updateUserRankPoints(timerRPGain)
                         }
                         wasButtonClicked = false
                     }
@@ -385,41 +388,65 @@ fun TimerFooter(
     timerViewModel: TimerViewModel,
     modifier: Modifier = Modifier
 ) {
+    val points = calculateTimerRPGain(timerService)
     val days by timerService.days
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 35.dp, end = 35.dp, bottom = 10.dp)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
+    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = modifier.fillMaxWidth().padding(bottom = 40.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
             Text(
-                text = "DAY STREAK",
+                stringResource(R.string.timer_accumulated_points_heading),
                 style = Typography.bodySmall
             )
-            Text(
-                "$days",
-                style = Typography.headlineLarge,
-                textAlign = TextAlign.Center,
-                fontSize = 43.sp
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "$points",
+                    modifier = Modifier.padding(top = 0.dp, end = 10.dp),
+                    style = Typography.headlineLarge,
+                    letterSpacing = 1.sp,
+                    fontSize = 43.sp
+                )
+                Image(
+                    painterResource(id = R.drawable.rank_points_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(35.dp).padding(top = 5.dp)
+                )
+
+            }
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 35.dp, end = 35.dp, bottom = 0.dp)
         ) {
-            Text(
-                text = "DIFFICULTY",
-                style = Typography.bodySmall
-            )
-            DifficultySelect(
-                onClick = { timerViewModel.setDifficultySelectShown(true) },
-                timerService = timerService,
-                detoxRankUiState = detoxRankUiState,
-                detoxRankViewModel = detoxRankViewModel
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Text(
+                    text = "DAY STREAK",
+                    style = Typography.bodySmall
+                )
+                Text(
+                    "$days",
+                    style = Typography.headlineLarge,
+                    textAlign = TextAlign.Center,
+                    fontSize = 43.sp
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "DIFFICULTY",
+                    style = Typography.bodySmall
+                )
+                DifficultySelect(
+                    onClick = { timerViewModel.setDifficultySelectShown(true) },
+                    timerService = timerService,
+                    detoxRankUiState = detoxRankUiState,
+                    detoxRankViewModel = detoxRankViewModel
+                )
+            }
         }
     }
 }

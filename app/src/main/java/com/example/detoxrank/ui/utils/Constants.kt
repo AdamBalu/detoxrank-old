@@ -71,4 +71,6 @@ object Constants {
     const val RP_PERCENTAGE_GAIN_EASY = 10
     const val RP_PERCENTAGE_GAIN_MEDIUM = 20
     const val RP_PERCENTAGE_GAIN_HARD = 30
+
+    const val TIMER_HOURLY_RP_GAIN = 8
 }

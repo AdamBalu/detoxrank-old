@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AvTimer
-import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.HistoryEdu
-import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -21,9 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
@@ -39,7 +37,6 @@ import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import com.example.detoxrank.ui.utils.getCurrentProgressBarProgression
 import com.example.detoxrank.ui.utils.getLevelDrawableId
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
@@ -72,27 +69,23 @@ fun DetoxRankAppContent(
     val navigationItemContentList = listOf(
         NavigationItemContent(
             section = Section.Rank,
-            icon = Icons.Filled.LocalPolice,
-            text = stringResource(id = R.string.tab_rank),
-            tint = rank_color
+            image = ImageVector.vectorResource(id = R.drawable.rank_points_icon),
+            text = stringResource(id = R.string.tab_rank)
         ),
         NavigationItemContent(
             section = Section.Tasks,
-            icon = Icons.Filled.Checklist,
-            text = stringResource(id = R.string.tab_tasks),
-            tint = if (isSystemInDarkTheme()) md_theme_dark_tertiary else md_theme_light_tertiary
+            image = ImageVector.vectorResource(id = R.drawable.tasksnavicon),
+            text = stringResource(id = R.string.tab_tasks)
         ),
         NavigationItemContent(
             section = Section.Timer,
-            icon = Icons.Filled.AvTimer,
-            text = stringResource(id = R.string.tab_timer),
-            tint = if (isSystemInDarkTheme()) timer_color_dark else md_theme_light_error
+            image = ImageVector.vectorResource(id = R.drawable.timernavicon),
+            text = stringResource(id = R.string.tab_timer)
         ),
         NavigationItemContent(
             section = Section.Theory,
-            icon = Icons.Filled.HistoryEdu,
+            image = ImageVector.vectorResource(id = R.drawable.theorynavicon),
             text = stringResource(id = R.string.tab_theory),
-            tint = if (isSystemInDarkTheme()) md_theme_dark_primary else md_theme_light_primary
         )
     )
 
@@ -150,17 +143,19 @@ fun DetoxRankBottomNavigationBar(
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier
 ) {
+    var topPadding: Dp
     NavigationBar(modifier = modifier.fillMaxWidth()) {
         for (navItem in navigationItemContentList) {
             NavigationBarItem(
                 selected = currentTab == navItem.section,
                 onClick = { onTabPressed(navItem.section) },
                 icon = {
-                    Icon(
-                        imageVector = navItem.icon,
+                    Image(
+                        imageVector = navItem.image,
                         contentDescription = navItem.text,
-                        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
-                        tint = navItem.tint
+                        modifier = Modifier
+                            .padding(top = 4.dp, bottom = 4.dp)
+                            .size(25.dp)
                     )
                 }
             )
@@ -184,12 +179,15 @@ fun DetoxRankNavigationRail(
                 selected = currentTab == navItem.section,
                 onClick = { onTabPressed(navItem.section) },
                 icon = {
-                    Icon(
-                        imageVector = navItem.icon,
+                    Image(
+                        imageVector = navItem.image,
                         contentDescription = navItem.text,
-                        tint = navItem.tint
+                        modifier = Modifier
+                            .padding(top = 2.dp, bottom = 2.dp)
+                            .size(25.dp)
                     )
-                }
+                },
+                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
             )
         }
     }
@@ -223,16 +221,19 @@ fun NavigationDrawerContent(
                     )
                 },
                 icon = {
-                    Icon(
-                        imageVector = navItem.icon,
+                    Image(
+                        imageVector = navItem.image,
                         contentDescription = navItem.text,
-                        tint = navItem.tint
+                        modifier = Modifier
+                            .padding(top = 4.dp, bottom = 4.dp)
+                            .size(30.dp)
                     )
                 },
                 colors = NavigationDrawerItemDefaults.colors(
                     unselectedContainerColor = Color.Transparent
                 ),
-                onClick = { onTabPressed(navItem.section) }
+                onClick = { onTabPressed(navItem.section) },
+                modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
             )
         }
     }
@@ -285,54 +286,50 @@ fun DetoxRankTopAppBar(
             xpBarHeight = 45.dp
         }
     }
-    Row {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier.padding(top = 12.dp, start = 20.dp)
-        ) {
-            Box {
-                Image(
-                    painterResource(getLevelDrawableId(currentLevel)),
-                    null,
-                    modifier = Modifier
-                        .size(levelBadgeSize)
-                        .zIndex(1f)
-                )
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier.padding(top = 12.dp, start = 20.dp)
+    ) {
+        Box {
+            Image(
+                painterResource(getLevelDrawableId(currentLevel)),
+                null,
+                modifier = Modifier
+                    .size(levelBadgeSize)
+                    .zIndex(1f)
+            )
 
-                if (currentLevel != 25) {
-                    LinearProgressIndicator(
-                        progress = animatedProgress,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                        modifier = Modifier
-                            .height(xpBarHeight)
-                            .padding(start = xpBarPaddingStart, end = 16.dp, top = xpBarPaddingTop)
-                            .fillMaxWidth(0.35f)
-                            .clip(RoundedCornerShape(2.dp))
-                            .border(
-                                BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
-                                RoundedCornerShape(2.dp)
-                            )
-                    )
-                }
+            if (currentLevel != 25) {
+                LinearProgressIndicator(
+                    progress = animatedProgress,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier
+                        .height(xpBarHeight)
+                        .padding(start = xpBarPaddingStart, end = 16.dp, top = xpBarPaddingTop)
+                        .fillMaxWidth(0.35f)
+                        .clip(RoundedCornerShape(2.dp))
+                        .border(
+                            BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+                            RoundedCornerShape(2.dp)
+                        )
+                )
             }
         }
-        Button(onClick = {
-            coroutineScope.launch {
-                detoxRankViewModel.updateUserRankPoints(500)
-                detoxRankViewModel.updateUserXPPoints(1000)
-            } },
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Text("Get Rank+XP (dev)", style = Typography.bodySmall, fontSize = 10.sp)
-        }
-
     }
+//        Button(onClick = { // DEVDATA add row for this to work
+//            coroutineScope.launch {
+//                detoxRankViewModel.updateUserRankPoints(500)
+//                detoxRankViewModel.updateUserXPPoints(1000)
+//            } },
+//            modifier = Modifier.padding(10.dp)
+//        ) {
+//            Text("Get Rank+XP (dev)", style = Typography.bodySmall, fontSize = 10.sp)
+//        }
 }
 
 data class NavigationItemContent(
     val section: Section,
-    val icon: ImageVector,
-    val text: String,
-    val tint: Color
+    val image: ImageVector,
+    val text: String
 )

@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PlayArrow
@@ -16,12 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.detoxrank.R
 import com.example.detoxrank.service.ServiceHelper
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.service.TimerState
@@ -32,6 +36,7 @@ import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.utils.Constants
 import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
+import com.example.detoxrank.ui.utils.calculateTimerRPGain
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -116,7 +121,7 @@ fun TimerClockLarge(
     )
 
     val k = minOf(LocalConfiguration.current.screenHeightDp, LocalConfiguration.current.screenWidthDp)
-    val add = (k - 550) / 2
+    val add = (k - 590) / 2
     val addition = if (add < 0) 0 else add
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(top = 0.dp)) {
@@ -355,15 +360,17 @@ fun TimerFooterLarge(
     modifier: Modifier = Modifier
 ) {
     val days by timerService.days
+
+    val points = 10000
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxHeight()
             .padding(start = 35.dp, end = 35.dp, bottom = 35.dp, top = 35.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "DAY STREAK",
@@ -375,6 +382,30 @@ fun TimerFooterLarge(
                 textAlign = TextAlign.Center,
                 fontSize = 43.sp
             )
+        }
+        Column(
+            modifier = modifier.padding(bottom = 0.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                stringResource(R.string.timer_accumulated_points_heading),
+                style = Typography.bodySmall
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "$points",
+                    modifier = Modifier.padding(top = 0.dp, end = 10.dp),
+                    style = Typography.headlineLarge,
+                    letterSpacing = 1.sp,
+                    fontSize = if (points > 999) { 23.sp } else { 43.sp }
+                )
+                Image(
+                    painterResource(id = R.drawable.rank_points_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(if (points > 999) {25.dp} else {30.dp}).padding(top = 5.dp)
+                )
+
+            }
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally

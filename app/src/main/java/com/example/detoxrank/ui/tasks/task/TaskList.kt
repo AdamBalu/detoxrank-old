@@ -106,7 +106,7 @@ fun TaskList(
 //                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
 //                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
 //
-////                          tasksToAdd.forEach { // DATA inserts new tasks to database
+////                          tasksToAdd.forEach { // DEVDATA inserts new tasks to database
 ////                                taskViewModel.updateUiState(it.toTaskUiState())
 ////                                  taskViewModel.insertTaskToDatabase()
 ////                          }
@@ -118,7 +118,7 @@ fun TaskList(
 //                ) {
 //                    Row {
 //                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
-//                        Text("Generate new tasks (temp btn)") // DATA generates new tasks
+//                        Text("Generate new tasks (temp btn)") // DEVDATA generates new tasks
 //                    }
 //                }
 //            }

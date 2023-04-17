@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if (isFirstRun) { // DATA later only get starting data from default database, not like this TODO delete
+//        if (isFirstRun) { // DEVDATA later only get starting data from default database, not like this TODO delete
 //            CoroutineScope(Dispatchers.IO).launch {
 //                // Insert data into Room database
 //                val database = AppDatabase.getDatabase(this@MainActivity)

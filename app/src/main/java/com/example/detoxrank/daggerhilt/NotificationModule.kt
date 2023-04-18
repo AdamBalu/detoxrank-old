@@ -25,10 +25,9 @@ object NotificationModule {
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Detox Active!")
-            .setContentText("00:00:00")
-            .setSmallIcon(R.drawable.baseline_av_timer_24)
+            .setContentText("Day 0, 00:00:00")
+            .setSmallIcon(R.drawable.timernavicon)
             .setOngoing(true)
-            .addAction(0, "Cancel", ServiceHelper.cancelPendingIntent(context))
             .setContentIntent(ServiceHelper.clickPendingIntent(context))
     }
 

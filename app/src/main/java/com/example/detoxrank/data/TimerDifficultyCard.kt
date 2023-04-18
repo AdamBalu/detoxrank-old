@@ -11,6 +11,5 @@ enum class TimerDifficulty {
 data class TimerDifficultyCard(
     val difficulty: TimerDifficulty,
     val avoidList: List<Int>,
-    @DrawableRes val backgroundImageRes: Int,
-    val height: Dp = 300.dp
+    @DrawableRes val backgroundImageRes: Int
 )

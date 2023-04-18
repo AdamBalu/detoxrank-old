@@ -60,44 +60,11 @@ fun TaskList(
     taskViewModel: TaskViewModel = viewModel(factory = DetoxRankViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
-    if (taskList.isEmpty()) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
-                .padding(top = 100.dp, start = 50.dp, end = 50.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.TaskAlt,
-                contentDescription = null,
-                modifier = Modifier.size(250.dp),
-                tint = if (isSystemInDarkTheme())
-                    md_theme_dark_tertiary
-                else
-                    md_theme_light_tertiary
-            )
-            Text(
-                stringResource(R.string.congratulations),
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 10.dp),
-                textAlign = TextAlign.Center,
-                color = if (isSystemInDarkTheme())
-                    md_theme_dark_tertiary
-                else
-                    md_theme_light_tertiary,
-            )
-            Text(
-                stringResource(R.string.all_tasks_completed_description),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                fontStyle = FontStyle.Italic
-            )
-        }
-    } else {
-        LazyColumn(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
 //            item {
 //                OutlinedIconButton(
 //                    onClick = {
@@ -122,106 +89,105 @@ fun TaskList(
 //                    }
 //                }
 //            }
-            item {
-                if (!taskList.none { it.durationCategory == TaskDurationCategory.Uncategorized })
-                    TasksHeading(
-                        timerService = timerService,
-                        headingRes = R.string.tasklist_heading_custom,
-                        category = TaskDurationCategory.Uncategorized,
-                        iconImageVector = Icons.Filled.Face,
-                        taskViewModel = taskViewModel
-                    )
-            }
-            items(taskList.filter { it.durationCategory == TaskDurationCategory.Uncategorized }) { task ->
-                AnimationBox {
-                    Task(
-                        task = task,
-                        detoxRankViewModel = detoxRankViewModel,
-                        achievementViewModel = achievementViewModel,
-                        taskViewModel = taskViewModel
-                    )
-                }
-            }
-            item {
+        item {
+            if (!taskList.none { it.durationCategory == TaskDurationCategory.Uncategorized })
                 TasksHeading(
                     timerService = timerService,
-                    headingRes = R.string.tasklist_heading_daily,
-                    category = TaskDurationCategory.Daily,
-                    iconImageVector = Icons.Filled.Today,
+                    headingRes = R.string.tasklist_heading_custom,
+                    category = TaskDurationCategory.Uncategorized,
+                    iconImageVector = Icons.Filled.Face,
+                    taskViewModel = taskViewModel
+                )
+        }
+        items(taskList.filter { it.durationCategory == TaskDurationCategory.Uncategorized }) { task ->
+            AnimationBox {
+                Task(
+                    task = task,
+                    detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     taskViewModel = taskViewModel
                 )
             }
-            items(taskList.filter { it.durationCategory == TaskDurationCategory.Daily }) { task ->
-                AnimationBox {
-                    Task(
-                        task = task,
-                        detoxRankViewModel = detoxRankViewModel,
-                        achievementViewModel = achievementViewModel,
-                        taskViewModel = taskViewModel
-                    )
-                }
-            }
-            item {
-                TasksHeading(
-                    timerService = timerService,
-                    headingRes = R.string.tasklist_heading_weekly,
-                    category = TaskDurationCategory.Weekly,
-                    iconImageVector = Icons.Filled.DateRange,
+        }
+        item {
+            TasksHeading(
+                timerService = timerService,
+                headingRes = R.string.tasklist_heading_daily,
+                category = TaskDurationCategory.Daily,
+                iconImageVector = Icons.Filled.Today,
+                taskViewModel = taskViewModel
+            )
+        }
+        items(taskList.filter { it.durationCategory == TaskDurationCategory.Daily }) { task ->
+            AnimationBox {
+                Task(
+                    task = task,
+                    detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     taskViewModel = taskViewModel
                 )
             }
-            items(taskList.filter { it.durationCategory == TaskDurationCategory.Weekly }) { task ->
-                AnimationBox {
-                    Task(
-                        task = task,
-                        detoxRankViewModel = detoxRankViewModel,
-                        achievementViewModel = achievementViewModel,
-                        taskViewModel = taskViewModel
-                    )
-                }
-            }
-            item {
-                TasksHeading(
-                    timerService = timerService,
-                    headingRes = R.string.tasklist_heading_monthly,
-                    category = TaskDurationCategory.Monthly,
-                    iconImageVector = Icons.Filled.CalendarMonth,
+        }
+        item {
+            TasksHeading(
+                timerService = timerService,
+                headingRes = R.string.tasklist_heading_weekly,
+                category = TaskDurationCategory.Weekly,
+                iconImageVector = Icons.Filled.DateRange,
+                taskViewModel = taskViewModel
+            )
+        }
+        items(taskList.filter { it.durationCategory == TaskDurationCategory.Weekly }) { task ->
+            AnimationBox {
+                Task(
+                    task = task,
+                    detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
                     taskViewModel = taskViewModel
                 )
             }
-            items(taskList.filter { it.durationCategory == TaskDurationCategory.Monthly }) { task ->
-                AnimationBox {
-                    Task(
-                        task = task,
-                        detoxRankViewModel = detoxRankViewModel,
-                        achievementViewModel = achievementViewModel,
-                        taskViewModel = taskViewModel
-                    )
-                }
+        }
+        item {
+            TasksHeading(
+                timerService = timerService,
+                headingRes = R.string.tasklist_heading_monthly,
+                category = TaskDurationCategory.Monthly,
+                iconImageVector = Icons.Filled.CalendarMonth,
+                taskViewModel = taskViewModel
+            )
+        }
+        items(taskList.filter { it.durationCategory == TaskDurationCategory.Monthly }) { task ->
+            AnimationBox {
+                Task(
+                    task = task,
+                    detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
+                    taskViewModel = taskViewModel
+                )
             }
-            item {
-                if (!taskList.none { it.durationCategory == TaskDurationCategory.Special })
-                    TasksHeading(
-                        timerService = timerService,
-                        headingRes = R.string.tasklist_heading_special,
-                        category = TaskDurationCategory.Special,
-                        iconImageVector = Icons.Filled.ElectricBolt,
-                        taskViewModel = taskViewModel
-                    )
+        }
+        item {
+            if (!taskList.none { it.durationCategory == TaskDurationCategory.Special })
+                TasksHeading(
+                    timerService = timerService,
+                    headingRes = R.string.tasklist_heading_special,
+                    category = TaskDurationCategory.Special,
+                    iconImageVector = Icons.Filled.ElectricBolt,
+                    taskViewModel = taskViewModel
+                )
+        }
+        items(taskList.filter { it.durationCategory == TaskDurationCategory.Special }) { task ->
+            AnimationBox {
+                Task(
+                    task = task,
+                    detoxRankViewModel = detoxRankViewModel,
+                    achievementViewModel = achievementViewModel,
+                    taskViewModel = taskViewModel
+                )
             }
-            items(taskList.filter { it.durationCategory == TaskDurationCategory.Special }) { task ->
-                AnimationBox {
-                    Task(
-                        task = task,
-                        detoxRankViewModel = detoxRankViewModel,
-                        achievementViewModel = achievementViewModel,
-                        taskViewModel = taskViewModel
-                    )
-                }
-            }
-            item {
-                Spacer(modifier = Modifier.padding(bottom = 75.dp))
-            }
+        }
+        item {
+            Spacer(modifier = Modifier.padding(bottom = 75.dp))
         }
     }
 }

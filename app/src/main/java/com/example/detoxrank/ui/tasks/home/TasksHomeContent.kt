@@ -31,12 +31,11 @@ import com.example.detoxrank.ui.tasks.task.TaskList
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
 import com.example.detoxrank.ui.tasks.task.toTaskUiState
 import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import java.time.Instant
-import java.time.ZoneId
 import java.util.*
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -129,10 +128,9 @@ fun TasksContent(
         val year = calendar.get(Calendar.YEAR)
         val currentTime = Calendar.getInstance()
         currentTime.timeInMillis = System.currentTimeMillis()
-//        lastMonth.set(Calendar.MONTH, lastMonth.get(Calendar.MONTH) - 1)
-        val isFromLastMonth = currentTime.get(Calendar.MONTH) - 1 == month && currentTime.get(Calendar.YEAR) >= year
+        val isFromLastMonth = currentTime.get(Calendar.MONTH) - 1 >= month && currentTime.get(Calendar.YEAR) >= year
         if (isFromLastMonth) {
-            taskViewModel.getMonthlyTasks()
+            taskViewModel.getNewTasks(TaskDurationCategory.Monthly)
         }
     }
 

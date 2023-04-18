@@ -3,6 +3,12 @@ package com.example.detoxrank.ui.utils
 import android.text.format.Time
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.detoxrank.R
 import com.example.detoxrank.service.TimerService
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_100_TASKS
@@ -38,8 +44,8 @@ import com.example.detoxrank.ui.utils.Constants.ID_TIMER_7_DAYS
 import com.example.detoxrank.ui.utils.Constants.TIMER_HOURLY_RP_GAIN
 
 
-fun formatTime(seconds: String, minutes: String, hours: String): String {
-    return "$hours:$minutes:$seconds"
+fun formatTime(days: String, seconds: String, minutes: String, hours: String): String {
+    return "Day $days, $hours:$minutes:$seconds"
 }
 
 fun formatTimeWithLetters(days: String, hours: String, minutes: String): String {
@@ -52,7 +58,7 @@ fun Int.pad(): String {
 
 @ExperimentalAnimationApi
 fun calculateTimerRPGain(timerService: TimerService): Int {
-    return timerService.days.value * TIMER_HOURLY_RP_GAIN * 24 + timerService.hours.value.toInt() * TIMER_HOURLY_RP_GAIN
+    return timerService.days.value.toInt() * TIMER_HOURLY_RP_GAIN * 24 + timerService.hours.value.toInt() * TIMER_HOURLY_RP_GAIN
 }
 
 @DrawableRes
@@ -119,6 +125,50 @@ fun getCurrentProgressBarProgression(xpPoints: Int): Float {
         return 1f
     }
     return (xpPoints.toFloat() - lowerBound) / (accumulated - lowerBound)
+}
+
+@Composable
+fun getParamDependingOnScreenSizeDp(p1: Dp?, p2: Dp?, p3: Dp?, p4: Dp?, otherwise: Dp): Dp {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    return if (currentScreenHeight < 600 && currentScreenWidth < 340) p1 ?: 0.dp
+        else if (currentScreenHeight < 700 && currentScreenWidth < 370) p2 ?: 0.dp
+        else if (currentScreenHeight < 800 && currentScreenWidth < 400) p3 ?: 0.dp
+        else if (currentScreenHeight < 900 && currentScreenWidth < 500) p4 ?: 0.dp
+        else otherwise
+}
+
+@Composable
+fun getParamDependingOnScreenSizeDpLarge(p1: Dp?, p2: Dp?, p3: Dp?, p4: Dp?, otherwise: Dp): Dp {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    return if (currentScreenHeight < 340 && currentScreenWidth < 600) p1 ?: 0.dp
+    else if (currentScreenHeight < 370 && currentScreenWidth < 700) p2 ?: 0.dp
+    else if (currentScreenHeight < 400 && currentScreenWidth < 800) p3 ?: 0.dp
+    else if (currentScreenHeight < 500 && currentScreenWidth < 900) p4 ?: 0.dp
+    else otherwise
+}
+
+@Composable
+fun getParamDependingOnScreenSizeSp(p1: TextUnit?, p2: TextUnit?, p3: TextUnit?, p4: TextUnit?, otherwise: TextUnit): TextUnit {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    return if (currentScreenHeight < 600 && currentScreenWidth < 340) p1 ?: 0.sp
+    else if (currentScreenHeight < 700 && currentScreenWidth < 370) p2 ?: 0.sp
+    else if (currentScreenHeight < 800 && currentScreenWidth < 400) p3 ?: 0.sp
+    else if (currentScreenHeight < 900 && currentScreenWidth < 500) p4 ?: 0.sp
+    else otherwise
+}
+
+@Composable
+fun getParamDependingOnScreenSizeSpLarge(p1: TextUnit?, p2: TextUnit?, p3: TextUnit?, p4: TextUnit?, otherwise: TextUnit): TextUnit {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    return if (currentScreenHeight < 340 && currentScreenWidth < 600) p1 ?: 0.sp
+    else if (currentScreenHeight < 370 && currentScreenWidth < 700) p2 ?: 0.sp
+    else if (currentScreenHeight < 400 && currentScreenWidth < 800) p3 ?: 0.sp
+    else if (currentScreenHeight < 500 && currentScreenWidth < 900) p4 ?: 0.sp
+    else otherwise
 }
 
 fun calculateTimerFloatAddition(progressLength: Float, numberOfUnitsInBiggerUnit: Int): Float =

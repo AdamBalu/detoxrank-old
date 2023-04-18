@@ -37,6 +37,8 @@ import com.example.detoxrank.ui.utils.Constants
 import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
 import com.example.detoxrank.ui.utils.calculateTimerRPGain
+import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeDpLarge
+import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeSpLarge
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -174,8 +176,7 @@ fun TimerClockLarge(
                     .align(Alignment.Center),
                 progress = 39f,
                 progressMax = 100f,
-                progressBarColor =
-                MaterialTheme.colorScheme.secondary,
+                progressBarColor = MaterialTheme.colorScheme.secondary,
                 progressBarWidth = 4.dp,
                 backgroundProgressBarColor = Color.Transparent,
                 backgroundProgressBarWidth = 1.dp,
@@ -283,7 +284,7 @@ fun TimerStartStopButtonLarge(
                             action = Constants.ACTION_SERVICE_CANCEL
                         )
                         coroutineScope.launch {
-                            achievementViewModel.achieveTimerAchievements(timerService.days.value)
+                            achievementViewModel.achieveTimerAchievements(timerService.days.value.toInt())
                             detoxRankViewModel.updateTimerStarted(false)
                         }
                         wasButtonClicked = false
@@ -361,7 +362,10 @@ fun TimerFooterLarge(
 ) {
     val days by timerService.days
 
-    val points = 10000
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+
+    val points = calculateTimerRPGain(timerService)
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -380,7 +384,13 @@ fun TimerFooterLarge(
                 "$days",
                 style = Typography.headlineLarge,
                 textAlign = TextAlign.Center,
-                fontSize = 43.sp
+                fontSize = getParamDependingOnScreenSizeSpLarge(
+                    p1 = 21.sp,
+                    p2 = 25.sp,
+                    p3 = 30.sp,
+                    p4 = 40.sp,
+                    otherwise = 40.sp
+                )
             )
         }
         Column(
@@ -389,7 +399,8 @@ fun TimerFooterLarge(
         ) {
             Text(
                 stringResource(R.string.timer_accumulated_points_heading),
-                style = Typography.bodySmall
+                style = Typography.bodySmall,
+                fontSize = if (currentScreenWidth < 800 && currentScreenHeight < 400) 10.sp else Typography.bodySmall.fontSize
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -397,12 +408,26 @@ fun TimerFooterLarge(
                     modifier = Modifier.padding(top = 0.dp, end = 10.dp),
                     style = Typography.headlineLarge,
                     letterSpacing = 1.sp,
-                    fontSize = if (points > 999) { 23.sp } else { 43.sp }
+                    fontSize = if (points > 999) { 15.sp } else { getParamDependingOnScreenSizeSpLarge(
+                        p1 = 21.sp,
+                        p2 = 25.sp,
+                        p3 = 30.sp,
+                        p4 = 40.sp,
+                        otherwise = 40.sp
+                    ) }
                 )
                 Image(
                     painterResource(id = R.drawable.rank_points_icon),
                     contentDescription = null,
-                    modifier = Modifier.size(if (points > 999) {25.dp} else {30.dp}).padding(top = 5.dp)
+                    modifier = Modifier
+                        .size(
+                            if (points > 999 || (currentScreenWidth < 800 && currentScreenHeight < 400)) {
+                                25.dp
+                            } else {
+                                30.dp
+                            }
+                        )
+                        .padding(top = 5.dp)
                 )
 
             }

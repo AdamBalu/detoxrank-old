@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +46,8 @@ import com.example.detoxrank.ui.utils.Constants
 import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
 import com.example.detoxrank.ui.utils.calculateTimerRPGain
+import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeDp
+import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeSp
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,12 +63,12 @@ fun BannedItem(
         Icon(
             imageVector = Icons.Filled.ArrowRight,
             contentDescription = null,
-            modifier = modifier.width(12.dp),
+            modifier = modifier.width(26.dp),
             tint = MaterialTheme.colorScheme.error
         )
         Text(
             stringResource(item),
-            style = Typography.bodySmall,
+            style = Typography.bodyMedium,
             fontStyle = FontStyle.Normal,
             modifier = Modifier.padding(bottom = 4.dp, start = 5.dp, end = 8.dp)
         )
@@ -86,6 +90,7 @@ fun TimerClock(
         targetValue = timerService.hours.value.toFloat() * calculateTimerFloatAddition(19.44f, 24)
     )
 
+    val timerWidthDecrement = getParamDependingOnScreenSizeDp(50.dp, 40.dp, 30.dp, 20.dp, 0.dp)
     Box(contentAlignment = Alignment.Center) {
         Box(
             modifier = modifier
@@ -93,7 +98,7 @@ fun TimerClock(
         ) {
             CircularProgressBar(
                 modifier = Modifier
-                    .width(328.dp)
+                    .width(328.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = progressSeconds,
                 progressMax = 100f,
@@ -107,7 +112,7 @@ fun TimerClock(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(314.dp)
+                    .width(314.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = 50f,
                 progressMax = 100f,
@@ -121,7 +126,7 @@ fun TimerClock(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(285.dp)
+                    .width(285.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = progressMinutes,
                 progressMax = 100f,
@@ -135,7 +140,7 @@ fun TimerClock(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(269.dp)
+                    .width(269.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = 39f,
                 progressMax = 100f,
@@ -150,7 +155,7 @@ fun TimerClock(
 
             CircularProgressBar(
                 modifier = Modifier
-                    .width(240.dp)
+                    .width(240.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = progressHours,
                 progressMax = 100f,
@@ -165,7 +170,7 @@ fun TimerClock(
 
             CircularProgressBar(
                 modifier = Modifier
-                    .width(220.dp)
+                    .width(220.dp - timerWidthDecrement)
                     .align(Alignment.Center),
                 progress = 19.44f,
                 progressMax = 100f,
@@ -315,7 +320,7 @@ fun TimerStartStopButton(
                             action = Constants.ACTION_SERVICE_CANCEL
                         )
                         coroutineScope.launch {
-                            achievementViewModel.achieveTimerAchievements(timerService.days.value)
+                            achievementViewModel.achieveTimerAchievements(timerService.days.value.toInt())
                             detoxRankViewModel.updateTimerStarted(false)
                             detoxRankViewModel.updateUserRankPoints(timerRPGain)
                         }
@@ -390,11 +395,34 @@ fun TimerFooter(
 ) {
     val points = calculateTimerRPGain(timerService)
     val days by timerService.days
-    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Column(modifier = modifier.fillMaxWidth().padding(bottom = 40.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    val decrement = getParamDependingOnScreenSizeDp(10.dp, 5.dp, null, null, 0.dp)
+
+    val timerTranslationY =
+        if (currentScreenHeight < 600 && currentScreenWidth < 340) -100f
+        else if (currentScreenHeight < 700 && currentScreenWidth < 370) -90f
+        else if (currentScreenHeight < 800 && currentScreenWidth < 400) -70f
+        else if (currentScreenHeight < 900 && currentScreenWidth < 500) -60f
+        else if (currentScreenHeight < 1100 && currentScreenWidth < 600) -50f
+        else { 0f }
+
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .graphicsLayer { translationY = timerTranslationY }, horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = if (currentScreenHeight < 800) 0.dp else 50.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 stringResource(R.string.timer_accumulated_points_heading),
-                style = Typography.bodySmall
+                style = Typography.bodySmall,
+                fontSize = getParamDependingOnScreenSizeSp(
+                    p1 = 10.sp,
+                    p2 = 12.sp,
+                    p3 = 14.sp,
+                    p4 = Typography.bodySmall.fontSize,
+                    otherwise = Typography.bodySmall.fontSize
+                )
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -402,12 +430,14 @@ fun TimerFooter(
                     modifier = Modifier.padding(top = 0.dp, end = 10.dp),
                     style = Typography.headlineLarge,
                     letterSpacing = 1.sp,
-                    fontSize = 43.sp
+                    fontSize = getParamDependingOnScreenSizeSp(p1 = 21.sp, p2 = 25.sp, p3 = 40.sp, p4 = 45.sp, 45.sp)
                 )
                 Image(
                     painterResource(id = R.drawable.rank_points_icon),
                     contentDescription = null,
-                    modifier = Modifier.size(35.dp).padding(top = 5.dp)
+                    modifier = Modifier
+                        .size(35.dp - decrement)
+                        .padding(top = 5.dp)
                 )
 
             }
@@ -424,13 +454,27 @@ fun TimerFooter(
             ) {
                 Text(
                     text = "DAY STREAK",
-                    style = Typography.bodySmall
+                    style = Typography.bodySmall,
+                    fontSize = getParamDependingOnScreenSizeSp(
+                        p1 = 10.sp,
+                        p2 = 12.sp,
+                        p3 = 14.sp,
+                        p4 = Typography.bodySmall.fontSize,
+                        otherwise = Typography.bodySmall.fontSize
+                    )
                 )
                 Text(
                     "$days",
                     style = Typography.headlineLarge,
                     textAlign = TextAlign.Center,
-                    fontSize = 43.sp
+                    fontSize = getParamDependingOnScreenSizeSp(p1 = 23.sp, p2 = 32.sp, p3 = 40.sp, p4 = 45.sp, 45.sp),
+                    modifier = Modifier.padding(top = getParamDependingOnScreenSizeDp(
+                        p1 = 12.dp,
+                        p2 = 8.dp,
+                        p3 = 5.dp,
+                        p4 = 0.dp,
+                        otherwise = 0.dp
+                    ))
                 )
             }
             Column(
@@ -438,7 +482,14 @@ fun TimerFooter(
             ) {
                 Text(
                     text = "DIFFICULTY",
-                    style = Typography.bodySmall
+                    style = Typography.bodySmall,
+                    fontSize = getParamDependingOnScreenSizeSp(
+                        p1 = 10.sp,
+                        p2 = 12.sp,
+                        p3 = 14.sp,
+                        p4 = Typography.bodySmall.fontSize,
+                        otherwise = Typography.bodySmall.fontSize
+                    )
                 )
                 DifficultySelect(
                     onClick = { timerViewModel.setDifficultySelectShown(true) },
@@ -498,6 +549,10 @@ fun DifficultySelect(
         TimerDifficulty.Hard -> R.drawable.timer_hard_difficulty_icon
     }
 
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    val difficultyPaddingShrinker = getParamDependingOnScreenSizeDp(10.dp, 8.dp, 4.dp, 0.dp, 0.dp)
+
     OutlinedIconButton(
         onClick = onClick,
         shape = RoundedCornerShape(14.dp),
@@ -511,8 +566,8 @@ fun DifficultySelect(
             )))
         } else { BorderStroke(2.dp, MaterialTheme.colorScheme.surfaceVariant) },
         modifier = modifier
-            .width(80.dp)
-            .height(60.dp)
+            .width(80.dp - difficultyPaddingShrinker)
+            .height(60.dp - difficultyPaddingShrinker)
             .padding(top = 10.dp)
     ) {
         Column(
@@ -522,7 +577,7 @@ fun DifficultySelect(
                 painterResource(id = iconToDisplay),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(80.dp)
+                    .width(80.dp - difficultyPaddingShrinker)
                     .padding(10.dp)
             )
         }

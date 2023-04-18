@@ -103,7 +103,7 @@ class OfflineTasksRepository(
         }
     }
 
-    private suspend fun handleTaskRotation(
+    override suspend fun handleTaskRotation(
         xpGain: Int,
         rpGain: Int,
         numOfNewTasks: Int,
@@ -131,7 +131,7 @@ class OfflineTasksRepository(
 
     override fun selectSpecialTasks() = taskDao.selectSpecialTasks()
 
-    private suspend fun updateAchievementsProgression(taskDurationCategory: TaskDurationCategory) {
+    override suspend fun updateAchievementsProgression(taskDurationCategory: TaskDurationCategory) {
         updateCompletedTaskNumAchievements()
         val taskList = getCompletedTasksByDuration(taskDurationCategory).first()
         taskList.forEach {

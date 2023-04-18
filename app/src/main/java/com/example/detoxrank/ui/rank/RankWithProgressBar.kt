@@ -55,6 +55,8 @@ fun RankWithProgressBar(
 
     val currentRank = detoxRankViewModel.getCurrentRank()
 
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val rankWidthFraction = if (currentScreenHeight < 700) 0.4f  else 1f
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -78,7 +80,7 @@ fun RankWithProgressBar(
         Image(
             painterResource(id = getRankDrawableId(currentRank)),
             contentDescription = null,
-            modifier = Modifier.padding(bottom = 25.dp, start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(bottom = 25.dp, start = 16.dp, end = 16.dp).fillMaxWidth(rankWidthFraction)
         )
         Box {
             Text(

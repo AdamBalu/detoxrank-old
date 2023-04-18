@@ -20,4 +20,14 @@ interface TasksRepository {
     suspend fun updateRows(rows: List<Task>)
 
     fun selectSpecialTasks()
+
+    suspend fun updateAchievementsProgression(taskDurationCategory: TaskDurationCategory)
+
+    suspend fun handleTaskRotation(
+        xpGain: Int,
+        rpGain: Int,
+        numOfNewTasks: Int,
+        taskDurationCategory: TaskDurationCategory,
+        completedTasksNum: Int
+    )
 }

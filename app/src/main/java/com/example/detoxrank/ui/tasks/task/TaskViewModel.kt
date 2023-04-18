@@ -13,7 +13,6 @@ import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TasksRepository
 import com.example.detoxrank.data.task.WMTasksRepository
-import com.example.detoxrank.data.user.OfflineUserDataRepository
 import com.example.detoxrank.data.user.UserDataRepository
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_DAILY
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
@@ -41,9 +40,9 @@ class TaskViewModel(
         val firstRun = sharedPrefs.getBoolean("first_run", true)
         Log.d("Tasks", "First run: $firstRun")
         if (firstRun) {
-            getNewTasks(TaskDurationCategory.Daily, NUMBER_OF_TASKS_DAILY)
-            getNewTasks(TaskDurationCategory.Weekly, NUMBER_OF_TASKS_WEEKLY)
-            getNewTasks(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
+            getNewTasksWithoutProgress(TaskDurationCategory.Daily, NUMBER_OF_TASKS_DAILY)
+            getNewTasksWithoutProgress(TaskDurationCategory.Weekly, NUMBER_OF_TASKS_WEEKLY)
+            getNewTasksWithoutProgress(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
             withContext(Dispatchers.IO) {
                 userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
             }
@@ -54,7 +53,7 @@ class TaskViewModel(
 
     suspend fun getMonthlyTasks() {
         withContext(Dispatchers.IO) {
-            getNewTasks(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
+            getNewTasksWithoutProgress(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
             userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
         }
     }
@@ -87,9 +86,26 @@ class TaskViewModel(
         return tasksRepository.getCompletedTasksByDuration(taskDurationCategory = taskDurationCategory)
     }
 
-    private suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory, numberOfTasks: Int) {
+    suspend fun updateAchievements(taskDurationCategory: TaskDurationCategory) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                tasksRepository.updateAchievementsProgression(taskDurationCategory)
+            }
+        }
+    }
+
+    suspend fun getNewTasksWithoutProgress(taskDurationCategory: TaskDurationCategory, numberOfTasks: Int) {
         tasksRepository.resetTasksFromCategory(durationCategory = taskDurationCategory)
         tasksRepository.selectNRandomTasksByDuration(taskDurationCategory, numberOfTasks)
+    }
+
+    suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
+                tasksRepository.getNewTasks(taskDurationCategory = taskDurationCategory)
+            }
+        }
     }
 
     suspend fun insertTaskToDatabase() {

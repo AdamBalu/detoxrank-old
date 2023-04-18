@@ -15,8 +15,7 @@ object LocalTimerDifficultyDataProvider {
                 R.string.drugs,
                 R.string.pornography
             ),
-            backgroundImageRes = R.drawable.timer_easy_difficulty_background,
-            height = 230.dp
+            backgroundImageRes = R.drawable.timer_easy_difficulty_background
         ),
         TimerDifficultyCard(
             difficulty = TimerDifficulty.Medium,
@@ -29,8 +28,7 @@ object LocalTimerDifficultyDataProvider {
                 R.string.tv,
                 R.string.risktaking
             ),
-            backgroundImageRes = R.drawable.timer_medium_difficulty_background,
-            height = 280.dp
+            backgroundImageRes = R.drawable.timer_medium_difficulty_background
         ),
         TimerDifficultyCard(
             difficulty = TimerDifficulty.Hard,
@@ -47,8 +45,7 @@ object LocalTimerDifficultyDataProvider {
                 R.string.music,
                 R.string.parties
             ),
-            backgroundImageRes = R.drawable.timer_hard_difficulty_background,
-            height = 370.dp
+            backgroundImageRes = R.drawable.timer_hard_difficulty_background
         )
     )
 }

@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -129,6 +130,10 @@ fun RankMainScreenBody(
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
+
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val achievementsPadding = if (currentScreenHeight < 700) 4.dp else 15.dp
+
     LaunchedEffect(Unit) {
         rankViewModel.setLocalRankPoints()
         val rankPoints = detoxRankViewModel.getUserRankPoints()
@@ -183,18 +188,18 @@ fun RankMainScreenBody(
                     Icon(
                         Icons.Filled.KeyboardArrowUp,
                         contentDescription = null,
-                        modifier = Modifier.padding(end = 15.dp, top = 10.dp),
+                        modifier = Modifier.padding(end = 15.dp, top = achievementsPadding - 4.dp),
                         tint = MaterialTheme.colorScheme.inversePrimary
                     )
                     Text(
                         "ACHIEVEMENTS",
-                        modifier = Modifier.padding(top = 15.dp, bottom = 15.dp),
+                        modifier = Modifier.padding(top = achievementsPadding, bottom = achievementsPadding + 4.dp),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Icon(
                         Icons.Filled.KeyboardArrowUp,
                         contentDescription = null,
-                        modifier = Modifier.padding(start = 15.dp, top = 10.dp),
+                        modifier = Modifier.padding(start = 15.dp, top = achievementsPadding - 4.dp),
                         tint = MaterialTheme.colorScheme.inversePrimary
                     )
                 }

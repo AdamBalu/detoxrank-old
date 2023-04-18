@@ -40,7 +40,6 @@ object DetoxRankViewModelProvider {
                 tasksRepository = detoxRankApplication().container.tasksRepository,
                 wmTasksRepository = detoxRankApplication().container.wmTasksRepository,
                 userDataRepository = detoxRankApplication().container.userDataRepository
-//                application = this[APPLICATION_KEY] as DetoxRankApp
             )
         }
 

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -176,7 +177,7 @@ fun TimerBody(
                     detoxRankViewModel = detoxRankViewModel,
                     achievementViewModel = achievementViewModel,
                     modifier = Modifier
-                        .padding(start = 40.dp, end = 40.dp, top = 150.dp)
+                        .padding(start = 60.dp, end = 60.dp, top = 150.dp)
                         .align(Alignment.Center)
                 )
             }
@@ -194,15 +195,6 @@ fun TimerBody(
 
 @ExperimentalAnimationApi
 @Composable
-fun GeneratedPoints(
-    timerService: TimerService,
-    modifier: Modifier = Modifier
-) {
-
-}
-
-@ExperimentalAnimationApi
-@Composable
 fun TimerBodyLarge(
     timerService: TimerService,
     detoxRankUiState: DetoxRankUiState,
@@ -211,6 +203,8 @@ fun TimerBodyLarge(
     timerViewModel: TimerViewModel,
     modifier: Modifier = Modifier
 ) {
+    val currentScreenHeight = LocalConfiguration.current.screenHeightDp
+    val timerTranslationY = if (currentScreenHeight >= 900) 0f else (currentScreenHeight.toFloat() / 5)
     Box(
         modifier = modifier.zIndex(1f)
     ) {
@@ -233,14 +227,14 @@ fun TimerBodyLarge(
                 enter = expandVertically(animationSpec = tween(durationMillis = 700)) +
                         fadeIn(animationSpec = tween(durationMillis = 1200))
             ) {
-                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxHeight().graphicsLayer { translationY = 120f }) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxHeight().graphicsLayer { translationY = timerTranslationY }) {
                     TimerClockLarge(timerService)
                     TimerStartStopButtonLarge(
                         timerService = timerService,
                         detoxRankViewModel = detoxRankViewModel,
                         achievementViewModel = achievementViewModel,
                         modifier = Modifier
-                            .padding(start = 0.dp, end = 0.dp, top = 120.dp)
+                            .padding(start = 0.dp, end = 0.dp, top = 130.dp)
                             .align(Alignment.Center)
                     )
                 }

@@ -53,7 +53,7 @@ class TimerService : Service() {
         private set
     var hours = mutableStateOf("00")
         private set
-    var days = mutableStateOf(0)
+    var days = mutableStateOf("0")
         private set
     var currentState = mutableStateOf(TimerState.Idle)
         private set
@@ -74,8 +74,8 @@ class TimerService : Service() {
         when (intent?.getStringExtra(STOPWATCH_STATE)) {
             TimerState.Started.name -> {
                 startForegroundService()
-                startTimer { hours, minutes, seconds ->
-                    updateNotification(hours = hours, minutes = minutes, seconds = seconds)
+                startTimer { days, hours, minutes, seconds ->
+                    updateNotification(days = days, hours = hours, minutes = minutes, seconds = seconds)
                 }
             }
             TimerState.Canceled.name -> {
@@ -87,8 +87,8 @@ class TimerService : Service() {
             when (it) {
                 ACTION_SERVICE_START -> {
                     startForegroundService()
-                    startTimer { hours, minutes, seconds ->
-                        updateNotification(hours = hours, minutes = minutes, seconds = seconds)
+                    startTimer { days, hours, minutes, seconds ->
+                        updateNotification(days = days, hours = hours, minutes = minutes, seconds = seconds)
                     }
                 }
                 ACTION_SERVICE_CANCEL -> {
@@ -100,12 +100,12 @@ class TimerService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun startTimer(onTick: (h: String, m: String, s: String) -> Unit) {
+    private fun startTimer(onTick: (d: String, h: String, m: String, s: String) -> Unit) {
         currentState.value = TimerState.Started
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
             duration = duration.plus(1.seconds)
             updateTimeUnits()
-            onTick(hours.value, minutes.value, seconds.value)
+            onTick(days.value, hours.value, minutes.value, seconds.value)
         }
     }
 
@@ -117,7 +117,7 @@ class TimerService : Service() {
         if (userData.timerStarted) {
             val rawTime = System.currentTimeMillis() - timerStartTimeMillis
             duration = (rawTime % (1000 * 60 * 60 * 24)).milliseconds
-            days.value = rawTime.milliseconds.toInt(DurationUnit.DAYS)
+            days.value = rawTime.milliseconds.toInt(DurationUnit.DAYS).toString()
 
             if (currentState.value != TimerState.Started) {
                 ServiceHelper.triggerForegroundService(
@@ -148,7 +148,7 @@ class TimerService : Service() {
         if (this::timer.isInitialized) {
             timer.cancel()
         }
-        days.value = 0
+        days.value = "0"
         duration = Duration.ZERO
         currentState.value = TimerState.Idle
         updateTimeUnits()
@@ -197,11 +197,12 @@ class TimerService : Service() {
         }
     }
 
-    private fun updateNotification(hours: String, minutes: String, seconds: String) {
+    private fun updateNotification(days: String, hours: String, minutes: String, seconds: String) {
         notificationManager.notify(
             NOTIFICATION_ID,
             notificationBuilder.setContentText(
                 formatTime(
+                    days = days,
                     hours = hours,
                     minutes = minutes,
                     seconds = seconds,

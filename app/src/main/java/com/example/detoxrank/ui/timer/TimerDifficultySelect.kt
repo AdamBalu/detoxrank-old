@@ -10,7 +10,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -125,13 +129,13 @@ fun DifficultyCard(
         border = BorderStroke(4.dp, cardColor),
         modifier = modifier
             .fillMaxWidth()
+            .height(270.dp)
             .clickable(enabled = cardEnabled) {
                 timerViewModel.setDifficultySelectShown(false)
                 detoxRankViewModel.setTimerDifficultyUiState(card.difficulty)
                 detoxRankViewModel.setTimerDifficultyDatabase(card.difficulty)
             }
             .padding(top = 7.dp)
-            .height(card.height)
     ) {
         Box() {
             Image(
@@ -158,12 +162,16 @@ fun DifficultyCard(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            "Avoid :",
-                            style = Typography.bodySmall,
+                            if (card.difficulty != TimerDifficulty.Easy) "Avoid (scroll to see all):" else "Avoid:",
+                            style = Typography.bodyMedium,
                             modifier = Modifier.padding(bottom = 5.dp)
                         )
-                        for (item in card.avoidList) {
-                            BannedItem(item)
+                        Column {
+                            LazyColumn(modifier = Modifier.height(120.dp).width(190.dp)) {
+                                items(card.avoidList) { avoidItem ->
+                                    BannedItem(item = avoidItem)
+                                }
+                            }
                         }
                     }
                 }

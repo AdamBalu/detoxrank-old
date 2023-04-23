@@ -37,6 +37,7 @@ import com.example.detoxrank.ui.utils.Constants
 import com.example.detoxrank.ui.utils.Constants.ID_START_TIMER
 import com.example.detoxrank.ui.utils.calculateTimerFloatAddition
 import com.example.detoxrank.ui.utils.calculateTimerRPGain
+import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeDp
 import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeDpLarge
 import com.example.detoxrank.ui.utils.getParamDependingOnScreenSizeSpLarge
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
@@ -122,15 +123,13 @@ fun TimerClockLarge(
         targetValue = timerService.hours.value.toFloat() * calculateTimerFloatAddition(19.44f, 24)
     )
 
-    val k = minOf(LocalConfiguration.current.screenHeightDp, LocalConfiguration.current.screenWidthDp)
-    val add = (k - 590) / 2
-    val addition = if (add < 0) 0 else add
+    val timerWidthIncrement = getParamDependingOnScreenSizeDpLarge(-20.dp, 0.dp, 0.dp, 10.dp, 30.dp, 60.dp)
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(top = 0.dp)) {
         Box {
             CircularProgressBar(
                 modifier = Modifier
-                    .width(328.dp + addition.dp)
+                    .width(328.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = progressSeconds,
                 progressMax = 100f,
@@ -144,7 +143,7 @@ fun TimerClockLarge(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(314.dp + addition.dp)
+                    .width(314.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = 50f,
                 progressMax = 100f,
@@ -158,7 +157,7 @@ fun TimerClockLarge(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(285.dp + addition.dp)
+                    .width(285.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = progressMinutes,
                 progressMax = 100f,
@@ -172,7 +171,7 @@ fun TimerClockLarge(
             )
             CircularProgressBar(
                 modifier = Modifier
-                    .width(269.dp + addition.dp)
+                    .width(269.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = 39f,
                 progressMax = 100f,
@@ -186,7 +185,7 @@ fun TimerClockLarge(
 
             CircularProgressBar(
                 modifier = Modifier
-                    .width(240.dp + addition.dp)
+                    .width(240.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = progressHours,
                 progressMax = 100f,
@@ -201,7 +200,7 @@ fun TimerClockLarge(
 
             CircularProgressBar(
                 modifier = Modifier
-                    .width(220.dp + addition.dp)
+                    .width(220.dp + timerWidthIncrement)
                     .align(Alignment.Center),
                 progress = 19.44f,
                 progressMax = 100f,

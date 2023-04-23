@@ -17,6 +17,7 @@ import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_5
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
 import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES

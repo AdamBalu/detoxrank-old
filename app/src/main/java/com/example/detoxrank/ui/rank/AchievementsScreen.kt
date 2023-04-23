@@ -27,7 +27,9 @@ import com.example.detoxrank.data.achievements.AchievementDifficulty
 import com.example.detoxrank.data.local.LocalAchievementDataProvider
 import com.example.detoxrank.ui.DetoxRankViewModel
 import com.example.detoxrank.ui.theme.*
+import com.example.detoxrank.ui.toAchievementUiState
 import com.example.detoxrank.ui.utils.getAchievementDrawableFromId
+import kotlinx.coroutines.launch
 
 @Composable
 fun AchievementsScreen(
@@ -57,17 +59,21 @@ fun AchievementsScreen(
         Box(modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)) {
-//            Button(onClick = {
-//                coroutineScope.launch { // DEVDATA uncomment to fill achievement db
-//                    achievementsToAdd.forEach {
-//                        detoxRankViewModel.updateAchievementUiState(it.toAchievementUiState())
-//                        detoxRankViewModel.insertAchievementToDatabase()
-//                    }
-//                }
-//            }) {
-//                Text("Fill achievs db")
-//            }
             Column(modifier = Modifier.align(Alignment.TopCenter)) {
+//                Button(
+//                    onClick = {
+//                        coroutineScope.launch { // FILLDB uncomment to fill achievement db
+////                      achievementViewModel.deleteAllAchievementsInDb()
+//                            achievementsToAdd.forEach {
+//                                detoxRankViewModel.updateAchievementUiState(it.toAchievementUiState())
+//                                detoxRankViewModel.insertAchievementToDatabase()
+//                            }
+//                        }
+//                    },
+//                    modifier = Modifier.height(40.dp)
+//                ) {
+//                    Text("Fill achievs db")
+//                }
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowDown,
                     tint = MaterialTheme.colorScheme.inversePrimary,

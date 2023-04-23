@@ -18,6 +18,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.R
@@ -31,7 +32,6 @@ import com.example.detoxrank.ui.tasks.task.TaskList
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
 import com.example.detoxrank.ui.tasks.task.toTaskUiState
 import com.example.detoxrank.ui.theme.*
-import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 import com.example.detoxrank.ui.utils.getCurrentLevelFromXP
 import kotlinx.coroutines.*
@@ -121,17 +121,16 @@ fun TasksContent(
             taskViewModel.wereTasksOpened.value = true
         }
 
-        val timeInstance = detoxRankViewModel.getUserMonthlyTasksRefreshedTimeInstance()
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timeInstance
-        val month = calendar.get(Calendar.MONTH)
-        val year = calendar.get(Calendar.YEAR)
-        val currentTime = Calendar.getInstance()
-        currentTime.timeInMillis = System.currentTimeMillis()
-        val isFromLastMonth = currentTime.get(Calendar.MONTH) - 1 >= month && currentTime.get(Calendar.YEAR) >= year
-        if (isFromLastMonth) {
-            taskViewModel.getNewTasks(TaskDurationCategory.Monthly)
+        val calendarDaily = Calendar.getInstance().apply {
+            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Daily)
         }
+        val calendarWeekly = Calendar.getInstance().apply {
+            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Weekly)
+        }
+        val calendarMonthly = Calendar.getInstance().apply {
+            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Monthly)
+        }
+        taskViewModel.refreshTasks(calendarDaily, calendarWeekly, calendarMonthly)
     }
 
     Row(modifier = modifier.fillMaxSize()) {
@@ -148,14 +147,13 @@ fun TasksContent(
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                    coroutineScope.launch { // DATA uncomment to fill task db
-//                        taskViewModel.deleteAllTasksInDb()
-                        tasksToAdd.forEach {
-                            taskViewModel.updateUiState(it.toTaskUiState())
-                            taskViewModel.insertTaskToDatabase()
-                        }
-                    }
-
+//                    coroutineScope.launch { // FILLDB uncomment to fill task db
+////                        taskViewModel.deleteAllTasksInDb()
+//                        tasksToAdd.forEach {
+//                            taskViewModel.updateUiState(it.toTaskUiState())
+//                            taskViewModel.insertTaskToDatabase()
+//                        }
+//                    }
                     viewModel.invertCreateTaskMenuShownValue()
                 }) {
                     Icon(
@@ -241,7 +239,6 @@ fun TasksHeading(
     timerService: TimerService,
     category: TaskDurationCategory,
     iconImageVector: ImageVector,
-    taskViewModel: TaskViewModel,
     modifier: Modifier = Modifier
 ) {
     var isLaunched by remember { mutableStateOf(false) }
@@ -291,7 +288,8 @@ fun TasksHeading(
             Text(
                 text = stringResource(headingRes),
                 style = Typography.bodyLarge,
-                modifier = Modifier.padding(end = 10.dp)
+                modifier = Modifier.padding(end = 10.dp),
+                fontSize = 22.sp
             )
             Icon(
                 imageVector = iconImageVector,
@@ -309,10 +307,15 @@ fun TasksHeading(
 @Composable
 fun TaskTimer(
     category: TaskDurationCategory,
-    timerService: TimerService,
-    modifier: Modifier = Modifier
+    timerService: TimerService
 ) {
-    val daysRemainingWeek = 7 - Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    var dayOfWeekEu = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
+    val daysRemainingWeek: Int
+    when (dayOfWeekEu) {
+        Calendar.SUNDAY -> {daysRemainingWeek = 0}
+        else -> daysRemainingWeek = dayOfWeekEu - 1
+    }
     var isVisible by remember { mutableStateOf(false) }
     val hoursRemaining by timerService.hoursDay
     val minutesRemaining by timerService.minutesDay
@@ -342,7 +345,7 @@ fun TaskTimer(
                         "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = Typography.bodyMedium
                 )
             }
             TaskDurationCategory.Weekly -> {
@@ -354,7 +357,7 @@ fun TaskTimer(
                 Text(
                     stringResource(id = R.string.tasklist_time_left, formattedTimer),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = Typography.bodyMedium
                 )
             }
             TaskDurationCategory.Monthly -> {
@@ -366,7 +369,7 @@ fun TaskTimer(
                 Text(
                     stringResource(id = R.string.tasklist_time_left, formattedTimer),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = Typography.bodyMedium
                 )
             }
             TaskDurationCategory.Special -> {

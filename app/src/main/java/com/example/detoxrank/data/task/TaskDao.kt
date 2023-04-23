@@ -21,7 +21,7 @@ interface TaskDao {
     fun getAllTasks(): Flow<List<Task>>
 
     @Transaction
-    @Query("UPDATE task SET selected = 1 WHERE duration_category = :durationCategory AND id IN (SELECT id FROM task WHERE duration_category = :durationCategory ORDER BY RANDOM() LIMIT :numberOfTasks)")
+    @Query("UPDATE task SET selected = 1 WHERE duration_category = :durationCategory AND id IN (SELECT id FROM task WHERE duration_category = :durationCategory AND was_selected_last_time = 0 ORDER BY RANDOM() LIMIT :numberOfTasks)")
     suspend fun selectNRandomTasksByDuration(durationCategory: TaskDurationCategory,
                                   numberOfTasks: Int)
 
@@ -40,4 +40,12 @@ interface TaskDao {
 
     @Update
     suspend fun updateRows(taskRows: List<Task>)
+
+    @Transaction
+    @Query("UPDATE task SET was_selected_last_time = :value WHERE selected = 1 AND duration_category = :taskDurationCategory")
+    fun updateTasksSelectedLastTime(taskDurationCategory: TaskDurationCategory, value: Boolean)
+
+    @Transaction
+    @Query("UPDATE task SET was_selected_last_time = 0 WHERE duration_category = :taskDurationCategory")
+    fun resetSelectedLastTime(taskDurationCategory: TaskDurationCategory)
 }

@@ -74,6 +74,9 @@ fun TheoryChapterSelectScreen(
                 )
             }
         }
+        item {
+            Spacer(modifier = Modifier.height(15.dp))
+        }
     }
 }
 
@@ -90,14 +93,11 @@ fun TheoryChapter(
     Card(
         colors = CardDefaults.cardColors(
             containerColor = if (chapter.wasCompleted) {
-                if (isSystemInDarkTheme())
-                    MaterialTheme.colorScheme.tertiaryContainer
-                else
-                    MaterialTheme.colorScheme.tertiaryContainer
+                MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
             } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            }
-
+                MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
+            },
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         modifier = modifier
             .padding(vertical = 4.dp, horizontal = 16.dp),

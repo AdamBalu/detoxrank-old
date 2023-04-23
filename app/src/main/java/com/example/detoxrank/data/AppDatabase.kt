@@ -14,7 +14,7 @@ import com.example.detoxrank.data.task.TaskDao
 import com.example.detoxrank.data.user.UserData
 import com.example.detoxrank.data.user.UserDataDao
 
-@Database(entities = [Task::class, Chapter::class, UserData::class, Achievement::class], version = 12)
+@Database(entities = [Task::class, Chapter::class, UserData::class, Achievement::class], version = 14)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao

@@ -1,6 +1,5 @@
 package com.example.detoxrank.ui.utils
 
-import android.text.format.Time
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
 import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
@@ -139,13 +139,14 @@ fun getParamDependingOnScreenSizeDp(p1: Dp?, p2: Dp?, p3: Dp?, p4: Dp?, otherwis
 }
 
 @Composable
-fun getParamDependingOnScreenSizeDpLarge(p1: Dp?, p2: Dp?, p3: Dp?, p4: Dp?, otherwise: Dp): Dp {
+fun getParamDependingOnScreenSizeDpLarge(p1: Dp?, p2: Dp?, p3: Dp?, p4: Dp?, p5: Dp?, otherwise: Dp): Dp {
     val currentScreenHeight = LocalConfiguration.current.screenHeightDp
     val currentScreenWidth = LocalConfiguration.current.screenWidthDp
     return if (currentScreenHeight < 340 && currentScreenWidth < 600) p1 ?: 0.dp
     else if (currentScreenHeight < 370 && currentScreenWidth < 700) p2 ?: 0.dp
     else if (currentScreenHeight < 400 && currentScreenWidth < 800) p3 ?: 0.dp
     else if (currentScreenHeight < 500 && currentScreenWidth < 900) p4 ?: 0.dp
+    else if (currentScreenHeight < 600 && currentScreenWidth < 1200) p5 ?: 0.dp
     else otherwise
 }
 

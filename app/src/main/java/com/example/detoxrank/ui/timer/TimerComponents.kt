@@ -1,5 +1,6 @@
 package com.example.detoxrank.ui.timer
 
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent

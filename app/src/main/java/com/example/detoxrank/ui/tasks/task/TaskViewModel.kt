@@ -22,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class TaskViewModel(
     application: Application,
@@ -38,23 +39,17 @@ class TaskViewModel(
 
     suspend fun firstRunGetTasks() {
         val firstRun = sharedPrefs.getBoolean("first_run", true)
-        Log.d("Tasks", "First run: $firstRun")
         if (firstRun) {
             getNewTasksWithoutProgress(TaskDurationCategory.Daily, NUMBER_OF_TASKS_DAILY)
             getNewTasksWithoutProgress(TaskDurationCategory.Weekly, NUMBER_OF_TASKS_WEEKLY)
             getNewTasksWithoutProgress(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
             withContext(Dispatchers.IO) {
+                userDataRepository.updateDailyTasksLastRefreshTime(System.currentTimeMillis())
+                userDataRepository.updateWeeklyTasksLastRefreshTime(System.currentTimeMillis())
                 userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
             }
-            wmTasksRepository.getNewTasks()
+//            wmTasksRepository.getNewTasks()
             sharedPrefs.edit().putBoolean("first_run", false).apply()
-        }
-    }
-
-    suspend fun getMonthlyTasks() {
-        withContext(Dispatchers.IO) {
-            getNewTasksWithoutProgress(TaskDurationCategory.Monthly, NUMBER_OF_TASKS_MONTHLY)
-            userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
         }
     }
 
@@ -101,8 +96,15 @@ class TaskViewModel(
 
     suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory) {
         viewModelScope.launch {
+            val time = System.currentTimeMillis()
             withContext(Dispatchers.IO) {
-                userDataRepository.updateMonthlyTasksLastRefreshTime(System.currentTimeMillis())
+                if (taskDurationCategory == TaskDurationCategory.Daily) {
+                    userDataRepository.updateDailyTasksLastRefreshTime(time)
+                } else if (taskDurationCategory == TaskDurationCategory.Weekly) {
+                    userDataRepository.updateWeeklyTasksLastRefreshTime(time)
+                } else if (taskDurationCategory == TaskDurationCategory.Monthly) {
+                    userDataRepository.updateMonthlyTasksLastRefreshTime(time)
+                }
                 tasksRepository.getNewTasks(taskDurationCategory = taskDurationCategory)
             }
         }
@@ -126,5 +128,32 @@ class TaskViewModel(
                 tasksRepository.deleteTask(task)
             }
         }
+    }
+
+    suspend fun refreshTasks(calendarDaily: Calendar, calendarWeekly: Calendar, calendarMonthly: Calendar) {
+        val day = calendarDaily.get(Calendar.DAY_OF_YEAR)
+        val yearDaily = calendarDaily.get(Calendar.YEAR)
+
+        // times of previously last refreshed weekly task
+        val week = calendarWeekly.get(Calendar.WEEK_OF_YEAR)
+        val yearWeekly = calendarWeekly.get(Calendar.YEAR)
+
+        // times of previously last refreshed monthly task
+        val month = calendarMonthly.get(Calendar.MONTH)
+        val yearMonthly = calendarMonthly.get(Calendar.YEAR)
+
+        val currentTime = Calendar.getInstance()
+
+        currentTime.timeInMillis = System.currentTimeMillis()
+        val isFromLastDay = (currentTime.get(Calendar.YEAR) >= yearDaily) && (currentTime.get(Calendar.DAY_OF_YEAR) - 1 >= day)
+        val isFromLastWeek = (currentTime.get(Calendar.YEAR) >= yearWeekly) && (currentTime.get(Calendar.WEEK_OF_YEAR) - 1 >= week)
+        val isFromLastMonth =  (currentTime.get(Calendar.YEAR) >= yearMonthly) && (currentTime.get(Calendar.MONTH) - 1 >= month)
+
+        if (isFromLastDay)
+            getNewTasks(TaskDurationCategory.Daily)
+        if (isFromLastWeek)
+            getNewTasks(TaskDurationCategory.Weekly)
+        if (isFromLastMonth)
+            getNewTasks(TaskDurationCategory.Monthly)
     }
 }

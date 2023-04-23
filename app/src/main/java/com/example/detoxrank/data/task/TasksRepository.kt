@@ -30,4 +30,8 @@ interface TasksRepository {
         taskDurationCategory: TaskDurationCategory,
         completedTasksNum: Int
     )
+
+    fun updateTasksSelectedLastTime(taskDurationCategory: TaskDurationCategory, value: Boolean)
+
+    fun resetSelectedLastTime(taskDurationCategory: TaskDurationCategory)
 }

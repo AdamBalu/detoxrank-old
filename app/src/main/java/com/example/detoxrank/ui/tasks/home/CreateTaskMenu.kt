@@ -27,6 +27,7 @@ import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
 import com.example.detoxrank.ui.tasks.task.TaskUiState
 import com.example.detoxrank.ui.tasks.task.TaskViewModel
+import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.utils.getIcon
 import kotlinx.coroutines.launch
 
@@ -63,7 +64,7 @@ fun CreateTaskMenu(
             ) {
                 Text(
                     text = "Custom task",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = Typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)

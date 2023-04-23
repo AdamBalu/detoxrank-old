@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.data.TimerDifficulty
 import com.example.detoxrank.data.achievements.AchievementRepository
+import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.user.Rank
 import com.example.detoxrank.data.user.UserDataRepository
 import kotlinx.coroutines.Dispatchers
@@ -91,8 +92,16 @@ class DetoxRankViewModel(
         return userDataRepository.getUserStream().first().xpPoints
     }
 
-    suspend fun getUserMonthlyTasksRefreshedTimeInstance(): Long {
-        return userDataRepository.getUserStream().first().monthlyTasksLastRefreshTime
+    suspend fun getUserTasksRefreshedTimeInstance(taskDurationCategory: TaskDurationCategory): Long {
+        return if (taskDurationCategory == TaskDurationCategory.Daily) {
+            userDataRepository.getUserStream().first().dailyTasksLastRefreshTime
+        } else if (taskDurationCategory == TaskDurationCategory.Weekly) {
+            userDataRepository.getUserStream().first().weeklyTasksLastRefreshTime
+        } else if (taskDurationCategory == TaskDurationCategory.Monthly) {
+            userDataRepository.getUserStream().first().monthlyTasksLastRefreshTime
+        } else {
+            0
+        }
     }
 
     suspend fun updateUserData() {

@@ -70,15 +70,15 @@ fun TimerDifficultySelectScreen(
                         "Difficulty select",
                         style = Typography.headlineMedium
                     )
-                    Text(
-                        "You get bonus RP gain from tasks depending on your timer " +
-                                "difficulty level when the timer is launched!",
-                        style = Typography.bodySmall,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 10.dp)
-                            .fillMaxWidth(0.8f)
-                    )
+//                    Text(
+//                        "You get bonus RP gain from tasks depending on your timer " +
+//                                "difficulty level when the timer is launched!",
+//                        style = Typography.bodySmall,
+//                        textAlign = TextAlign.Center,
+//                        modifier = Modifier
+//                            .padding(top = 10.dp)
+//                            .fillMaxWidth(0.8f)
+//                    )
                 }
             }
             items(timerViewModel.difficultyList) { card ->

@@ -60,6 +60,9 @@ object Constants {
     const val ID_TIMER_14_DAYS = 29
     const val ID_TIMER_30_DAYS = 30
 
+    const val ID_READ_10_PAGES = 31
+
+    const val PAGES_10 = 10
     const val PAGES_20 = 20
     const val PAGES_50 = 50
     const val PAGES_100 = 100

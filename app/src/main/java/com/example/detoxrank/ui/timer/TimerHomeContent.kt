@@ -204,7 +204,7 @@ fun TimerBodyLarge(
     modifier: Modifier = Modifier
 ) {
     val currentScreenHeight = LocalConfiguration.current.screenHeightDp
-    val timerTranslationY = if (currentScreenHeight >= 900) 0f else (currentScreenHeight.toFloat() / 5)
+    val timerTranslationY = if (currentScreenHeight >= 700) currentScreenHeight.toFloat() / 10 else currentScreenHeight.toFloat() / 3
     Box(
         modifier = modifier.zIndex(1f)
     ) {

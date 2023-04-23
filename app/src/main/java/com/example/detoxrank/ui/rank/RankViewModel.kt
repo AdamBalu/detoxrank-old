@@ -41,8 +41,16 @@ class RankViewModel(
     val achievementsDisplayed: MutableState<Boolean>
         get() = _achievementsDisplayed
 
+    private val _helpDisplayed = mutableStateOf(false)
+    val helpDisplayed: MutableState<Boolean>
+        get() = _helpDisplayed
+
     fun setAchievementsDisplayed(isDisplayed: Boolean) {
         _achievementsDisplayed.value = isDisplayed
+    }
+
+    fun setHelpDisplayed(isDisplayed: Boolean) {
+        _helpDisplayed.value = isDisplayed
     }
 
     suspend fun setLocalRankPoints() {

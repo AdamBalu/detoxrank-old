@@ -372,5 +372,13 @@
     <string name="save_timer_progress_dialog_confirm">Save</string>
     <string name="save_timer_progress_dialog_dismiss">Delete</string>
     <string name="tasklist_heading_special">Special</string>
-    <string name="timer_accumulated_points_heading">ACCUMULATED</string>
+    <string name="timer_accumulated_points_heading">ACCUMULATED RP</string>
+    <string name="help_rank_description">This is your current rank. Ranking system is based on rank points (in the rest of the app it\'s usually shortened to RP).\n\nTo
+        gain a better rank, you need to accumulate enough RP for the next rank. Your progress towards the next rank is shown below your rank.\n\nThere
+        is also an achievements section. You can complete them by doing specific actions throughout the app.</string>
+    <string name="help_tasks_description">Here you can complete tasks and even create your own ones.\n\nThe
+        higher the difficulty of your timer when it\'s started, the more RP you gain from these tasks. How much more you gain is shown in the timer difficulty select.</string>
+    <string name="help_timer_description">This is your detox timer. You can select the difficulty of your detox before you launch the timer.\n\nYou
+        can only change the difficulty while the timer is NOT running. You accumulate RP when the timer is ON. You receive the accumulated RP when you stop the timer.</string>
+    <string name="help_theory_description">Here you can study theory of a dopamine detox. It is highly recommended to study this section before you even start the timer, but it\'s not necessary.</string>
 </resources>

@@ -18,6 +18,7 @@ import com.example.detoxrank.ui.utils.Constants.ID_FINISH_CH_6
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
 import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_10_BOOKS
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
@@ -93,13 +94,13 @@ object LocalAchievementDataProvider {
             id = ID_READ_5_BOOKS,
             name = "Feeling educated",
             description = "Read 5 books (2500 pages)",
-            difficulty = AchievementDifficulty.VERY_HARD
+            difficulty = AchievementDifficulty.INSANE
         ),
         Achievement(
             id = ID_READ_10_BOOKS,
             name = "Nerd",
             description = "Read 10 books (5000 pages)",
-            difficulty = AchievementDifficulty.INSANE
+            difficulty = AchievementDifficulty.LEGENDARY
         ),
         Achievement(
             id = ID_FINISH_CH_1,

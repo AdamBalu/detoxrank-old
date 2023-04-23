@@ -3,7 +3,7 @@ package com.example.detoxrank.data.local
 import com.example.detoxrank.data.task.Task
 import com.example.detoxrank.data.task.TaskDurationCategory
 import com.example.detoxrank.data.task.TaskIconCategory
-import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_RUN_10_KM
@@ -39,10 +39,10 @@ object LocalTasksDataProvider {
             iconCategory = TaskIconCategory.Health
         ),
         Task(
-            description = "Read at least 20 pages",
+            description = "Read at least 10 pages",
             durationCategory = TaskDurationCategory.Daily,
             iconCategory = TaskIconCategory.Reading,
-            specialTaskID = ID_READ_20_PAGES
+            specialTaskID = ID_READ_10_PAGES
         ),
         Task(
             description = "Meditate",

@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -73,7 +72,7 @@ fun TaskList(
 //                            taskViewModel.getNewTasks(TaskDurationCategory.Weekly, 2)
 //                            taskViewModel.getNewTasks(TaskDurationCategory.Monthly, 4)
 //
-////                          tasksToAdd.forEach { // DEVDATA inserts new tasks to database
+////                          tasksToAdd.forEach { // DEV inserts new tasks to database FIXME
 ////                                taskViewModel.updateUiState(it.toTaskUiState())
 ////                                  taskViewModel.insertTaskToDatabase()
 ////                          }
@@ -85,18 +84,17 @@ fun TaskList(
 //                ) {
 //                    Row {
 //                        Icon(Icons.Filled.RestartAlt, contentDescription = null)
-//                        Text("Generate new tasks (temp btn)") // DEVDATA generates new tasks
+//                        Text("Generate new tasks (temp btn)") // DEV generates new tasks FIXME
 //                    }
 //                }
 //            }
         item {
             if (!taskList.none { it.durationCategory == TaskDurationCategory.Uncategorized })
                 TasksHeading(
-                    timerService = timerService,
                     headingRes = R.string.tasklist_heading_custom,
+                    timerService = timerService,
                     category = TaskDurationCategory.Uncategorized,
-                    iconImageVector = Icons.Filled.Face,
-                    taskViewModel = taskViewModel
+                    iconImageVector = Icons.Filled.Face
                 )
         }
         items(taskList.filter { it.durationCategory == TaskDurationCategory.Uncategorized }) { task ->
@@ -111,11 +109,10 @@ fun TaskList(
         }
         item {
             TasksHeading(
-                timerService = timerService,
                 headingRes = R.string.tasklist_heading_daily,
+                timerService = timerService,
                 category = TaskDurationCategory.Daily,
-                iconImageVector = Icons.Filled.Today,
-                taskViewModel = taskViewModel
+                iconImageVector = Icons.Filled.Today
             )
         }
         items(taskList.filter { it.durationCategory == TaskDurationCategory.Daily }) { task ->
@@ -130,11 +127,10 @@ fun TaskList(
         }
         item {
             TasksHeading(
-                timerService = timerService,
                 headingRes = R.string.tasklist_heading_weekly,
+                timerService = timerService,
                 category = TaskDurationCategory.Weekly,
-                iconImageVector = Icons.Filled.DateRange,
-                taskViewModel = taskViewModel
+                iconImageVector = Icons.Filled.DateRange
             )
         }
         items(taskList.filter { it.durationCategory == TaskDurationCategory.Weekly }) { task ->
@@ -149,11 +145,10 @@ fun TaskList(
         }
         item {
             TasksHeading(
-                timerService = timerService,
                 headingRes = R.string.tasklist_heading_monthly,
+                timerService = timerService,
                 category = TaskDurationCategory.Monthly,
-                iconImageVector = Icons.Filled.CalendarMonth,
-                taskViewModel = taskViewModel
+                iconImageVector = Icons.Filled.CalendarMonth
             )
         }
         items(taskList.filter { it.durationCategory == TaskDurationCategory.Monthly }) { task ->
@@ -169,11 +164,10 @@ fun TaskList(
         item {
             if (!taskList.none { it.durationCategory == TaskDurationCategory.Special })
                 TasksHeading(
-                    timerService = timerService,
                     headingRes = R.string.tasklist_heading_special,
+                    timerService = timerService,
                     category = TaskDurationCategory.Special,
-                    iconImageVector = Icons.Filled.ElectricBolt,
-                    taskViewModel = taskViewModel
+                    iconImageVector = Icons.Filled.ElectricBolt
                 )
         }
         items(taskList.filter { it.durationCategory == TaskDurationCategory.Special }) { task ->
@@ -374,8 +368,8 @@ fun Task(
                     ) {
                         Text(
                             text = task.description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 18.sp,
+                            style = Typography.bodyMedium,
+                            fontSize = 16.sp,
                             modifier = Modifier.padding(bottom = 5.dp)
                         )
                     }
@@ -388,7 +382,7 @@ fun Task(
                 ) {
                     Text(
                         text = stringResource(R.string.task_completed),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = Typography.bodyMedium,
                         fontSize = 18.sp,
                         fontStyle = FontStyle.Italic,
                         modifier = Modifier.padding(start = 38.dp)

@@ -57,5 +57,7 @@ data class Task(
     var selectedAsCurrentTask: Boolean = false,
     val language: String = "EN",
     @ColumnInfo(name = "special_task_id")
-    val specialTaskID: Int = 0
+    val specialTaskID: Int = 0,
+    @ColumnInfo(name = "was_selected_last_time")
+    val wasSelectedLastTime: Boolean = false
 )

@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.detoxrank.R
 import com.example.detoxrank.data.Section
+import com.example.detoxrank.data.local.LocalChapterDataProvider
 import com.example.detoxrank.ui.*
 import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.theme.md_theme_dark_tertiary
@@ -34,6 +35,7 @@ import com.example.detoxrank.ui.theory.screens.chapter_dopamine.*
 import com.example.detoxrank.ui.theory.screens.chapter_reinforcement.*
 import com.example.detoxrank.ui.theory.screens.chapter_solution.*
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -207,7 +209,7 @@ fun TheoryAppBar(
     Column(
         modifier = modifier.padding(bottom = 7.dp)
     ) {
-//        // DATA fill chapters with this button after db reset
+//        // FILLDB fill chapters with this button after db reset
 //        Button(onClick = {
 //            val chaptersToAdd = LocalChapterDataProvider.allChapters
 //            coroutineScope.launch {

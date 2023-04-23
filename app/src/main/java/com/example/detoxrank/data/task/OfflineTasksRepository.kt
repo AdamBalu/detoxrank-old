@@ -13,7 +13,7 @@ import com.example.detoxrank.ui.utils.Constants.ID_FINISH_50_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_5_TASKS
 import com.example.detoxrank.ui.utils.Constants.ID_FINISH_FIRST_TASK
 import com.example.detoxrank.ui.utils.Constants.ID_READ_100_PAGES
-import com.example.detoxrank.ui.utils.Constants.ID_READ_20_PAGES
+import com.example.detoxrank.ui.utils.Constants.ID_READ_10_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_250_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_READ_50_PAGES
 import com.example.detoxrank.ui.utils.Constants.ID_RUN_10_KM
@@ -25,7 +25,7 @@ import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_DAILY
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_MONTHLY
 import com.example.detoxrank.ui.utils.Constants.NUMBER_OF_TASKS_WEEKLY
 import com.example.detoxrank.ui.utils.Constants.PAGES_100
-import com.example.detoxrank.ui.utils.Constants.PAGES_20
+import com.example.detoxrank.ui.utils.Constants.PAGES_10
 import com.example.detoxrank.ui.utils.Constants.PAGES_250
 import com.example.detoxrank.ui.utils.Constants.PAGES_50
 import com.example.detoxrank.ui.utils.Constants.RP_PERCENTAGE_GAIN_EASY
@@ -60,6 +60,14 @@ class OfflineTasksRepository(
 
     override fun getCompletedTaskNum(taskDurationCategory: TaskDurationCategory): Int =
         taskDao.getCompletedTaskNum(taskDurationCategory)
+
+    override fun updateTasksSelectedLastTime(
+        taskDurationCategory: TaskDurationCategory,
+        value: Boolean
+    ) = taskDao.updateTasksSelectedLastTime(taskDurationCategory, value)
+
+    override fun resetSelectedLastTime(taskDurationCategory: TaskDurationCategory) =
+        taskDao.resetSelectedLastTime(taskDurationCategory)
 
     override suspend fun getNewTasks(taskDurationCategory: TaskDurationCategory)  {
         val completedTasksNum = getCompletedTaskNum(taskDurationCategory)
@@ -110,7 +118,6 @@ class OfflineTasksRepository(
         taskDurationCategory: TaskDurationCategory,
         completedTasksNum: Int
     ) {
-
         val percentageGain = when (userDataRepository.getUserStream().first().timerDifficulty) {
             TimerDifficulty.Easy -> RP_PERCENTAGE_GAIN_EASY / 100.0
             TimerDifficulty.Medium -> RP_PERCENTAGE_GAIN_MEDIUM / 100.0
@@ -121,8 +128,10 @@ class OfflineTasksRepository(
             userDataRepository.updateRankPoints(completedTasksNum * (rpGain + (rpGain * percentageGain).toInt()))
             userDataRepository.updateXpPoints(xpGain * completedTasksNum)
         }
+        updateTasksSelectedLastTime(taskDurationCategory, true)
         resetTasksFromCategory(taskDurationCategory)
         selectNRandomTasksByDuration(taskDurationCategory, numOfNewTasks)
+        resetSelectedLastTime(taskDurationCategory)
     }
 
     override fun getSelectedTasks(): Flow<List<Task>> = taskDao.getSelectedTasks()
@@ -176,9 +185,9 @@ class OfflineTasksRepository(
                         )
                     }
                 }
-                ID_READ_20_PAGES, ID_READ_50_PAGES, ID_READ_100_PAGES, ID_READ_250_PAGES -> {
+                ID_READ_10_PAGES, ID_READ_50_PAGES, ID_READ_100_PAGES, ID_READ_250_PAGES -> {
                     val pages = when (it.specialTaskID) {
-                        ID_READ_20_PAGES -> PAGES_20
+                        ID_READ_10_PAGES -> PAGES_10
                         ID_READ_50_PAGES -> PAGES_50
                         ID_READ_100_PAGES -> PAGES_100
                         ID_READ_250_PAGES -> PAGES_250

@@ -3,10 +3,16 @@ package com.example.detoxrank.ui.rank
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Help
+import androidx.compose.material.icons.rounded.Help
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +23,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.detoxrank.data.Section
 import com.example.detoxrank.ui.*
+import com.example.detoxrank.ui.theme.Typography
 import com.example.detoxrank.ui.utils.AnimationBox
 import com.example.detoxrank.ui.utils.DetoxRankNavigationType
 
@@ -90,7 +97,23 @@ fun RankContent(
             )
         }
         Scaffold(
-            topBar = { DetoxRankTopAppBar(detoxRankViewModel = detoxRankViewModel) },
+            topBar = {
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                    DetoxRankTopAppBar(detoxRankViewModel = detoxRankViewModel)
+                    IconButton(
+                        onClick = { rankViewModel.setHelpDisplayed(true) },
+                        modifier = Modifier
+                            .padding(end = 15.dp)
+                            .size(27.dp)
+                    ) {
+                        Icon(
+                            Icons.Rounded.Help,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.secondaryContainer,
+                        )
+                    }
+                }
+            },
             bottomBar = {
                 if (navigationType == DetoxRankNavigationType.BOTTOM_NAVIGATION)
                     DetoxRankBottomNavigationBar(
@@ -149,6 +172,14 @@ fun RankMainScreenBody(
         detoxRankViewModel.setRankProgressBar(progressBarPercentage)
     }
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(1f)
+    ) {
+        DetoxRankHelp(rankViewModel = rankViewModel)
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()
         .zIndex(1f)) {
@@ -194,7 +225,7 @@ fun RankMainScreenBody(
                     Text(
                         "ACHIEVEMENTS",
                         modifier = Modifier.padding(top = achievementsPadding, bottom = achievementsPadding + 4.dp),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = Typography.bodyMedium
                     )
                     Icon(
                         Icons.Filled.KeyboardArrowUp,
@@ -228,6 +259,14 @@ fun RankMainScreenBodyLarge(
             (rankPoints - currRankPair.second.first).toFloat() / (currRankPair.second.second - currRankPair.second.first)
         }
         detoxRankViewModel.setRankProgressBar(progressBarPercentage)
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(1f)
+    ) {
+        DetoxRankHelp(rankViewModel = rankViewModel)
     }
 
     Box(modifier = Modifier
@@ -273,7 +312,7 @@ fun RankMainScreenBodyLarge(
                     Text(
                         "ACHIEVEMENTS",
                         modifier = Modifier.padding(top = 9.dp, bottom = 5.dp),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = Typography.bodyMedium
                     )
                     Icon(
                         Icons.Filled.KeyboardArrowUp,

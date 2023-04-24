@@ -142,7 +142,9 @@ class TaskViewModel(
         val month = calendarMonthly.get(Calendar.MONTH)
         val yearMonthly = calendarMonthly.get(Calendar.YEAR)
 
-        val currentTime = Calendar.getInstance()
+        val currentTime = Calendar.getInstance().apply {
+            firstDayOfWeek = Calendar.MONDAY
+        }
 
         currentTime.timeInMillis = System.currentTimeMillis()
         val isFromLastDay = (currentTime.get(Calendar.YEAR) >= yearDaily) && (currentTime.get(Calendar.DAY_OF_YEAR) - 1 >= day)

@@ -113,7 +113,8 @@ fun TasksContent(
         val userXp = detoxRankViewModel.getUserXpPoints()
         val level = getCurrentLevelFromXP(userXp)
 
-        val specialTaskList = taskViewModel.getCompletedTasksByDuration(TaskDurationCategory.Special).first()
+        val specialTaskList =
+            taskViewModel.getCompletedTasksByDuration(TaskDurationCategory.Special).first()
         val noSpecialTasksCompleted = specialTaskList.none { it.completed }
 
         if (level >= 20 && noSpecialTasksCompleted && !taskViewModel.wereTasksOpened.value) {
@@ -122,13 +123,17 @@ fun TasksContent(
         }
 
         val calendarDaily = Calendar.getInstance().apply {
-            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Daily)
+            timeInMillis =
+                detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Daily)
         }
         val calendarWeekly = Calendar.getInstance().apply {
-            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Weekly)
+            timeInMillis =
+                detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Weekly)
+            firstDayOfWeek = Calendar.MONDAY
         }
         val calendarMonthly = Calendar.getInstance().apply {
-            timeInMillis = detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Monthly)
+            timeInMillis =
+                detoxRankViewModel.getUserTasksRefreshedTimeInstance(TaskDurationCategory.Monthly)
         }
         taskViewModel.refreshTasks(calendarDaily, calendarWeekly, calendarMonthly)
     }
@@ -214,7 +219,10 @@ fun TasksContent(
                         taskViewModel = taskViewModel,
                         modifier = Modifier
                             .fillMaxHeight(0.85f)
-                            .padding(start = customTaskStartEndPadding, end = customTaskStartEndPadding)
+                            .padding(
+                                start = customTaskStartEndPadding,
+                                end = customTaskStartEndPadding
+                            )
                     )
                 }
                 TaskList(
@@ -262,7 +270,7 @@ fun TasksHeading(
 
     val timeLeftDays = daysToNextMonth.days
     val timeLeftHours = ((secondsLeft / 60 / 60) % 24).hours
-    val timeLeftMinutes = ((secondsLeft / 60 ) % 60).minutes
+    val timeLeftMinutes = ((secondsLeft / 60) % 60).minutes
     val timeLeftSeconds = ((secondsLeft) % 60).seconds
 
     if (!isLaunched) {
@@ -313,8 +321,11 @@ fun TaskTimer(
 
     val daysRemainingWeek: Int
     when (dayOfWeekEu) {
-        Calendar.SUNDAY -> {daysRemainingWeek = 0}
-        else -> daysRemainingWeek = dayOfWeekEu - 1
+        Calendar.SUNDAY -> {
+            daysRemainingWeek = 0
+        }
+
+        else -> daysRemainingWeek = 7 - (dayOfWeekEu - 1)
     }
     var isVisible by remember { mutableStateOf(false) }
     val hoursRemaining by timerService.hoursDay
@@ -336,18 +347,25 @@ fun TaskTimer(
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = fadeIn() + slideInVertically(tween(700, easing = LinearOutSlowInEasing)) { height -> height/5 }
+        enter = fadeIn() + slideInVertically(
+            tween(
+                700,
+                easing = LinearOutSlowInEasing
+            )
+        ) { height -> height / 5 }
     ) {
         when (category) {
             TaskDurationCategory.Daily -> {
                 Text(
-                    stringResource(id = R.string.tasklist_time_left,
+                    stringResource(
+                        id = R.string.tasklist_time_left,
                         "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = Typography.bodyMedium
                 )
             }
+
             TaskDurationCategory.Weekly -> {
                 val formattedTimer = if (daysRemainingWeek >= 1) {
                     "${daysRemainingWeek}d ${hoursRemaining}h"
@@ -360,11 +378,12 @@ fun TaskTimer(
                     style = Typography.bodyMedium
                 )
             }
+
             TaskDurationCategory.Monthly -> {
                 val daysRemainingMonthInt = daysRemainingMonth.toInt()
                 val formattedTimer = if (daysRemainingMonthInt >= 7) "${daysRemainingMonth}d"
-                    else if (daysRemainingMonthInt >= 1) "${daysRemainingMonth}d ${hoursRemaining}h"
-                    else "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
+                else if (daysRemainingMonthInt >= 1) "${daysRemainingMonth}d ${hoursRemaining}h"
+                else "${hoursRemaining}h ${minutesRemaining}min ${secondsRemaining}s"
 
                 Text(
                     stringResource(id = R.string.tasklist_time_left, formattedTimer),
@@ -372,10 +391,12 @@ fun TaskTimer(
                     style = Typography.bodyMedium
                 )
             }
+
             TaskDurationCategory.Special -> {
                 Icon(Icons.Filled.AllInclusive, contentDescription = null)
             }
-            else -> { }
+
+            else -> {}
         }
     }
 }

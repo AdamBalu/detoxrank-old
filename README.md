@@ -1,19 +1,11 @@
-# Dopamine detox app
+**Dokumentácia k aplikácii Detox Rank**
 
-Gamified app for detoxication purposes.
+Gamifikovaná aplikácia slúžiaca na pomoc so zbavením závislosti na dopamíne procesom nazývaným dopamínová detoxikácia.
 
-Has ranking system to maintain user's motivation,
-task list with tasks designed for user to stay healthy,
-teaches theory for the user to better understand the point of detoxing,
-detoxication timer with custom detox difficulty,
-and you can even get some achievements for your efforts.
-
-
-# Dokumentácia k aplikácii Detox Rank
-
-Popis aplikácie:
-Aplikácia slúži na pomoc so zbavením závislosti na dopamíne. Využíva gamifikáciu na motivovanie užívateľa pri plnení 
-rôznych úloh v aplikácii a tvorení zdravých zvykov. 
+Obsahuje niekoľko hlavných sekcií. Prvou je hodnotiaci systém na udržanie užívateľovej motivácie. 
+Ďalšiu sekciu tvoria úlohy, ktoré slúžia na vytváranie zdravých zvykov. Nasledujúca sekcia je venovaná teórii, ktorá slúži na 
+vzdelávanie používateľa, aby lepšie pochopil princípy detoxikácie a vytvoril si vnútornú motiváciu. Dôležitou sekciou je aj časovač, 
+ktorý slúži na meranie času detoxikácie. Za rôzne aktivity naprieč aplikáciou je možné dostávať rôzne achievementy a skúsenostné body.
 
 Hlavné použité knižnice:
 ```

@@ -12,14 +12,16 @@ Hlavné použité knižnice:
 Hilt, Dagger, MaterialDesign3, Navigation, Material Icons, Room
 ```
 
-Odporúčaný postup po spustení aplikácie (.apk):
+### Odporúčaný postup po spustení aplikácie (.apk):
+
 1. Naštudovanie sekcie s teóriou
 2. Nastavenie obtiažnosti časovača
 3. Spustenie časovača
 4. Plnenie denných -> týždenných -> mesačných úloh
 5. Plnenie achievementov a vylepšovanie osobného hodnotenia - ranku
 
-Spustenie bez .apk súboru: 
+
+### Spustenie bez .apk súboru: 
 
 0. Odporúčaný software na spustenie aplikácie je Android Studio. 
 Preto je postup spustenia aplikácie popísaný výhradne pomocou tohto softwaru.

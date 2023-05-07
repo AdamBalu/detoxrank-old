@@ -10,6 +10,7 @@ and you can even get some achievements for your efforts.
 
 
 **Dokumentácia k aplikácii Detox Rank**
+
 Popis aplikácie:
 Aplikácia slúži na pomoc so zbavením závislosti na dopamíne. Využíva gamifikáciu na motivovanie užívateľa pri plnení 
 rôznych úloh v aplikácii a tvorení zdravých zvykov. 

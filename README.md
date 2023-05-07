@@ -1,4 +1,4 @@
-**Dokumentácia k aplikácii Detox Rank**
+#Dokumentácia k aplikácii Detox Rank
 
 Gamifikovaná aplikácia slúžiaca na pomoc so zbavením závislosti na dopamíne procesom nazývaným dopamínová detoxikácia.
 
